@@ -1,0 +1,39 @@
+%include ~/.hg.user
+
+[extensions]
+churn     =
+color     =
+extdiff   =
+graphlog  =
+hgk       =
+mq        =
+purge     =
+pager     =
+rebase    =
+
+[color]
+diff.diffline = red
+diff.extended = cyan bold
+diff.file_a = blue
+diff.file_b = green
+diff.hunk = yellow bold
+diff.deleted = magenta
+diff.inserted = cyan
+diff.changed = white
+diff.trailingwhitespace = bold red_background
+
+[pager]
+pager = LESS='FSRX' less
+attend = log, glog, diff, qdiff, annotate, status, branches, tags
+
+[web]
+style = gitweb
+allowbz2 = yes
+allowgz = yes
+allowzip = yes
+
+[defaults]
+revert = --no-backup
+annotate = --user
+
+# vim: ft=config

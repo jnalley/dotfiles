@@ -1,0 +1,32 @@
+[user]
+    name = Jon Nalley
+[include]
+    path = ~/.git.user
+[push]
+    default = matching
+[branch]
+    autosetuprebase = always
+[core]
+    editor = vim
+[color]
+    ui = true
+[color "branch"]
+    current = yellow black
+    local = yellow bold
+    remote = magenta
+[color "diff"]
+    meta = green
+    frag = yellow bold
+    old = red
+    new = blue
+    whitespace = red reverse
+[color "status"]
+    added = green
+    changed = blue
+    untracked = red
+    branch = yellow bold
+[alias]
+    ci = commit
+    co = checkout
+    l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
+    unpushed = log --branches --not --remotes --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
