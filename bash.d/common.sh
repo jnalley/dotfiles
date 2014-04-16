@@ -31,7 +31,7 @@ export HISTCONTROL=erasedups
 # do not create history entries for the following commands
 export HISTIGNORE="history*:exit:jobs:fg:bg:top:clear:cd:pwd"
 # limit history size
-export HISTSIZE=5000
+export HISTSIZE=100000
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command
