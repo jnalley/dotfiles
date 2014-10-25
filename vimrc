@@ -11,45 +11,54 @@
     call vundle#rc()
 " }
 
-" Bundles {
+" Plugins {
     " Vundle {
-        Bundle 'gmarik/vundle'
+        Plugin 'gmarik/vundle'
     " }
 
     " Enhancements {
-        Bundle 'bling/vim-airline'
-        Bundle 'h1mesuke/unite-outline'
-        Bundle 'nelstrom/vim-visual-star-search'
-        Bundle 'Raimondi/delimitMate'
-        Bundle 'Shougo/unite.vim'
-        Bundle 'sudo.vim'
-        Bundle 'tpope/vim-characterize'
-        Bundle 'tpope/vim-repeat'
-        Bundle 'tpope/vim-surround'
-        Bundle 'tpope/vim-unimpaired'
-        Bundle 'Valloric/YouCompleteMe'
+        Plugin 'bling/vim-airline'
+        Plugin 'h1mesuke/unite-outline'
+        Plugin 'nelstrom/vim-visual-star-search'
+        Plugin 'Raimondi/delimitMate'
+        Plugin 'Shougo/unite.vim'
+        Plugin 'sudo.vim'
+        Plugin 'tpope/vim-characterize'
+        Plugin 'tpope/vim-repeat'
+        Plugin 'tpope/vim-surround'
+        Plugin 'tpope/vim-unimpaired'
+        Plugin 'haya14busa/incsearch.vim'
+        Plugin 'Valloric/YouCompleteMe'
     " }
 
     " Programming {
         " Syntax {
-            Bundle 'sh.vim'
-            Bundle 'sheerun/vim-polyglot'
+            Plugin 'sh.vim'
+            Plugin 'sheerun/vim-polyglot'
+            Plugin 'tpope/vim-endwise'
         " }
         " Lint {
-            Bundle 'scrooloose/syntastic'
+            Plugin 'scrooloose/syntastic'
         " }
         " Python {
-            Bundle 'tmhedberg/SimpylFold'
+            Plugin 'tmhedberg/SimpylFold'
+        " }
+        " Javascript {
+            Plugin 'pangloss/vim-javascript'
+        " }
+        " Ruby {
+            Plugin 'vim-ruby/vim-ruby'
+            Plugin 'tpope/vim-rails'
         " }
     " }
 
     " Colorschemes {
-        Bundle 'altercation/vim-colors-solarized'
+        Plugin 'altercation/vim-colors-solarized'
     " }
 
     " Version control {
-        Bundle 'gregsexton/gitv'
-        Bundle 'tpope/vim-fugitive'
+        Plugin 'gregsexton/gitv'
+        Plugin 'tpope/vim-fugitive'
     " }
 " }
 
@@ -77,7 +86,7 @@
     set mouse=v                 " Enable mouse only for visual mode
     set autoread                " Auto re-load files when they are changed from the outside
     scriptencoding utf-8
-    " Completion (
+    " Completion {
         set completeopt=menu
     " }
     " reload .vimrc when it's edited
@@ -97,14 +106,14 @@
     set title                       " Set terminal title using escape codes
     set noerrorbells                " Silence is golden
     set noerrorbells visualbell t_vb=
-    " Performance Tweaks (
+    " Performance Tweaks {
         set ttyfast            " Indicates a fast terminal connection.
         set synmaxcol=200      " Prevent long lines from slowing down redraws.
         set lazyredraw         " Don't redraw while executing macros.
         set ttimeout
         set ttimeoutlen=20
         set notimeout
-    " )
+    " }
     set viewdir=~/.vim/tmp/view                 " directory where view files are stored
     if !isdirectory(&g:viewdir)
         call mkdir(&g:viewdir, "p", 0700)
@@ -250,12 +259,18 @@
     nnoremap <C-H> <C-W><C-H>
 " }
 
-" Plugins {
+" Plugin Configuration {
     " Unite {
         let g:unite_source_history_yank_enable = 1
         let g:unite_data_directory = expand('~/.vim/tmp/unite')
         call unite#filters#matcher_default#use(['matcher_fuzzy'])
         nnoremap <leader>be :<C-u>Unite -buffer-name=buffer buffer<cr>
+    " }
+
+    " incsearch {
+        map /  <Plug>(incsearch-forward)
+        map ?  <Plug>(incsearch-backward)
+        map g/ <Plug>(incsearch-stay)
     " }
 
     " Air-Line {
