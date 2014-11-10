@@ -65,18 +65,41 @@
 " Functions {
     " Set indention for "normal" or "kernel" mode {
         function! EditMode(m)
-            let &tabstop
-                \ = a:m == "normal" ? 4 : 8 " indent every n columns
-            let &softtabstop
-                \ = a:m == "normal" ? 4 : 8 " backspace deletes indent
-            let &shiftwidth
-                \ = a:m == "normal" ? 4 : 8 " use indents of n spaces
-            if a:m == "normal"
-                set expandtab   " tabs are spaces
-            else
-                set noexpandtab " tabs are tabs
+            let modes = {
+              \ 'normal': {
+              \     'tabstop': 4,
+              \     'softtabstop': 4,
+              \     'shiftwidth': 4,
+              \     'expandtab': 1
+              \ },
+              \ 'ruby': {
+              \     'tabstop': 2,
+              \     'softtabstop': 2,
+              \     'shiftwidth': 2,
+              \     'expandtab': 1
+              \ },
+              \ 'kernel': {
+              \     'tabstop': 8,
+              \     'softtabstop': 8,
+              \     'shiftwidth': 8
+              \ } }
+
+            if has_key(modes, a:m)
+                " indent every n columns
+                let &tabstop = modes[a:m]['tabstop']
+                " backspace deletes indent
+                let &softtabstop = modes[a:m]['softtabstop']
+                " use indents of n spaces
+                let &shiftwidth = modes[a:m]['shiftwidth']
+
+                if has_key(modes[a:m], 'expandtab')
+                    set expandtab   " tabs are spaces
+                else
+                    set noexpandtab " tabs are tabs
+                endif
             endif
         endfunction
+
     " }
 " }
 
@@ -193,6 +216,8 @@
     autocmd FileType c,cpp,java,php,javascript,python,xml,yml,vim
         \ autocmd BufWritePre <buffer> :call
         \   setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+    autocmd BufRead,BufNewFile *.rb
+        \ call EditMode("ruby")
 " }
 
 " BASH {
@@ -213,6 +238,9 @@
 
     " Kernel editing mode
     map <leader>ke :call EditMode("kernel")<cr>
+
+    " Ruby editing mode
+    map <leader>re :call EditMode("ruby")<cr>
 
     " Next buffer
     map <leader>bn :bnext<cr>
