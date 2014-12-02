@@ -1,5 +1,6 @@
 [user]
     name = Jon Nalley
+    email = jnalley@earth
 [include]
     path = ~/.git.user
 [push]
