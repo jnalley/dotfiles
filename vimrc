@@ -46,6 +46,9 @@
         " Javascript {
             Plugin 'pangloss/vim-javascript'
         " }
+        " Go {
+            Plugin 'fatih/vim-go'
+        "
         " Ruby {
             Plugin 'vim-ruby/vim-ruby'
             Plugin 'tpope/vim-rails'
