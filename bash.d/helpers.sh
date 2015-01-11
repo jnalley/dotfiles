@@ -100,7 +100,7 @@ tmpdir() {
 # this replicates GNU readlink -f behavior
 # (OSX does not support readlink -f)
 linkread() {
-    [[ -n "$1" && -e "$1" ]] || return 1
+    [[ -n "$1" ]] || return 1
     python -c "import os;print(os.path.realpath('$1'))"
 }
 
