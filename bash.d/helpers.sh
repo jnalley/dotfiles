@@ -100,22 +100,8 @@ tmpdir() {
 # this replicates GNU readlink -f behavior
 # (OSX does not support readlink -f)
 linkread() {
-    local TARGET_FILE=${1##*/}
-    local TARGET_DIR=${1%/*}
-
-    cd ${TARGET_DIR}
-
-    # iterate down a (possible) chain of symlinks
-    while [ -L "${TARGET_FILE}" ]; do
-        TARGET_FILE=$(readlink ${TARGET_FILE})
-        cd ${TARGET_FILE%/*}
-        TARGET_FILE=${TARGET_FILE##*/}
-    done
-
-    # compute the canonicalized name by finding the physical path
-    # for the directory we're in and appending the target file.
-    PHYS_DIR=$(pwd -P)
-    echo ${PHYS_DIR}/${TARGET_FILE}
+    [[ -n "$1" && -e "$1" ]] || return 1
+    python -c "import os;print(os.path.realpath('$1'))"
 }
 
 # download a file using curl
