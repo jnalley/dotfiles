@@ -71,6 +71,33 @@ if inpath ssh && [[ -f ~/.ssh/config ]]; then
     }"
 fi
 
+# set user.email in git repos
+git_user_email() {
+    local email
+    [[ $(git config user.email) == "jnalley@earth" ]] || return 0
+    read -e -i 'code@bluebot.org' -p 'GIT email: ' email
+    git config user.email ${email}
+}
+
+# run commands when entering a git repo
+git_commands() {
+    git_user_email
+}
+
+# run commands when directory changes
+dirchange() {
+    if [[ ${OWD:-${PWD}} != ${PWD} ]]; then
+        [[ -d .git ]] && git_commands
+        # update path in terminal title
+        if [[ ${TERM} == screen* || ${TERM} == xterm* || ${TERM} == rxvt* ]]; then
+            echo -ne "\033]0;${HOSTNAME%%.*} ${PWD/$HOME/~}\007"
+        fi
+    fi
+    OWD=${PWD}
+}
+
+export PROMPT_COMMAND="${PROMPT_COMMAND};dirchange"
+
 ########################################################################
 # enable colors
 ########################################################################

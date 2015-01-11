@@ -18,10 +18,6 @@ DEFAULT_PROMPT='\W\$'
 prompt_command() {
     # write history so that it is available between shell sessions
     history -a
-    # update path in terminal title
-    if [[ ${TERM} == screen* || ${TERM} == xterm* || ${TERM} == rxvt* ]]; then
-        echo -ne "\033]0;${HOSTNAME%%.*} ${PWD/$HOME/~}\007"
-    fi
     # set default prompt
     export PS1=${DEFAULT_PROMPT}
 }
