@@ -216,10 +216,10 @@
     highlight OverLength ctermbg=52 ctermfg=242 guibg=#592929
     match OverLength /\%80v.\+/
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,php,javascript,python,xml,yml,vim
+    autocmd FileType c,cpp,java,javascript,json,php,python,ruby,slim,vim,xml,yml
         \ autocmd BufWritePre <buffer> :call
         \   setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-    autocmd BufRead,BufNewFile *.rb
+    autocmd FileType ruby,slim
         \ call EditMode("ruby")
 " }
 
@@ -296,6 +296,10 @@
         let g:unite_data_directory = expand('~/.vim/tmp/unite')
         call unite#filters#matcher_default#use(['matcher_fuzzy'])
         nnoremap <leader>be :<C-u>Unite -buffer-name=buffer buffer<cr>
+    " }
+
+    " delimitMate {
+        let g:delimitMate_matchpairs = "(:),[:],{:}"
     " }
 
     " incsearch {
