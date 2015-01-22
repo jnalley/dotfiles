@@ -46,23 +46,23 @@ colorterm() {
 color() {
     colorterm || return 1
     case "$1" in
-        BLACK)        echo -ne '\033[0;30m' ;;
-        WHITE)        echo -ne '\033[1;37m' ;;
-        BROWN)        echo -ne '\033[0;33m' ;;
-        RED)          echo -ne '\033[0;31m' ;;
-        GREEN)        echo -ne '\033[0;32m' ;;
-        BLUE)         echo -ne '\033[0;34m' ;;
-        YELLOW)       echo -ne '\033[1;33m' ;;
-        PURPLE)       echo -ne '\033[0;35m' ;;
-        CYAN)         echo -ne '\033[0;36m' ;;
-        GREY)         echo -ne '\033[1;30m' ;;
-        LIGHT_RED)    echo -ne '\033[1;31m' ;;
-        LIGHT_GREEN)  echo -ne '\033[1;32m' ;;
-        LIGHT_BLUE)   echo -ne '\033[1;34m' ;;
-        LIGHT_PURPLE) echo -ne '\033[1;35m' ;;
-        LIGHT_CYAN)   echo -ne '\033[1;36m' ;;
-        LIGHT_GREY)   echo -ne '\033[0;37m' ;;
-        P)            echo -ne '\033[0m'    ;;
+        BLACK)        $'\E[0;30m' ;;
+        WHITE)        $'\E[1;37m' ;;
+        BROWN)        $'\E[0;33m' ;;
+        RED)          $'\E[0;31m' ;;
+        GREEN)        $'\E[0;32m' ;;
+        BLUE)         $'\E[0;34m' ;;
+        YELLOW)       $'\E[1;33m' ;;
+        PURPLE)       $'\E[0;35m' ;;
+        CYAN)         $'\E[0;36m' ;;
+        GREY)         $'\E[1;30m' ;;
+        LIGHT_RED)    $'\E[1;31m' ;;
+        LIGHT_GREEN)  $'\E[1;32m' ;;
+        LIGHT_BLUE)   $'\E[1;34m' ;;
+        LIGHT_PURPLE) $'\E[1;35m' ;;
+        LIGHT_CYAN)   $'\E[1;36m' ;;
+        LIGHT_GREY)   $'\E[0;37m' ;;
+        P)            $'\E[0m'    ;;
     esac
 }
 
