@@ -4,7 +4,8 @@
 [include]
     path = ~/.git.user
 [push]
-    default = matching
+    ; always be explicit
+    default = nothing
 [branch]
     autosetuprebase = always
 [core]
@@ -29,5 +30,9 @@
 [alias]
     ci = commit
     co = checkout
+    st = status --short --branch
+    df = diff
+    dc = diff --cached
+    br = branch -a
     l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
     unpushed = log --branches --not --remotes --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit

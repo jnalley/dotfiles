@@ -56,7 +56,10 @@ fi
 
 # pager
 if inpath less; then
-    export LESS="-RX"
+    # - 'R' Accept control chars
+    # - 'X' Don't clear screen
+    # - 'F' Don't page if output fits on a single screen
+    export LESS="-RXF"
     export PAGER='less'
     alias more="less"
 fi
