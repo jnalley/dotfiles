@@ -140,6 +140,7 @@
         set ttimeoutlen=20
         set notimeout
     " }
+    set directory=~/.vim/tmp//                  " store .swp files here instead of working directory
     set viewdir=~/.vim/tmp/view                 " directory where view files are stored
     if !isdirectory(&g:viewdir)
         call mkdir(&g:viewdir, "p", 0700)
@@ -219,7 +220,7 @@
     autocmd FileType c,cpp,java,javascript,json,php,python,ruby,slim,vim,xml,yml
         \ autocmd BufWritePre <buffer> :call
         \   setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-    autocmd FileType ruby,slim
+    autocmd FileType ruby,slim,yml
         \ call EditMode("ruby")
 " }
 
