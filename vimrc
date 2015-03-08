@@ -18,7 +18,8 @@
 
     " Enhancements {
         Plugin 'bling/vim-airline'
-        Plugin 'h1mesuke/unite-outline'
+        Plugin 'Shougo/vimproc'
+        Plugin 'Shougo/unite-outline'
         Plugin 'nelstrom/vim-visual-star-search'
         Plugin 'Raimondi/delimitMate'
         Plugin 'Shougo/unite.vim'
@@ -147,6 +148,7 @@
     endif
     autocmd BufWinLeave *.* silent! mkview      " make vim save view (state) (folds, cursor, etc)
     autocmd BufWinEnter *.* silent! loadview    " make vim load view (state) (folds, cursor, etc)
+    autocmd FileType help wincmd L              " open help in vertical split
 " }
 
 " Vim UI {
@@ -277,13 +279,6 @@
     vnoremap < <gv
     vnoremap > >gv
 
-    " Some helpers to edit mode - http://vimcasts.org/e/14
-    cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-    map <leader>ew :e %%
-    map <leader>es :sp %%
-    map <leader>ev :vsp %%
-    map <leader>et :tabe %%
-
     " Navigate splits more easily
     nnoremap <C-J> <C-W><C-J>
     nnoremap <C-K> <C-W><C-K>
@@ -293,10 +288,32 @@
 
 " Plugin Configuration {
     " Unite {
+        let g:unite_prompt='>>> '
         let g:unite_source_history_yank_enable = 1
         let g:unite_data_directory = expand('~/.vim/tmp/unite')
         call unite#filters#matcher_default#use(['matcher_fuzzy'])
-        nnoremap <leader>be :<C-u>Unite -buffer-name=buffer buffer<cr>
+        call unite#filters#sorter_default#use(['sorter_rank'])
+
+        " split vertically
+        call unite#custom#profile('default', 'context', {
+        \   'vertical' : 1,
+        \   'start-insert' : 1,
+        \   'direction' : 'botright'
+        \ })
+
+        nnoremap <leader>rf :<C-u>Unite -buffer-name=files file_rec/async:!<cr>
+        nnoremap <leader>f  :<C-u>Unite -buffer-name=files file<cr>
+        nnoremap <leader>o  :<C-u>Unite -buffer-name=outline outline<cr>
+        nnoremap <leader>be :<C-u>Unite -buffer-name=buffer -no-start-insert buffer<cr>
+
+        " Custom mappings for the unite buffer
+        autocmd FileType unite call s:unite_settings()
+        function! s:unite_settings()
+          " Enable navigation with control-j and control-k in insert mode
+          imap <buffer> <C-j> <Plug>(unite_select_next_line)
+          imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+          nmap <buffer> <ESC> <Plug>(unite_exit)
+        endfunction
     " }
 
     " delimitMate {
