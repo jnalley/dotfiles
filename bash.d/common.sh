@@ -35,7 +35,7 @@ export HISTSIZE=100000
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command
-export CDPATH=.:~:~/share
+export CDPATH=.:~/Projects
 # python startup script
 export PYTHONSTARTUP=~/.pystartup.py
 # allow host specific hgrc

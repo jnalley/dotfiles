@@ -297,7 +297,7 @@
         " split vertically
         call unite#custom#profile('default', 'context', {
         \   'vertical' : 1,
-        \   'start-insert' : 1,
+        \   'start_insert' : 1,
         \   'direction' : 'botright'
         \ })
 
