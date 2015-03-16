@@ -6,8 +6,19 @@
     set nocompatible                " Disable VI compatibility
     set background=dark             " Dark background
     filetype off                    " Vundle enables filetype
-    set rtp+=~/.vim/bundle/vundle   " Enable vundle
-    call vundle#rc()
+
+    " Enable vundle {
+        let vundlepath = expand('~/.vim/bundle/vundle')
+        if isdirectory(vundlepath)
+            set rtp+=vundlepath
+            call vundle#begin()
+        else
+            " prevent errors from Plugin commands
+            com! -nargs=+ -bar Plugin
+            echohl WarningMsg | echo "Missing Vundle!" | echohl None
+            filetype on
+        endif
+    " }
 " }
 
 " Plugins {
