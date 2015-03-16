@@ -11,7 +11,7 @@
 # in ssh_config(5).
 ########################################################################
 
-[[ -r ${SSH_TTY} && -z ${TMUX} && ${TERM} == *256color ]] || return
+[[ -r ${SSH_TTY} && ${TERM} != "screen-256color" && ${TERM} == *256color ]] || return
 
 TMUXCMD="$(type -p tmux)"
 
