@@ -72,9 +72,8 @@ git_commands() {
 
 # update terminal title
 tmux_title() {
-    [[ -n ${TMUX} ]] || return
     echo -ne "\033k"
-    [[ -n ${SSH_CLIENT} ]] && echo -n "${HOSTNAME%%.*} "
+    [[ -z ${TMUX} && -n ${SSH_CLIENT} ]] && echo -n "${HOSTNAME%%.*} "
     echo -ne "${PWD/$HOME/\~}\033\\"
 }
 
