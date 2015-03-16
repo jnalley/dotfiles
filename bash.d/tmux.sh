@@ -11,13 +11,16 @@
 # in ssh_config(5).
 ########################################################################
 
-[[ -r ${SSH_TTY} && ${TERM} != "screen-256color" && ${TERM} == *256color ]] || return
+[[ ${TERM} != "screen-256color" && ${TERM} == *256color ]] || return
 
 TMUXCMD="$(type -p tmux)"
 
 [[ -x ${TMUXCMD} ]] || return
 
-${TMUXCMD} has-session -t main 2> /dev/null && \
-    exec ${TMUXCMD} attach-session -t main
+# connect if a sesion exists
+${TMUXCMD} has-session 2> /dev/null && \
+    exec ${TMUXCMD} attach
 
-exec ${TMUXCMD} new-session -s main
+# create a new session when connecting through SSH
+[[ -r ${SSH_TTY} ]] && \
+    exec ${TMUXCMD} new
