@@ -182,7 +182,6 @@
 
 " Vim UI {
     " Attempt to use a nice colorscheme
-    " but fallback to something safer.
     try
         if &term !~ '.*-256color$' || &t_Co != 256
             throw "Not enough colors!"
@@ -193,11 +192,8 @@
         let base16colorspace=&t_Co
         colorscheme base16-atelierforest
     catch
-        if &t_Co == 256
-            colorscheme desert256
-        else
-            colorscheme desert
-        endif
+        " fallback to builtin
+        colorscheme desert
     endtry
     " Settings for GUI version
     if has("gui_running")
