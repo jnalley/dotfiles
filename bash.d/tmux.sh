@@ -19,10 +19,12 @@ TMUXCMD="$(type -p tmux)"
 
 [[ -x ${TMUXCMD} ]] || return
 
-# connect if a sesion exists and has no clients
-${TMUXCMD} has-session 2> /dev/null && \
-    [[ -z $(${TMUXCMD}  list-clients > /dev/null) ]] && \
+# connect to existing session
+if ${TMUXCMD} has-session 2> /dev/null; then
+    # only if it has no clients
+    [[ -z $(${TMUXCMD}  list-clients) ]] && \
         exec ${TMUXCMD} attach
-
-# auto-create session only when connecting through SSH
-[[ -r ${SSH_TTY} ]] && exec ${TMUXCMD} new
+else
+    # auto-create new session if logging in via SSH
+    [[ -r ${SSH_TTY} ]] && exec ${TMUXCMD} new
+fi
