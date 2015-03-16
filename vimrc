@@ -1,6 +1,5 @@
 " Description {
 "   Author:  Jon Nalley
-"   Updated: 2013-10-02
 " }
 
 " Environment {
@@ -57,12 +56,13 @@
     " }
 
     " Colorschemes {
-        Plugin 'altercation/vim-colors-solarized'
+        Plugin 'chriskempson/base16-vim'
     " }
 
     " Version control {
         Plugin 'gregsexton/gitv'
         Plugin 'tpope/vim-fugitive'
+        Plugin 'kablamo/vim-git-log'
     " }
 " }
 
@@ -104,6 +104,34 @@
             endif
         endfunction
 
+        function! GetBufferList()
+            redir =>buflist
+            silent! ls
+            redir END
+            return buflist
+        endfunction
+
+        " toggle the quickfix window
+        function! ToggleList(bufname, pfx)
+            let buflist = GetBufferList()
+            for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+                if bufwinnr(bufnum) != -1
+                    exec(a:pfx.'close')
+                    return
+                endif
+            endfor
+            if a:pfx == 'l' && len(getloclist(0)) == 0
+                echohl ErrorMsg
+                echo "Location List is Empty."
+                return
+            endif
+            let winnr = winnr()
+            exec(a:pfx.'open')
+            if winnr() != winnr
+                wincmd p
+            endif
+        endfunction
+
     " }
 " }
 
@@ -119,8 +147,8 @@
     " reload .vimrc when it's edited
     augroup vimrcs
         au!
-        au bufwritepost ~/.vimrc
-            \ source ~/.vimrc
+        au bufwritepost ~/.dotfiles/vimrc
+            \ source ~/.dotfiles/vimrc
     augroup END
     " reload .tmux.conf when it's edited
     autocmd bufwritepost .tmux.conf silent! :!tmux source-file ~/.tmux.conf \; display-message "  tmux config reloaded..."
@@ -133,6 +161,7 @@
     set title                       " Set terminal title using escape codes
     set noerrorbells                " Silence is golden
     set noerrorbells visualbell t_vb=
+    set diffopt=vertical            " Start diff mode with vertical splits.
     " Performance Tweaks {
         set ttyfast            " Indicates a fast terminal connection.
         set synmaxcol=200      " Prevent long lines from slowing down redraws.
@@ -152,12 +181,23 @@
 " }
 
 " Vim UI {
+    " Attempt to use a nice colorscheme
+    " but fallback to something safer.
     try
-        colorscheme solarized
-        let g:solarized_termcolors=&t_Co
+        if &term !~ '.*-256color$' || &t_Co != 256
+            throw "Not enough colors!"
+        endif
+        if $TERM_PROGRAM == "Apple_Terminal"
+            throw "Get a better Terminal!"
+        endif
+        let base16colorspace=&t_Co
+        colorscheme base16-atelierforest
     catch
-        " Fallback to a builtin colorscheme
-        colorscheme desert
+        if &t_Co == 256
+            colorscheme desert256
+        else
+            colorscheme desert
+        endif
     endtry
     " Settings for GUI version
     if has("gui_running")
@@ -212,8 +252,16 @@
     call EditMode("normal")         " 'normal' editmode (spaces and tabstop=4)
     set matchpairs+=<:>             " alow < & > to be matched with %
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    set clipboard=unnamed           " sync to system clipboard
     set splitbelow
     set splitright
+    if v:version > 703 || v:version == 703 && has("patch541")
+        set formatoptions+=j " Delete comment character when joining commented lines
+    endif
+    if v:version > 704 || v:version == 704 && has("patch338")
+        " Patch 7.4.338, after wrapping lines, indent the wrapping lines too! Thanks to Chris Brabandt for fix.
+        set breakindent
+    endif
     hi SpellBad ctermfg=red
     " Highlight long lines
     highlight OverLength ctermbg=52 ctermfg=242 guibg=#592929
@@ -233,11 +281,10 @@
 
 " Key (re) Mappings {
     " Edit .vimrc
-    map <leader>v :e! ~/.vimrc<cr>
+    map <leader>v :e! ~/.dotfiles/vimrc<cr>
 
-    " open/close the quickfix window
-    nmap <leader>c :copen<CR>
-    nmap <leader>cc :cclose<CR>
+    nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
+    nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
 
     " Normal editing mode
     map <leader>ne :call EditMode("normal")<cr>
@@ -288,32 +335,39 @@
 
 " Plugin Configuration {
     " Unite {
-        let g:unite_prompt='>>> '
-        let g:unite_source_history_yank_enable = 1
-        let g:unite_data_directory = expand('~/.vim/tmp/unite')
-        call unite#filters#matcher_default#use(['matcher_fuzzy'])
-        call unite#filters#sorter_default#use(['sorter_rank'])
+        if exists('g:loaded_unite')
+            let g:unite_prompt='>>> '
+            let g:unite_source_history_yank_enable = 1
+            let g:unite_data_directory = expand('~/.vim/tmp/unite')
+            call unite#filters#matcher_default#use(['matcher_fuzzy'])
+            call unite#filters#sorter_default#use(['sorter_rank'])
 
-        " split vertically
-        call unite#custom#profile('default', 'context', {
-        \   'vertical' : 1,
-        \   'start_insert' : 1,
-        \   'direction' : 'botright'
-        \ })
+            " split vertically
+            call unite#custom#profile('default', 'context', {
+            \   'vertical' : 1,
+            \   'start_insert' : 1,
+            \   'direction' : 'botright'
+            \ })
 
-        nnoremap <leader>rf :<C-u>Unite -buffer-name=files file_rec/async:!<cr>
-        nnoremap <leader>f  :<C-u>Unite -buffer-name=files file<cr>
-        nnoremap <leader>o  :<C-u>Unite -buffer-name=outline outline<cr>
-        nnoremap <leader>be :<C-u>Unite -buffer-name=buffer -no-start-insert buffer<cr>
+            nnoremap <leader>rf :<C-u>Unite -buffer-name=files file_rec/async:!<cr>
+            nnoremap <leader>f  :<C-u>Unite -buffer-name=files file<cr>
+            nnoremap <leader>o  :<C-u>Unite -buffer-name=outline outline<cr>
+            nnoremap <leader>be :<C-u>Unite -buffer-name=buffer -no-start-insert buffer<cr>
 
-        " Custom mappings for the unite buffer
-        autocmd FileType unite call s:unite_settings()
-        function! s:unite_settings()
-          " Enable navigation with control-j and control-k in insert mode
-          imap <buffer> <C-j> <Plug>(unite_select_next_line)
-          imap <buffer> <C-k> <Plug>(unite_select_previous_line)
-          nmap <buffer> <ESC> <Plug>(unite_exit)
-        endfunction
+            " Custom mappings for the unite buffer
+            autocmd FileType unite call s:unite_settings()
+            function! s:unite_settings()
+              " Enable navigation with control-j and control-k in insert mode
+              imap <buffer> <C-j> <Plug>(unite_select_next_line)
+              imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+              nmap <buffer> <ESC> <Plug>(unite_exit)
+            endfunction
+        endif
+    " }
+
+    " fugitive {
+        nnoremap <Leader>gl :exe "silent Glog <Bar> Unite -no-quit
+            \ quickfix"<CR>:redraw!<CR>
     " }
 
     " delimitMate {
@@ -321,10 +375,12 @@
     " }
 
     " incsearch {
-        map /  <Plug>(incsearch-forward)
-        map ?  <Plug>(incsearch-backward)
-        map g/ <Plug>(incsearch-stay)
-        let g:incsearch#auto_nohlsearch = 1
+        if exists('g:loaded_incsearch')
+            map /  <Plug>(incsearch-forward)
+            map ?  <Plug>(incsearch-backward)
+            map g/ <Plug>(incsearch-stay)
+            let g:incsearch#auto_nohlsearch = 1
+        endif
     " }
 
     " Air-Line {

@@ -96,6 +96,15 @@ tmpdir() {
     _mktemp -d
 }
 
+# convert seconds to hh:mm:ss
+timedelta() {
+    local h m s
+    ((h=${1}/3600))
+    ((m=(${1}%3600)/60))
+    ((s=${1}%60))
+    printf "%02d:%02d:%02d\n" $h $m $s
+}
+
 # platform agnostic readlink -f
 # this replicates GNU readlink -f behavior
 # (OSX does not support readlink -f)

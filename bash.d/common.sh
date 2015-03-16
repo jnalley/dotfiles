@@ -1,9 +1,5 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-########################################################################
-# options/environment/aliases
-########################################################################
-
 # shell options:
 # - enable programable completion
 # - fix minor errors in the spelling of a directory names when using cd
@@ -21,30 +17,17 @@ shopt -s \
     histappend \
     checkwinsize \
     no_empty_cmd_completion
+
 # report the status of terminated background jobs immediately
 set -o notify
 # Use a vi-style command line editing interface.
 set -o vi
 
-# prevent duplicate history entries
-export HISTCONTROL=erasedups
-# do not create history entries for the following commands
-export HISTIGNORE="history*:exit:jobs:fg:bg:top:clear:cd:pwd"
-# limit history size
-export HISTSIZE=100000
-# format output of ps
-export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
-# search path for cd command
-export CDPATH=.:~/Projects
-# python startup script
-export PYTHONSTARTUP=~/.pystartup.py
-# allow host specific hgrc
-export HGRCPATH=${HOME}/.hgrc:${HOME}/.hgrc.d/${HOSTNAME}.rc
-
 # date in the format YYYYMMDDHHMMSS (ISO 8601)
 alias mydate="date +'%G%m%d%H%M%S'"
 # use sudo instead of su
 alias su="sudo -E $(type -p bash)"
+
 # use htop if it's available
 inpath htop && alias top=htop
 
@@ -87,19 +70,37 @@ git_commands() {
     git_user_email
 }
 
+# update terminal title
+tmux_title() {
+    [[ -n ${TMUX} ]] || return
+    echo -ne "\033k"
+    [[ -n ${SSH_CLIENT} ]] && echo -n "${HOSTNAME%%.*} "
+    echo -ne "${PWD/$HOME/\~}\033\\"
+}
+
 # run commands when directory changes
 dirchange() {
     if [[ ${OWD:-${PWD}} != ${PWD} ]]; then
-        [[ -d .git ]] && git_commands
-        # update path in terminal title
-        if [[ ${TERM} == screen* || ${TERM} == xterm* || ${TERM} == rxvt* ]]; then
-            echo -ne "\033]0;${HOSTNAME%%.*} ${PWD/$HOME/~}\007"
-        fi
+        [[ -d .git ]] && inpath git && git_commands
+        tmux_title
     fi
     OWD=${PWD}
 }
 
-export PROMPT_COMMAND="${PROMPT_COMMAND};dirchange"
+# called prior to displaying the prompt
+prompt_command() {
+    # write history so that it is available between shell sessions
+    history -a
+    # set default prompt
+    export PS1=${DEFAULT_PROMPT}
+}
+
+# default prompt
+DEFAULT_PROMPT='\W\$'
+
+export PROMPT_COMMAND="prompt_command;dirchange"
+
+tmux_title
 
 ########################################################################
 # enable colors
@@ -111,15 +112,8 @@ COLORS=$(tput colors 2> /dev/null)
 [[ ${COLORS:-0} -lt 8 ]] && unset COLORS && return
 unset COLORS
 
-# Less Colors for Man Pages
-# (this also fixes issues with highlighting in tmux)
-export LESS_TERMCAP_mb=$'\E[1;31m'                 # begin blinking
-export LESS_TERMCAP_md=$'\E[0;34;5;74m'            # begin bold
-export LESS_TERMCAP_me=$'\E[0m'                    # end mode
-export LESS_TERMCAP_se=$'\E[0m'                    # end standout-mode
-export LESS_TERMCAP_so=$'\E[38;5;016m\E[46;5;220m' # begin standout-mode
-export LESS_TERMCAP_ue=$'\E[0m'                    # end underline
-export LESS_TERMCAP_us=$'\E[0;33;5;146m'           # begin underline
+[[ ${TERM} == "xterm-256color" ]] && \
+    source ~/.bash.d/colors/base16-atelierforest.dark.sh
 
 # makes prompt red when root light cyan otherwise
 if [ ${UID} -eq 0 ]; then
