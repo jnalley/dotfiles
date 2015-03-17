@@ -111,9 +111,6 @@ COLORS=$(tput colors 2> /dev/null)
 [[ ${COLORS:-0} -lt 8 ]] && unset COLORS && return
 unset COLORS
 
-[[ ${TERM} == "xterm-256color" ]] && \
-    source ~/.bash.d/colors/base16-atelierforest.dark.sh
-
 # makes prompt red when root light cyan otherwise
 if [ ${UID} -eq 0 ]; then
     DEFAULT_PROMPT="\[[0m\]\[[1;31m\]${DEFAULT_PROMPT}\[[0m\]"
