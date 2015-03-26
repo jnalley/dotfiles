@@ -81,19 +81,19 @@ message() {
 }
 
 # create temporary files/directories
-_mktemp() {
+__mktemp() {
     mkdir -p ${TMPDIR:-/tmp}
     TMPDIR=${TMPDIR} mktemp ${1:+-d} -t tmp.XXXXX
 }
 
 # create a temporary file
 tmpfile() {
-    _mktemp
+    __mktemp
 }
 
 # create a temporary directory
 tmpdir() {
-    _mktemp -d
+    __mktemp -d
 }
 
 # convert seconds to hh:mm:ss
