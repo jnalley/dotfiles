@@ -25,7 +25,9 @@ if isdirectory(vundlepath)
   Plugin 'tpope/vim-surround'
   Plugin 'tpope/vim-unimpaired'
   Plugin 'haya14busa/incsearch.vim'
-  Plugin 'Valloric/YouCompleteMe'
+  if !has("gui_running")
+    Plugin 'Valloric/YouCompleteMe'
+  endif
 
   " Syntax
   Plugin 'sh.vim'
@@ -50,6 +52,8 @@ if isdirectory(vundlepath)
 
   " Colorschemes
   Plugin 'chriskempson/base16-vim'
+  Plugin 'romainl/Apprentice'
+  Plugin 'morhetz/gruvbox'
 
   " Version control
   Plugin 'gregsexton/gitv'
@@ -66,11 +70,8 @@ if isdirectory(vundlepath)
   call unite#filters#sorter_default#use(['sorter_rank'])
 
   " split vertically
-  call unite#custom#profile('default', 'context', {
-        \   'vertical' : 1,
-        \   'start_insert' : 1,
-        \   'direction' : 'botright'
-        \ })
+  call unite#custom#profile('default', 'context',
+    \ {'vertical': 1, 'start_insert': 1, 'direction': 'botright'})
 
   nnoremap <leader>rf :<C-u>Unite -buffer-name=files file_rec/async:!<cr>
   nnoremap <leader>f  :<C-u>Unite -buffer-name=files file<cr>
@@ -125,16 +126,26 @@ endif
 filetype plugin indent on
 set background=dark
 try
-  if &term !~ '.*-256color$' || &t_Co != 256
+  if !has('gui_running') && (&term !~ '.*-256color$' || &t_Co != 256)
     throw "Not enough colors!"
   endif
   if $TERM_PROGRAM == "Apple_Terminal"
     throw "Get a better Terminal!"
   endif
-  colorscheme base16-atelierforest
+  colorscheme gruvbox
 catch
   colorscheme desert
 endtry
+" Settings for gvim
+if has("gui_running")
+  set guifont=Inconsolata-dz\ for\ Powerline:h12
+  " remove scrollbar
+  set guioptions-=r
+  set guioptions-=R
+  set guioptions-=l
+  set guioptions-=L
+  set transparency=8
+endif
 syntax on
 " highlight Search ctermfg=123 ctermbg=20
 highlight Search ctermfg=51 ctermbg=20
