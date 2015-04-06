@@ -12,19 +12,10 @@ export LC_NUMERIC="${LANG}"
 export LC_TIME="${LANG}"
 export LC_ALL=
 
-# 1 - red
-# 2 - green
-# 3 - yellow
-# 4 - blue
-# 5 - purple
-# 6 - cyan
-# 7 - white
-# 8 - gray
-
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
 export LESS_TERMCAP_md=$(tput bold; tput setaf 5)
 export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 6; tput setab 4)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 51; tput setab 20)
 export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
 export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 3)
 export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)

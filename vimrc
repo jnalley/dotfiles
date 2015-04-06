@@ -51,8 +51,6 @@ if isdirectory(vundlepath)
   Plugin 'tpope/vim-rails'
 
   " Colorschemes
-  Plugin 'chriskempson/base16-vim'
-  Plugin 'romainl/Apprentice'
   Plugin 'morhetz/gruvbox'
 
   " Version control
@@ -89,8 +87,11 @@ if isdirectory(vundlepath)
   " }
 
   " fugitive {
-  nnoremap <Leader>gl :exe "silent Glog <Bar> Unite -no-quit
-        \ quickfix"<CR>:redraw!<CR>
+  nnoremap <leader>gb :Gblame<CR>
+  nnoremap <leader>gd :Gdiff<CR>
+  nnoremap <leader>ge :Gedit<CR>
+  nnoremap <leader>gl :silent! Glog<CR>:redraw!<CR>
+  nnoremap <leader>gs :Gstatus<CR>
   " }
 
   " delimitMate {
@@ -108,6 +109,7 @@ if isdirectory(vundlepath)
   let g:airline#extensions#tabline#enabled = 1
   let g:airline_inactive_collapse = 1
   let g:airline#extensions#syntastic#enabled = 1
+  let g:airline_section_b = '%{&expandtab?"S":"T"}'
   " }
 
   " sh.vim {
@@ -147,7 +149,7 @@ if has("gui_running")
   set transparency=8
 endif
 syntax on
-" highlight Search ctermfg=123 ctermbg=20
+" change search highlight
 highlight Search ctermfg=51 ctermbg=20
 highlight IncSearch ctermfg=51 ctermbg=20 cterm=underline
 " change match color
@@ -167,6 +169,8 @@ augroup myvimrc
   au BufWinEnter $MYVIMRC setl ts=2 sw=2 sts=2 et
   au BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
+" Automatically open quick fix window
+autocmd QuickFixCmdPost *grep* cwindow
 " Save view (state) (folds, cursor, etc)
 autocmd BufWinLeave *.* silent! mkview
 " Load view (state) (folds, cursor, etc)
@@ -218,6 +222,9 @@ nmap <silent> <leader><cr> :nohlsearch<cr>
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
+
+" Toggle tab mode
+map <leader>t :call TabToggle()<CR>
 
 " Navigate splits more easily
 nnoremap <C-J> <C-W><C-J>
