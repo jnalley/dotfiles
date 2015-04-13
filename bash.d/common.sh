@@ -76,7 +76,7 @@ title() {
     local msg=${PWD/$HOME/\\x7e}
     [[ ${#msg} -gt 24 ]] && msg="${msg:0:12}..${msg:(-12)}"
     # add hostname for remote sessions
-    [[ -n ${SSH_CLIENT} ]] && msg="${HOSTNAME%%.*} ${msg}"
+    [[ -z ${TMUX} && -n ${SSH_CLIENT} ]] && msg="${HOSTNAME%%.*} ${msg}"
     echo -ne "\033]2;${msg}\033\\"
 }
 
