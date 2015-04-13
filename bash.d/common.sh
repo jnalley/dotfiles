@@ -71,17 +71,19 @@ git_commands() {
 }
 
 # update terminal title
-tmux_title() {
-    echo -ne "\033k"
-    [[ -z ${TMUX} && -n ${SSH_CLIENT} ]] && echo -n "${HOSTNAME%%.*} "
-    echo -ne "${PWD/$HOME/\~}\033\\"
+title() {
+    [[ ${TERM} == screen* || ${TERM} == xterm* ]] || return
+    local msg=${PWD/$HOME/\\x7e}
+    [[ ${#msg} -gt 24 ]] && msg="${msg:0:12}..${msg:(-12)}"
+    # add hostname for remote sessions
+    [[ -n ${SSH_CLIENT} ]] && msg="${HOSTNAME%%.*} ${msg}"
+    echo -ne "\033]2;${msg}\033\\"
 }
 
 # run commands when directory changes
 dirchange() {
     if [[ ${OWD:-${PWD}} != ${PWD} ]]; then
         [[ -d .git ]] && inpath git && git_commands
-        tmux_title
     fi
     OWD=${PWD}
 }
@@ -92,14 +94,14 @@ prompt_command() {
     history -a
     # set default prompt
     export PS1=${DEFAULT_PROMPT}
+    dirchange
+    title
 }
 
 # default prompt
 DEFAULT_PROMPT='\W\$'
 
-export PROMPT_COMMAND="prompt_command;dirchange"
-
-tmux_title
+export PROMPT_COMMAND="prompt_command"
 
 ########################################################################
 # enable colors
