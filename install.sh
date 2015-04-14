@@ -30,7 +30,7 @@ fi
 type -p curl > /dev/null || exit 1
 
 # install vim-plug
-if [[ -s ${DOTFILES}/vim/autoload/plug.vim ]]; then
+if [[ ! -s ${DOTFILES}/vim/autoload/plug.vim ]]; then
     curl --create-dirs -sfLo ${DOTFILES}/vim/autoload/plug.vim \
         'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
