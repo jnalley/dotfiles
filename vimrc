@@ -5,70 +5,50 @@ filetype off
 let $MYVIMRC = resolve($MYVIMRC) " resolve .vimrc symlink
 
 " Plugins {
-let vundlepath=expand('~/.vim/bundle/vundle')
-if isdirectory(vundlepath)
-  let &runtimepath.=','.vundlepath
-  call vundle#begin()
+let s:plugins = join([fnamemodify($MYVIMRC,':h'),'vim','plugins'],'/')
+if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
+  call plug#begin(s:plugins)
 
-  Plugin 'gmarik/vundle'
+  Plug 'ConradIrwin/vim-bracketed-paste'
+  Plug 'Raimondi/delimitMate'
+  Plug 'Shougo/unite-outline'
+  Plug 'Shougo/unite.vim'
+  Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+  Plug 'bling/vim-airline'
+  Plug 'fatih/vim-go'
+  Plug 'gregsexton/gitv'
+  Plug 'haya14busa/incsearch.vim'
+  Plug 'kablamo/vim-git-log'
+  Plug 'morhetz/gruvbox'
+  Plug 'nelstrom/vim-visual-star-search'
+  Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+  Plug 'scrooloose/syntastic'
+  Plug 'sh.vim', { 'for': 'sh' }
+  Plug 'sheerun/vim-polyglot'
+  Plug 'sudo.vim'
+  Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+  Plug 'tpope/vim-characterize'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-endwise'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rails', { 'for': 'ruby' }
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 
-  " Enhancements
-  Plugin 'ConradIrwin/vim-bracketed-paste'
-  Plugin 'Raimondi/delimitMate'
-  Plugin 'Shougo/unite-outline'
-  Plugin 'Shougo/unite.vim'
-  Plugin 'Shougo/vimproc'
-  Plugin 'Valloric/YouCompleteMe'
-  Plugin 'bling/vim-airline'
-  Plugin 'haya14busa/incsearch.vim'
-  Plugin 'nelstrom/vim-visual-star-search'
-  Plugin 'sudo.vim'
-  Plugin 'tpope/vim-characterize'
-  Plugin 'tpope/vim-commentary'
-  Plugin 'tpope/vim-repeat'
-  Plugin 'tpope/vim-surround'
-  Plugin 'tpope/vim-unimpaired'
-
-  " Syntax
-  Plugin 'sh.vim'
-  Plugin 'sheerun/vim-polyglot'
-  Plugin 'tpope/vim-endwise'
-
-  " Lint
-  Plugin 'scrooloose/syntastic'
-
-  " Python
-  Plugin 'tmhedberg/SimpylFold'
-
-  " Javascript
-  Plugin 'pangloss/vim-javascript'
-
-  " Go
-  Plugin 'fatih/vim-go'
-
-  " Ruby
-  Plugin 'vim-ruby/vim-ruby'
-  Plugin 'tpope/vim-rails'
-
-  " Colorschemes
-  Plugin 'morhetz/gruvbox'
-
-  " Version control
-  Plugin 'gregsexton/gitv'
-  Plugin 'tpope/vim-fugitive'
-  Plugin 'kablamo/vim-git-log'
-
-  call vundle#end()
+  call plug#end()
 
   " Unite {
   let g:unite_prompt='>>> '
   let g:unite_source_history_yank_enable = 1
   let g:unite_data_directory = expand('~/.vim/tmp/unite')
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-  call unite#filters#sorter_default#use(['sorter_rank'])
+  silent! call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  silent! call unite#filters#sorter_default#use(['sorter_rank'])
 
   " split vertically
-  call unite#custom#profile('default', 'context',
+  silent! call unite#custom#profile('default', 'context',
     \ {'vertical': 1, 'start_insert': 1, 'direction': 'botright'})
 
   nnoremap <leader>rf :<C-u>Unite -buffer-name=files file_rec/async:!<cr>
@@ -120,7 +100,7 @@ if isdirectory(vundlepath)
   let g:syntastic_disabled_filetypes = ['rst']
   " }
 else
-  echohl WarningMsg | echo "Missing Vundle!" | echohl None
+  echohl WarningMsg | echo "Missing vim-plug!" | echohl None
 endif
 " }
 
@@ -176,11 +156,13 @@ if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j
 endif
 " Remove trailing whitespaces and ^M chars
-autocmd FileType c,cpp,java,javascript,json,php,python,ruby,slim,vim,xml,yml
+autocmd FileType c,cpp,java,javascript,json,php,python,ruby,sh,slim,vim,xml,yml
       \ autocmd BufWritePre <buffer> :call
-      \   setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-autocmd FileType ruby,slim,yml,html
+      \ setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+autocmd FileType html,ruby,slim,yml
       \ setl ts=2 sw=2 sts=2 et
+autocmd FileType go
+      \ set nolist
 " }
 
 " Key (re) mappings {
