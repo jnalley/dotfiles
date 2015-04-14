@@ -13,21 +13,21 @@ if isdirectory(vundlepath)
   Plugin 'gmarik/vundle'
 
   " Enhancements
-  Plugin 'bling/vim-airline'
-  Plugin 'Shougo/vimproc'
-  Plugin 'Shougo/unite-outline'
-  Plugin 'nelstrom/vim-visual-star-search'
+  Plugin 'ConradIrwin/vim-bracketed-paste'
   Plugin 'Raimondi/delimitMate'
+  Plugin 'Shougo/unite-outline'
   Plugin 'Shougo/unite.vim'
+  Plugin 'Shougo/vimproc'
+  Plugin 'Valloric/YouCompleteMe'
+  Plugin 'bling/vim-airline'
+  Plugin 'haya14busa/incsearch.vim'
+  Plugin 'nelstrom/vim-visual-star-search'
   Plugin 'sudo.vim'
   Plugin 'tpope/vim-characterize'
+  Plugin 'tpope/vim-commentary'
   Plugin 'tpope/vim-repeat'
   Plugin 'tpope/vim-surround'
   Plugin 'tpope/vim-unimpaired'
-  Plugin 'haya14busa/incsearch.vim'
-  if !has("gui_running")
-    Plugin 'Valloric/YouCompleteMe'
-  endif
 
   " Syntax
   Plugin 'sh.vim'
@@ -124,31 +124,18 @@ else
 endif
 " }
 
-" Colorscheme {
+" Colors {
 filetype plugin indent on
 set background=dark
 try
-  if !has('gui_running') && (&term !~ '.*-256color$' || &t_Co != 256)
-    throw "Not enough colors!"
-  endif
-  if $TERM_PROGRAM == "Apple_Terminal"
-    throw "Get a better Terminal!"
-  endif
+  let g:gruvbox_contrast='hard'
   colorscheme gruvbox
 catch
   colorscheme desert
 endtry
-" Settings for gvim
-if has("gui_running")
-  set guifont=Inconsolata-dz\ for\ Powerline:h12
-  " remove scrollbar
-  set guioptions-=r
-  set guioptions-=R
-  set guioptions-=l
-  set guioptions-=L
-  set transparency=8
-endif
 syntax on
+" change highlight for line numbers
+highlight LineNr ctermbg=16 ctermfg=24
 " change search highlight
 highlight Search ctermfg=51 ctermbg=20
 highlight IncSearch ctermfg=51 ctermbg=20 cterm=underline
@@ -192,7 +179,7 @@ endif
 autocmd FileType c,cpp,java,javascript,json,php,python,ruby,slim,vim,xml,yml
       \ autocmd BufWritePre <buffer> :call
       \   setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-autocmd FileType ruby,slim,yml
+autocmd FileType ruby,slim,yml,html
       \ setl ts=2 sw=2 sts=2 et
 " }
 
@@ -225,6 +212,10 @@ vnoremap > >gv
 
 " Toggle tab mode
 map <leader>t :call TabToggle()<CR>
+
+" Toggle line numbering
+map <silent> <leader>nr :set relativenumber!<CR>
+map <silent> <leader>nn :set number!<CR>
 
 " Navigate splits more easily
 nnoremap <C-J> <C-W><C-J>
@@ -285,7 +276,7 @@ set noshowmode                  " 'airline' shows the mode
 set nostartofline               " Try to preserve cursor column
 set notimeout
 set nowrap                      " Do not wrap long lines
-set numberwidth=3               " Use only 2 columns while possible
+set numberwidth=5
 set pastetoggle=<F12>           " Pastetoggle (sane indentation when pasting)
 set scrolljump=5                " Lines to scroll when cursor leaves screen
 set scrolloff=3                 " Minimum lines to keep above and below cursor
@@ -309,5 +300,10 @@ set wildignore+=eggs/**
 set wildmenu
 set wildmode=list:longest,full
 set winminheight=0
+" silver searcher
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+  set grepformat=%f:%l:%c:%m
+endif
 
 " vim: set fmr={,} fdl=0 fdm=marker ft=vim:ts=2:sw=2:noet:nowrap
