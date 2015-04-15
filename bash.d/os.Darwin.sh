@@ -17,15 +17,14 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxexexabagacad
 
 # bash completion
-[[ -f /usr/local/etc/bash_completion ]] && \
-    source /usr/local/etc/bash_completion
+source /usr/local/etc/bash_completion 2> /dev/null
 
 # run vagrant commands from anywhere
 # <vagrant vm name> <command>
 __vagrant() {
     local instance=$1; shift
     [[ -d ~/Projects/vagrant/${instance} ]] || return 1
-    (cd ~/Projects/vagrant/${instance} ; vagrant $@)
+    (cd ~/Projects/vagrant/${instance} ; exec vagrant $@)
 }
 
 for dir in ${HOME}/Projects/vagrant/*; do
