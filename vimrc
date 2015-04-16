@@ -20,6 +20,7 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   Plug 'gregsexton/gitv'
   Plug 'haya14busa/incsearch.vim'
   Plug 'kablamo/vim-git-log'
+  Plug 'mbbill/undotree'
   Plug 'morhetz/gruvbox'
   Plug 'nelstrom/vim-visual-star-search'
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -94,6 +95,14 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
 
   " sh.vim {
   let g:sh_indent_case_labels = 1
+  " }
+
+  " undotree {
+  let g:undotree_SetFocusWhenToggle = 1
+  let g:undotree_DiffAutoOpen = 0
+  let g:undotree_DiffCommand = "diff -u"
+  let g:undotree_WindowLayout = 2
+  nnoremap <leader>ut :UndotreeToggle<cr>
   " }
 
   " Syntastic {
