@@ -10,7 +10,6 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   call plug#begin(s:plugins)
 
   Plug 'ConradIrwin/vim-bracketed-paste'
-  Plug 'Raimondi/delimitMate'
   Plug 'Shougo/unite-outline'
   Plug 'Shougo/unite.vim'
   Plug 'Shougo/vimproc.vim', { 'do': 'make' }
@@ -19,7 +18,7 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   Plug 'fatih/vim-go'
   Plug 'gregsexton/gitv'
   Plug 'haya14busa/incsearch.vim'
-  Plug 'kablamo/vim-git-log'
+  Plug 'jiangmiao/auto-pairs'
   Plug 'mbbill/undotree'
   Plug 'morhetz/gruvbox'
   Plug 'nelstrom/vim-visual-star-search'
@@ -75,8 +74,8 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   nnoremap <leader>gs :Gstatus<CR>
   " }
 
-  " delimitMate {
-  let g:delimitMate_matchpairs = "(:),[:],{:}"
+  " auto-pairs {
+  let g:AutoPairsFlyMode = 0
   " }
 
   " incsearch {
@@ -151,6 +150,8 @@ autocmd QuickFixCmdPost *grep* cwindow
 autocmd BufWinLeave *.* silent! mkview
 " Load view (state) (folds, cursor, etc)
 autocmd BufWinEnter *.* silent! loadview
+" Set formatoptions correctly
+autocmd BufWinEnter,BufNewFile * setl formatoptions-=o formatoptions+=n,2,1,j
 " Store .swp files here instead of working directory
 set directory=~/.vim/tmp//
 " Directory where view files are stored
@@ -160,10 +161,6 @@ if !isdirectory(&g:viewdir)
 endif
 " Open help in vertical split
 autocmd FileType help wincmd H
-" Delete comment character when joining commented lines
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j
-endif
 " Remove trailing whitespaces and ^M chars
 autocmd FileType c,cpp,java,javascript,json,php,python,ruby,sh,slim,vim,xml,yml
       \ autocmd BufWritePre <buffer> :call
@@ -260,7 +257,6 @@ set matchpairs+=<:>             " Alow < & > to be matched with %
 set nocursorcolumn              " Don't highlight current line
 set nocursorline                " Don't highlight current line
 set noerrorbells                " Silence is golden
-set visualbell t_vb=
 set nonumber                    " No line numbers by default
 set norelativenumber            " No relative line numbers by default
 set noshowmode                  " 'airline' shows the mode
@@ -283,6 +279,7 @@ set ttimeout
 set ttimeoutlen=20
 set ttyfast                     " Indicates a fast terminal connection.
 set virtualedit=block           " Allow virtualedit in visual block mode
+set visualbell t_vb=
 set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap to
 set wildignore+=*.egg-info/**
 set wildignore+=*.ko,*.mod.c,*.order,modules.builtin
