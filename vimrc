@@ -15,6 +15,7 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   Plug 'Shougo/vimproc.vim', { 'do': 'make' }
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
   Plug 'bling/vim-airline'
+  Plug 'christoomey/vim-tmux-navigator'
   Plug 'fatih/vim-go'
   Plug 'gregsexton/gitv'
   Plug 'haya14busa/incsearch.vim'
