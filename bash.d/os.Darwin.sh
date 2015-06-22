@@ -34,3 +34,7 @@ for dir in ${HOME}/Projects/vagrant/*; do
         "function _${name} { _vagrant \$@; }"
     complete -F _${name} ${name}
 done
+
+flushdnscache() {
+    sudo discoveryutil mdnsflushcache
+}
