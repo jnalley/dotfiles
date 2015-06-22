@@ -67,12 +67,13 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   endfunction
   " }
 
-  " fugitive {
+  " git {
   nnoremap <leader>gb :Gblame<CR>
+  nnoremap <leader>gl :Gitv<CR>
   nnoremap <leader>gd :Gdiff<CR>
-  nnoremap <leader>ge :Gedit<CR>
-  nnoremap <leader>gl :silent! Glog<CR>:redraw!<CR>
   nnoremap <leader>gs :Gstatus<CR>
+  let g:Gitv_WipeAllOnClose = 1
+  let g:Gitv_OpenPreviewOnLaunch = 1
   " }
 
   " auto-pairs {
