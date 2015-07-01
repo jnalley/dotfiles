@@ -1,7 +1,7 @@
 #!/bin/bash
 
 venv() {
-    local VENV_VERSION='12.0.7'
+    local VENV_VERSION='13.1.0'
     local VENV_URL="https://pypi.python.org/packages/source/v/virtualenv/virtualenv-${VENV_VERSION}.tar.gz"
     local VENV_BASE=${HOME}/local/python/venv
     local VENV_BOOTSTRAP=${VENV_BASE}/bootstrap
