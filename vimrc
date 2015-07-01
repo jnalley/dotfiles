@@ -24,6 +24,7 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   Plug 'morhetz/gruvbox'
   Plug 'nelstrom/vim-visual-star-search'
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+  Plug 'rodjek/vim-puppet'
   Plug 'scrooloose/syntastic'
   Plug 'sh.vim', { 'for': 'sh' }
   Plug 'sheerun/vim-polyglot'
