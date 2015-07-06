@@ -16,15 +16,12 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
   Plug 'bling/vim-airline'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug 'fatih/vim-go'
   Plug 'gregsexton/gitv'
   Plug 'haya14busa/incsearch.vim'
   Plug 'jiangmiao/auto-pairs'
   Plug 'mbbill/undotree'
   Plug 'morhetz/gruvbox'
   Plug 'nelstrom/vim-visual-star-search'
-  Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-  Plug 'rodjek/vim-puppet'
   Plug 'scrooloose/syntastic'
   Plug 'sh.vim', { 'for': 'sh' }
   Plug 'sheerun/vim-polyglot'
@@ -38,7 +35,6 @@ if filereadable(join([fnamemodify(s:plugins,':h'),'autoload','plug.vim'],'/'))
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-unimpaired'
-  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 
   call plug#end()
 
