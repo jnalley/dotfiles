@@ -164,7 +164,7 @@ autocmd FileType help wincmd H
 autocmd FileType c,cpp,java,javascript,json,php,python,ruby,sh,slim,vim,xml,yml
       \ autocmd BufWritePre <buffer> :call
       \ setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-autocmd FileType html,ruby,slim,yml
+autocmd FileType html,ruby,slim,yml,bash
       \ setl ts=2 sw=2 sts=2 et
 autocmd FileType go
       \ set nolist
@@ -227,9 +227,9 @@ function! TabToggle()
     set softtabstop=8
     set noexpandtab
   else
-    set tabstop=4
-    set shiftwidth=4
-    set softtabstop=4
+    set tabstop=2
+    set shiftwidth=2
+    set softtabstop=2
     set expandtab
   endif
 endfunction
