@@ -193,6 +193,9 @@ nnoremap k gk
 " Clearing highlighted search
 nmap <silent> <leader><cr> :nohlsearch<cr>
 
+" Use 'smartcase' for * matches
+:nnoremap * /\<<C-R>=expand('<cword>')<CR>\><CR>
+
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
