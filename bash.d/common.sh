@@ -32,10 +32,14 @@ alias su="sudo -E $(type -p bash)"
 inpath htop && alias top=htop
 
 # editor
-if inpath vim; then
-    export EDITOR=vim
-    alias vi="vim -oX"
-fi
+for editor in nvim vim; do
+  if inpath ${editor}; then
+      export EDITOR=${editor}
+      alias vim="${editor} -oX"
+      alias vi='vim'
+      break
+  fi
+done
 
 # pager
 if inpath less; then

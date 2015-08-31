@@ -8,8 +8,6 @@
     default = nothing
 [branch]
     autosetuprebase = always
-[core]
-    editor = vim
 [color]
     ui = true
 [color "branch"]
