@@ -1,2 +1,0 @@
-# disable bash-completion (I prefer to load it from my .bashrc)
-shopt -u progcomp

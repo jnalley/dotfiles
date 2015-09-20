@@ -10,16 +10,6 @@ strstr() {
     return 1
 }
 
-# convert a string to uppercase
-toupper() {
-    echo -n $@ | tr '[:lower:]' '[:upper:]'
-}
-
-# convert a string to lowercase
-tolower() {
-    echo -n $@ | tr '[:upper:]' '[:lower:]'
-}
-
 # determine if a function/command is callable
 inpath() {
     type -p "${1}" > /dev/null

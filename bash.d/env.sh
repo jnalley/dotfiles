@@ -12,6 +12,8 @@ export LC_NUMERIC="${LANG}"
 export LC_TIME="${LANG}"
 export LC_ALL=
 
+export GREP_OPTIONS="--color=auto"
+
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
 export LESS_TERMCAP_md=$(tput bold; tput setaf 5)
 export LESS_TERMCAP_me=$(tput sgr0)
@@ -40,3 +42,6 @@ export CDPATH=.:~/Projects
 export PYTHONSTARTUP=~/.pystartup.py
 # default editor
 export EDITOR=vi
+
+# set LS_COLORS
+source ~/.bash.d/dircolors.sh

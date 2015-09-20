@@ -1,3 +1,5 @@
+bash.d/local.sh
 vim/.netrwhist
 vim/autoload/plug.vim
+vim/spell/
 vim/tmp/
