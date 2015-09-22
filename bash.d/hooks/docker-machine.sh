@@ -8,7 +8,10 @@
 alias dm=docker-machine
 
 denv() {
-  local name=${1:?}
+  local name=${1}
+  if [[ -z ${name} ]]; then
+    echo ${DOCKER_MACHINE_NAME:-unset} ; return
+  fi
   if ! [[ "$(docker-machine ls -q)" =~ .*${name}.* ]]; then
     >&2 echo "Invalid machine name: ${name}"
     return 1
@@ -18,9 +21,9 @@ denv() {
 
 dps() {
   for instance in $(docker-machine ls -q); do
-    echo "[ ${instance} - $(dm ip ${instance}) ]"
-    denv ${instance}
-    docker ps -a
+    echo "[ ${instance} - $(docker-machine ip ${instance}) ]"
+    # use a subshell to prevent clobbering environment.
+    (denv ${instance} ; docker ps -a)
     echo
   done
 }
