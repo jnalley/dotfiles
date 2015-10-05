@@ -1,0 +1,301 @@
+" vim:ft=vim:ts=3:sw=2:et:fdm=marker
+
+" Start vim using:
+"
+" vim -u ~/.myvim/vimrc
+"
+" or:
+"
+" export VIMINIT='source ~/.myvim/vimrc'
+
+" initialization {{{
+if has('nvim')
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+else
+  set nocompatible
+  set ttyfast
+endif
+
+let &runtimepath = printf('%s/vimfiles,%s,%s/vimfiles/after',
+  \ $VIM, $VIMRUNTIME, $VIM)
+let $MYVIMRC = resolve(expand('<sfile>'))
+let s:vimdir = fnamemodify($MYVIMRC, ':p:h')
+let &runtimepath = printf('%s,%s,%s/after',
+  \ s:vimdir, &runtimepath, s:vimdir)
+let s:tempdir = s:vimdir . '/tmp'
+let &directory = s:tempdir . '//'
+let &viewdir = s:tempdir . '/view'
+call mkdir(&g:viewdir, 'p', 0700)
+let &viminfo = "%,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/viminfo'
+"               | |    |   |   |    | |  + path to viminfo file
+"               | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
+"               | |    |   |   |    + disable 'hlsearch' loading viminfo
+"               | |    |   |   + command-line history saved
+"               | |    |   + search history saved
+"               | |    + files marks saved
+"               | + lines saved each register (old name for <, vi6.2)
+"               + save/restore buffer list
+" }}}
+
+" settings {{{
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set colorcolumn=80
+set completeopt=menu
+set diffopt=vertical
+set foldenable
+set hidden
+set history=500
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set lazyredraw
+set list
+set listchars=tab:▸\ ,trail:•
+set matchpairs+=<:>
+set mouse=
+set nonumber
+set norelativenumber
+set noshowmode
+set nostartofline
+set nowrap
+set numberwidth=5
+set scrolljump=5
+set scrolloff=3
+set shortmess+=I
+set showcmd
+set showmatch
+set showtabline=1
+set smartcase
+set splitbelow
+set splitright
+set synmaxcol=200
+set ttimeout
+set ttimeoutlen=-1
+set virtualedit=block
+set noerrorbells visualbell t_vb=
+set whichwrap=b,s,h,l,<,>,[,]
+set wildignore+=*.gem
+set wildignore+=*.o,*.obj,*.a
+set wildignore+=*.pyc
+set wildignore+=*/.git/*,*/.hg/*
+set wildignore+=*~,*.bak
+set wildmenu
+set wildmode=list:longest,full
+set winminheight=0
+" }}}
+
+" plugins {{{
+let s:plugins = s:vimdir . '/plugins'
+let s:vimplug = s:vimdir . '/autoload/plug.vim'
+let s:vimplug_url =
+  \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+" install vim-plug
+if ! filereadable(s:vimplug)
+  execute 'silent !curl -fLo' . s:vimplug . ' --create-dirs ' . s:vimplug_url
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
+call plug#begin(s:plugins)
+
+Plug 'Shougo/unite-outline'
+Plug 'Shougo/unite.vim'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+Plug 'bling/vim-airline'
+Plug 'bling/vim-bufferline'
+Plug 'cohama/lexima.vim'
+Plug 'gregsexton/gitv'
+Plug 'guns/xterm-color-table.vim'
+Plug 'mbbill/undotree'
+Plug 'morhetz/gruvbox'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'scrooloose/syntastic'
+Plug 'sh.vim', { 'for': 'sh' }
+Plug 'sheerun/vim-polyglot'
+Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+
+call plug#end()
+" }}}
+
+" functions {{{
+function! TNremap(...)
+  if a:0 != 2 | return | endif
+  execute printf('nnoremap %s %s', a:1, a:2)
+  if ! has('nvim') | return | endif
+  execute printf('tnoremap %s <C-\><C-N>%s', a:1, a:2)
+endfunction
+" }}}
+
+" autocommands {{{
+" save view (state) (folds, cursor, etc)
+autocmd BufWinLeave *.* silent! mkview
+" load view (state) (folds, cursor, etc)
+autocmd BufWinEnter *.* silent! loadview
+" set formatoptions correctly
+autocmd BufWinEnter,BufNewFile * setl formatoptions-=o formatoptions+=n,2,1,j
+" open help in vertical split
+autocmd FileType help wincmd H
+" remove trailing whitespaces and ^M chars
+autocmd FileType c,cpp,java,javascript,json,php,python,ruby,sh,slim,vim,xml,yml
+      \ autocmd BufWritePre <buffer> :call
+      \ setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+autocmd FileType go
+      \ set nolist
+" set path local to new windows
+autocmd BufEnter * silent! lcd %:p:h
+" switch to insert mode when entering a terminal buffer
+autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
+" }}}
+
+" colors {{{
+let g:gruvbox_contrast_dark='hard'
+colorscheme gruvbox
+
+" change highlight for line numbers
+highlight LineNr
+      \ ctermfg=24 ctermbg=16
+      \ guifg=#005f87 guibg=#000000
+highlight CursorLineNr
+      \ ctermfg=208 ctermbg=16
+      \ guifg=#ff8700  guibg=#000000
+" change search highlight
+highlight Search
+      \ ctermfg=51 ctermbg=20
+      \ guifg=#00ffff guibg=#0000d7
+highlight IncSearch
+      \ ctermfg=51 ctermbg=20 cterm=underline
+      \ guifg=#00ffff guibg=#0000d7 gui=underline
+" change match color
+highlight MatchParen
+      \ ctermfg=red ctermbg=NONE
+      \ guifg=red guibg=NONE
+" misspellings in red
+highlight SpellBad
+      \ ctermfg=52
+      \ guifg=#5f0000
+" indicate column 80
+highlight ColorColumn
+      \ ctermbg=233 guibg=#121212
+highlight TermCursor
+      \ ctermfg=40 guifg=#00d700
+" disable background (same as terminal)
+highlight Normal
+      \ ctermbg=NONE ctermfg=NONE
+      \ guifg=NONE guibg=NONE
+" }}}
+
+" airline {{{
+let g:bufferline_echo = 0
+let g:airline#extensions#bufferline#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
+let g:airline_inactive_collapse = 1
+let g:airline_left_alt_sep = '|'
+let g:airline_left_sep = ' '
+let g:airline_right_alt_sep = '|'
+let g:airline_right_sep = ' '
+let g:airline_theme= 'serene'
+" }}}
+
+" git {{{
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gl :Gitv<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
+let g:Gitv_WipeAllOnClose = 1
+let g:Gitv_OpenPreviewOnLaunch = 1
+" }}}
+
+" undotree {{{
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_DiffAutoOpen = 0
+let g:undotree_DiffCommand = "diff -u"
+let g:undotree_WindowLayout = 2
+nnoremap <leader>ut :UndotreeToggle<cr>
+" }}}
+
+" unite {{{
+let g:unite_prompt='>>> '
+let g:unite_source_history_yank_enable = 1
+let g:unite_data_directory = s:tempdir . '/unite'
+
+silent! call unite#filters#matcher_default#use(['matcher_fuzzy'])
+silent! call unite#filters#sorter_default#use(['sorter_rank'])
+silent! call unite#custom#profile('default', 'context',
+      \ {'vertical': 1, 'start_insert': 1, 'direction': 'botright'})
+
+nnoremap <leader>f  :<C-u>Unite -buffer-name=files file<cr>
+nnoremap <leader>o  :<C-u>Unite -buffer-name=outline outline<cr>
+" }}}
+
+" syntastic {{{
+let g:ycm_show_diagnostics_ui = 0
+let g:syntastic_disabled_filetypes = ['rst']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_style_error_symbol = "☁"
+let g:syntastic_style_warning_symbol = "☂"""
+" }}}
+
+" sh.vim {{{
+let g:sh_indent_case_labels = 1
+let g:sh_fold_enabled = 7
+let g:is_bash = 1
+" }}}
+
+" key mappings {{{
+" remove trailing whitespace
+nnoremap <leader>S :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" wrapped lines goes down/up to next row, rather than next line in file.
+nnoremap j gj
+nnoremap k gk
+
+" clear highlighted search
+noremap <silent> <cr> :nohlsearch<cr><cr>
+
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
+
+" select pasted text
+noremap gV `[v`]
+
+" execute default register.
+nnoremap Q @q
+
+" edit vimrc
+map <leader>v :e! $MYVIMRC<cr>
+
+" auto indent pasted text
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
+call TNremap('<C-A>c', ':terminal<cr>')
+call TNremap('<C-A>"', ':Unite -buffer-name=buffer -no-start-insert buffer<cr>')
+call TNremap('<C-A>p', ':bprevious<cr>')
+call TNremap('<C-A>n', ':bnext<cr>')
+call TNremap('<C-H>', '<C-W><C-H>')
+call TNremap('<C-J>', '<C-W><C-J>')
+call TNremap('<C-K>', '<C-W><C-K>')
+call TNremap('<C-L>', '<C-W><C-L>')
+" }}}

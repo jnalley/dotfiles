@@ -3,6 +3,8 @@
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
 
+export VIMINIT='source ~/.vim/vimrc'
+
 # editor
 for editor in nvim vim; do
   if inpath ${editor}; then
@@ -12,3 +14,7 @@ for editor in nvim vim; do
     break
   fi
 done
+
+if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
+  alias vim=nvim-terminal-edit.py
+fi
