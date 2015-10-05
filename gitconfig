@@ -1,36 +1,43 @@
 [user]
-    name = Jon Nalley
-    email = (none)
+  name = (none)
+  email = (none)
 [include]
-    path = ~/.git.user
+  path = ~/.git.user
 [push]
-    ; always be explicit
-    default = nothing
+  default = nothing
 [branch]
-    autosetuprebase = always
+  autosetuprebase = always
 [color]
-    ui = true
+  ui = auto
 [color "branch"]
-    current = yellow black
-    local = yellow bold
-    remote = magenta
+  current = yellow black
+  local = yellow bold
+  remote = magenta
 [color "diff"]
-    meta = green
-    frag = yellow bold
-    old = red
-    new = blue
-    whitespace = red reverse
+  meta = green
+  frag = yellow bold
+  old = red
+  new = blue
+  whitespace = red reverse
 [color "status"]
-    added = green
-    changed = blue
-    untracked = red
-    branch = yellow bold
+  added = green
+  changed = blue
+  untracked = red
+  branch = yellow bold
+[commit]
+  template = ~/.gitmessage
+[fetch]
+  prune = true
+[rebase]
+  autosquash = true
 [alias]
-    ci = commit
-    co = checkout
-    st = status --short --branch
-    df = diff
-    dc = diff --cached
-    br = branch -a
-    l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
-    unpushed = log --branches --not --remotes --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  aa = add --all
+  br = "!f() { (git heads; git remotes) | column -ts'|'; }; f"
+  heads = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset)|%(color:red)%(objectname:short)%(color:reset)|%(authorname)|%(color:green)%(committerdate:relative)%(color:reset)'
+  remotes = for-each-ref --sort=-committerdate refs/remotes/ --format='  %(color:yellow)%(refname:short)%(color:reset)|%(color:red)%(objectname:short)%(color:reset)|%(authorname)|%(color:green)%(committerdate:relative)%(color:reset)'
+  ci = commit -v
+  co = checkout
+  dc = diff --cached
+  df = diff
+  st = status --short --branch
+  l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local

@@ -83,7 +83,7 @@ venv_new() {
     return 1
   fi
   ${VENV_BOOTSTRAP}/bin/virtualenv ${VENV_OPTS} ${venvdir} && \
-  venv activate ${venvname}
+  venv_activate ${venvname}
 }
 
 # remove a virtualenv
@@ -91,7 +91,7 @@ venv_rm() {
   local venvname=${1}
   local active=$(linkread ${VENV_BASE}/active)
   if [[ -z ${venvname} ]]; then
-    venv usage
+    ${0} --help
     return 1
   fi
   if [[  ${VENV_BASE}/${venvname} == ${active} ]]; then

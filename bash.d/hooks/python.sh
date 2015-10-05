@@ -5,6 +5,8 @@
 
 [[ -n ${cmd} ]] || return 1
 
+export PATH=~/local/python/venv/active/bin:${PATH}
+
 venv() {
   ~/.bash.d/scripts/venv.sh $@
 }

@@ -3,6 +3,9 @@
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
 
+# skip if this is a SUDO shell
+[[ -n ${SUDO_USER} ]] && return 1
+
 [[ -n ${cmd} ]] || return 1
 
 alias dm=docker-machine
@@ -28,4 +31,4 @@ dps() {
   done
 }
 
-denv dev
+[[ $(denv) == "dev" ]] || denv dev
