@@ -25,7 +25,7 @@ let &runtimepath = printf('%s,%s,%s/after',
 let s:tempdir = s:vimdir . '/tmp'
 let &directory = s:tempdir . '//'
 let &viewdir = s:tempdir . '/view'
-call mkdir(&g:viewdir, 'p', 0700)
+if ! isdirectory(&g:viewdir) | call mkdir(&g:viewdir, 'p', 0700) | endif
 let &viminfo = "!,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/viminfo'
 "               | |    |   |   |    | |  + path to viminfo file
 "               | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
@@ -109,7 +109,9 @@ call plug#begin(s:plugins)
 
 Plug 'Shougo/unite-outline'
 Plug 'Shougo/unite.vim'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+if v:version > 703
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+endif
 Plug 'bling/vim-airline'
 Plug 'bling/vim-bufferline'
 Plug 'cohama/lexima.vim'
@@ -147,8 +149,10 @@ endfunction
 autocmd BufWinLeave *.* silent! mkview
 " load view (state) (folds, cursor, etc)
 autocmd BufWinEnter *.* silent! loadview
-" set formatoptions correctly
-autocmd BufWinEnter,BufNewFile * setl formatoptions-=o formatoptions+=n,2,1,j
+if v:version > 703
+  " set formatoptions correctly
+  autocmd BufWinEnter,BufNewFile * setl formatoptions-=o formatoptions+=n,2,1,j
+endif
 " open help in vertical split
 autocmd FileType help wincmd H
 " remove trailing whitespaces and ^M chars
