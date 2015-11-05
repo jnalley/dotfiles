@@ -26,7 +26,7 @@ let s:tempdir = s:vimdir . '/tmp'
 let &directory = s:tempdir . '//'
 let &viewdir = s:tempdir . '/view'
 call mkdir(&g:viewdir, 'p', 0700)
-let &viminfo = "%,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/viminfo'
+let &viminfo = "!,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/viminfo'
 "               | |    |   |   |    | |  + path to viminfo file
 "               | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
 "               | |    |   |   |    + disable 'hlsearch' loading viminfo
@@ -34,7 +34,7 @@ let &viminfo = "%,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/viminfo'
 "               | |    |   + search history saved
 "               | |    + files marks saved
 "               | + lines saved each register (old name for <, vi6.2)
-"               + save/restore buffer list
+"               + don't preserve the buffer list
 " }}}
 
 " settings {{{
