@@ -140,6 +140,7 @@ function! TNremap(...)
   if a:0 != 2 | return | endif
   execute printf('nnoremap %s %s', a:1, a:2)
   if ! has('nvim') | return | endif
+  if a:1 == '<C-L>' | return | endif " preserve screen clearing
   execute printf('tnoremap %s <C-\><C-N>%s', a:1, a:2)
 endfunction
 " }}}
