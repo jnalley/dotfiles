@@ -26,22 +26,3 @@ done
 if ! rmdir ${EXISTING} 2> /dev/null; then
     echo "Existing files moved to ${EXISTING}"
 fi
-
-type -p curl > /dev/null || exit 1
-
-# install vim-plug
-if [[ ! -s ${DOTFILES}/vim/autoload/plug.vim ]]; then
-    curl --create-dirs -sfLo ${DOTFILES}/vim/autoload/plug.vim \
-        'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-fi
-
-# install plugins
-type -p vim > /dev/null || exit 1
-
-if [[ -t 1 ]]; then
-    # interactive
-    vim -c 'PlugInstall'
-else
-    # headless
-    vim -En -c 'PlugInstall' -c 'qa' > /dev/null 2>&1
-fi
