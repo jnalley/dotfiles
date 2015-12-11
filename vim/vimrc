@@ -110,8 +110,9 @@ call plug#begin(s:plugins)
 Plug 'Shougo/unite-outline'
 Plug 'Shougo/unite.vim'
 if v:version > 703
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 endif
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'bling/vim-airline'
 Plug 'bling/vim-bufferline'
 Plug 'cohama/lexima.vim'
@@ -142,6 +143,23 @@ function! TNremap(...)
   if ! has('nvim') | return | endif
   if a:1 == '<C-L>' | return | endif " preserve screen clearing
   execute printf('tnoremap %s <C-\><C-N>%s', a:1, a:2)
+endfunction
+
+" Quote a word consisting of letters from iskeyword.
+nnoremap <silent> qw :call Quote('"')<CR>
+nnoremap <silent> qs :call Quote("'")<CR>
+nnoremap <silent> wq :call UnQuote()<CR>
+
+function! Quote(quote)
+  normal mz
+  exe 's/\(\k*\%#\k*\)/' . a:quote . '\1' . a:quote . '/'
+  normal `zl
+endfunction
+
+function! UnQuote()
+  normal mz
+  exe 's/["' . "'" . ']\(\k*\%#\k*\)[' . "'" . '"]/\1/'
+  normal `z
 endfunction
 " }}}
 
@@ -297,6 +315,7 @@ nnoremap P P=`]<C-o>
 
 call TNremap('<C-A>c', ':terminal<cr>')
 call TNremap('<C-A>"', ':Unite -buffer-name=buffer -no-start-insert buffer<cr>')
+call TNremap('<leader>be', ':Unite -buffer-name=buffer -no-start-insert buffer<cr>')
 call TNremap('<C-A>p', ':bprevious<cr>')
 call TNremap('<C-A>n', ':bnext<cr>')
 call TNremap('<C-H>', '<C-W><C-H>')
