@@ -180,8 +180,6 @@ autocmd FileType c,cpp,java,javascript,json,php,python,ruby,sh,slim,vim,xml,yml
       \ setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
 autocmd FileType go
       \ set nolist
-" set path local to new windows
-autocmd BufEnter * silent! lcd %:p:h
 " switch to insert mode when entering a terminal buffer
 autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
 " }}}
@@ -276,7 +274,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_style_error_symbol = "☁"
-let g:syntastic_style_warning_symbol = "☂"""
+let g:syntastic_style_warning_symbol = "☂""
 " }}}
 
 " sh.vim {{{

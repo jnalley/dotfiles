@@ -9,7 +9,7 @@ export VIMINIT='source ~/.vim/vimrc'
 for editor in nvim vim; do
   if inpath ${editor}; then
     export EDITOR=${editor}
-    alias vim="${editor} -oX"
+    alias vim="${editor}"
     alias vi='vim'
     break
   fi
