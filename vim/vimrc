@@ -68,8 +68,6 @@ set noshowmode
 set nostartofline
 set nowrap
 set numberwidth=5
-set scrolljump=5
-set scrolloff=3
 set shortmess+=I
 set showcmd
 set showmatch
@@ -113,7 +111,8 @@ if v:version > 703
   Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 endif
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-bufferline'
 Plug 'cohama/lexima.vim'
 Plug 'gregsexton/gitv'
@@ -219,6 +218,9 @@ highlight TermCursor
 highlight Normal
       \ ctermbg=NONE ctermfg=NONE
       \ guifg=NONE guibg=NONE
+" set operator color
+highlight Operator
+      \ ctermfg=172 guifg=#df8700
 " }}}
 
 " airline {{{
