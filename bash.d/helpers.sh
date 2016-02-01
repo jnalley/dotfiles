@@ -10,6 +10,13 @@ strstr() {
     return 1
 }
 
+# repeat a string
+repeat() {
+    [[ -n $1 ]] || return 1
+    [[ $2 =~ ^-?[0-9]+$ ]] || return 1
+    printf -- "%0.s$1" $(seq 1 $2)
+}
+
 # determine if a function/command is callable
 inpath() {
     type -p "${1}" > /dev/null
