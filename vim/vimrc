@@ -16,6 +16,14 @@ else
   set ttyfast
 endif
 
+" disable netrw (use dirvish instead)
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
+" Set leader as easily accessible for both hands
+let mapleader=' '
+" map <Space> <leader>
+
 let &runtimepath = printf('%s/vimfiles,%s,%s/vimfiles/after',
   \ $VIM, $VIMRUNTIME, $VIM)
 let $MYVIMRC = resolve(expand('<sfile>'))
@@ -51,6 +59,8 @@ set colorcolumn=80
 set completeopt=menu
 set diffopt=vertical
 set foldenable
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
 set hidden
 set history=500
 set hlsearch
@@ -62,6 +72,7 @@ set list
 set listchars=tab:▸\ ,trail:•
 set matchpairs+=<:>
 set mouse=
+set noerrorbells visualbell t_vb=
 set nonumber
 set norelativenumber
 set noshowmode
@@ -78,8 +89,8 @@ set splitright
 set synmaxcol=200
 set ttimeout
 set ttimeoutlen=-1
+set updatetime=250
 set virtualedit=block
-set noerrorbells visualbell t_vb=
 set whichwrap=b,s,h,l,<,>,[,]
 set wildignore+=*.gem
 set wildignore+=*.o,*.obj,*.a
@@ -103,27 +114,24 @@ if ! filereadable(s:vimplug)
   autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
+" combine update+upgrade
+command! PU PlugUpdate | PlugUpgrade
+
 call plug#begin(s:plugins)
 
-Plug 'Shougo/unite-outline'
-Plug 'Shougo/unite.vim'
-if v:version > 703
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
-endif
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bling/vim-bufferline'
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'Valloric/YouCompleteMe', { 'on': [], 'do': '--clang-completer --gocode-completer --tern-completer' }
+Plug 'ap/vim-css-color'
 Plug 'cohama/lexima.vim'
-Plug 'gregsexton/gitv'
-Plug 'guns/xterm-color-table.vim'
-Plug 'mbbill/undotree'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/gv.vim'
+Plug 'justinmk/vim-dirvish'
 Plug 'morhetz/gruvbox'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'scrooloose/syntastic'
 Plug 'sh.vim', { 'for': 'sh' }
 Plug 'sheerun/vim-polyglot'
-Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -181,6 +189,21 @@ autocmd FileType go
       \ set nolist
 " switch to insert mode when entering a terminal buffer
 autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
+" defer ycm startup
+" augroup load_ycm
+"   autocmd!
+"   autocmd InsertEnter * call plug#load('YouCompleteMe') | autocmd! load_ycm
+" augroup END
+autocmd VimEnter * command! Buffers
+  \ call fzf#vim#buffers({'right': '25%'})
+augroup my_dirvish_events
+  autocmd!
+  " Enable :Gstatus and friends.
+  autocmd FileType dirvish call fugitive#detect(@%)
+
+  " Map CTRL-R to reload the Dirvish buffer.
+  autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
+augroup END
 " }}}
 
 " colors {{{
@@ -221,50 +244,21 @@ highlight Normal
 " set operator color
 highlight Operator
       \ ctermfg=172 guifg=#df8700
+highlight Folded
+      \ ctermfg=24 guifg=#005f87
+      \ ctermbg=NONE guibg=NONE
 " }}}
 
-" airline {{{
-let g:bufferline_echo = 0
-let g:airline#extensions#bufferline#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#tabline#enabled = 0
-let g:airline_inactive_collapse = 1
-let g:airline_left_alt_sep = '|'
-let g:airline_left_sep = ' '
-let g:airline_right_alt_sep = '|'
-let g:airline_right_sep = ' '
-let g:airline_theme= 'serene'
+" lightline {{{
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
 " }}}
 
 " git {{{
 nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gl :Gitv<CR>
+nnoremap <leader>gv :GV<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
-let g:Gitv_WipeAllOnClose = 1
-let g:Gitv_OpenPreviewOnLaunch = 1
-" }}}
-
-" undotree {{{
-let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_DiffAutoOpen = 0
-let g:undotree_DiffCommand = "diff -u"
-let g:undotree_WindowLayout = 2
-nnoremap <leader>ut :UndotreeToggle<cr>
-" }}}
-
-" unite {{{
-let g:unite_prompt='>>> '
-let g:unite_source_history_yank_enable = 1
-let g:unite_data_directory = s:tempdir . '/unite'
-
-silent! call unite#filters#matcher_default#use(['matcher_fuzzy'])
-silent! call unite#filters#sorter_default#use(['sorter_rank'])
-silent! call unite#custom#profile('default', 'context',
-      \ {'vertical': 1, 'start_insert': 1, 'direction': 'botright'})
-
-nnoremap <leader>f  :<C-u>Unite -buffer-name=files file<cr>
-nnoremap <leader>o  :<C-u>Unite -buffer-name=outline outline<cr>
 " }}}
 
 " syntastic {{{
@@ -286,7 +280,7 @@ let g:sh_fold_enabled = 7
 let g:is_bash = 1
 " }}}
 
-" key mappings {{{
+" mappings {{{
 " remove trailing whitespace
 nnoremap <leader>S :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
@@ -315,8 +309,7 @@ nnoremap p p=`]<C-o>
 nnoremap P P=`]<C-o>
 
 call TNremap('<C-A>c', ':terminal<cr>')
-call TNremap('<C-A>"', ':Unite -buffer-name=buffer -no-start-insert buffer<cr>')
-call TNremap('<leader>be', ':Unite -buffer-name=buffer -no-start-insert buffer<cr>')
+call TNremap('<C-A>"', ':Buffers<cr>')
 call TNremap('<C-A>p', ':bprevious<cr>')
 call TNremap('<C-A>n', ':bnext<cr>')
 call TNremap('<C-H>', '<C-W><C-H>')
