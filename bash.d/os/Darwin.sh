@@ -18,3 +18,6 @@ export LSCOLORS=exfxcxdxbxexexabagacad
 
 # bash completion
 source /usr/local/etc/bash_completion 2> /dev/null
+
+# homebrew
+source ~/.homebrew.key 2> /dev/null

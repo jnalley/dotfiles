@@ -5,6 +5,7 @@ set mark-directories on
 set mark-symlinked-directories on
 set show-all-if-ambiguous on
 set completion-ignore-case on
+set completion-map-case on
 
 "\C-l": clear-screen
 "\C-x\C-r": re-read-init-file

@@ -1,5 +1,4 @@
 bash.d/local.sh
-vim/.netrwhist
-vim/autoload/plug.vim
-vim/spell/
-vim/tmp/
+nvim/autoload/plug.vim
+nvim/site/
+nvim/tmp/

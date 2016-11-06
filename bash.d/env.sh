@@ -29,15 +29,20 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # prevent duplicate history entries
-export HISTCONTROL=erasedups
+HISTCONTROL="erasedups:ignoreboth"
 # do not create history entries for the following commands
-export HISTIGNORE="exit:jobs:fg:bg:top:clear:cd:pwd"
-# limit history size
-export HISTSIZE=100000
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
+# unlimited history size
+HISTSIZE=-1
+HISTFILESIZE=-1
+# Use standard ISO 8601 timestamp
+# %F equivalent to %Y-%m-%d
+# %T equivalent to %H:%M:%S (24-hours format)
+HISTTIMEFORMAT='%F %T '
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command
-export CDPATH=.:~/Projects
+CDPATH=.:~/Projects
 # python startup script
 export PYTHONSTARTUP=~/.pystartup.py
 # default editor
@@ -45,3 +50,7 @@ export EDITOR=vi
 
 # set LS_COLORS
 source ~/.bash.d/dircolors.sh
+
+# store config files in .dotfiles directory
+export XDG_CONFIG_HOME=~/.dotfiles
+export XDG_DATA_HOME="${XDG_CONFIG_HOME}"

@@ -14,13 +14,16 @@ fi
 # shell options:
 # - enable programable completion
 # - fix spelling errors when using cd
+# - expand directories with completion results
+# - fix spelling errors during tab-completion
 # - change directory by typing directory name
 # - extended pattern matching
 # - append to the history file, don't overwrite it
 # - check the window size after each command
 # - don't complete empty command line
-shopt -s progcomp cdspell autocd extglob histappend \
-  checkwinsize no_empty_cmd_completion
+# - recursive globbing (enables ** to recurse all directories)
+shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
+  cmdhist checkwinsize no_empty_cmd_completion globstar
 
 # test if a command is available
 inpath() { type -p "${1}" > /dev/null ; }
@@ -30,6 +33,10 @@ set -o notify
 
 # Use a vi-style command line editing interface.
 set -o vi
+
+# Enable history expansion with space
+# e.g. typing !!<space> will replace the !! with your last command
+bind Space:magic-space
 
 # date in the format YYYYMMDDHHMMSS (ISO 8601)
 alias mydate="date +'%G%m%d%H%M%S'"

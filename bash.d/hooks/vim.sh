@@ -3,7 +3,8 @@
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
 
-export VIMINIT='source ~/.vim/vimrc'
+# make legacy vim use init.vim instead of ~/.vimrc
+export VIMINIT='source ~/.dotfiles/nvim/init.vim'
 
 # editor
 for editor in nvim vim; do
@@ -15,6 +16,7 @@ for editor in nvim vim; do
   fi
 done
 
-if [[ -n ${NVIM_LISTEN_ADDRESS} ]]; then
-  alias vim=nvim-terminal-edit.py
+# use nvr - https://github.com/mhinz/neovim-remote.git
+if [[ -n ${NVIM_LISTEN_ADDRESS} ]] && inpath nvr; then
+  alias vim='nvr --remote'
 fi

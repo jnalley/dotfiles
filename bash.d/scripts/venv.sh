@@ -2,29 +2,41 @@
 
 source ~/.bash.d/helpers.sh
 
-VENV_VERSION='13.1.2'
-VENV_URL="https://pypi.python.org/packages/source/v/virtualenv/virtualenv-${VENV_VERSION}.tar.gz"
+VENV_VERSION='15.0.3'
+VENV_URL="https://github.com/pypa/virtualenv/tarball/${VENV_VERSION}"
 VENV_BASE=${HOME}/local/python/venv
 VENV_BOOTSTRAP=${VENV_BASE}/bootstrap
 VENV_OPTS='--no-site-packages --distribute'
+VENV_PYTHON='python'
 
 # install virtualenv
 venv_bootstrap() {
+  # parse options
+  for opt in "$@"; do
+    case ${opt} in
+      -p=*|--python=*)
+        VENV_PYTHON="${opt#*=}" ; shift ;;
+      -v=*|--version=*)
+        VENV_VERSION="${opt#*=}" ; shift ;;
+    esac
+  done
   # check for python
-  if ! inpath python; then
-    error "You need to install python!"
+  if ! inpath ${VENV_PYTHON}; then
+    error "You need to install python! -- ${VENV_PYTHON}"
     return 1
   fi
+  # add interpreter
+  VENV_OPTS="--python=${VENV_PYTHON} ${VENV_OPTS}"
   # create temp dir
   local TMPDIR=$(TMPDIR=${HOME}/local/tmp tmpdir)
   # get virtualenv
-  fetch ${VENV_URL} ${TMPDIR}/${VENV_URL##*/} || return 1
+  fetch ${VENV_URL} ${TMPDIR}/${VENV_VERSION}.tar.gz || return 1
   # unpack the tarball
-  unpack ${TMPDIR}/${VENV_URL##*/} ${TMPDIR}/virtualenv || return 1
+  unpack ${TMPDIR}/${VENV_VERSION}.tar.gz ${TMPDIR}/virtualenv || return 1
   # create the first "bootstrap" environment.
-  ${PYTHON} ${TMPDIR}/virtualenv/virtualenv.py ${VENV_OPTS} ${VENV_BOOTSTRAP}
+  ${VENV_PYTHON} ${TMPDIR}/virtualenv/virtualenv.py ${VENV_OPTS} ${VENV_BOOTSTRAP}
   # install virtualenv into ${VENV_BOOTSTRAP}
-  ${VENV_BOOTSTRAP}/bin/pip install ${TMPDIR}/${VENV_URL##*/}
+  ${VENV_BOOTSTRAP}/bin/pip install ${TMPDIR}/${VENV_VERSION}.tar.gz
   # cleanup
   rm -rf ${TMPDIR}
 }
@@ -124,6 +136,8 @@ case "${CMD}" in
   *help)
     echo "Usage:"
     echo "    venv bootstrap       -  Install virtualenv"
+    echo "         --version=<virtualenv version>"
+    echo "         --python=<python interpreter to use>"
     echo "    venv list            -  List virtual environments"
     echo "    venv new <name>      -  Create a new virtual environment"
     echo "    venv activate <name> -  Activate the virtual environment"
