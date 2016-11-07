@@ -52,6 +52,9 @@ for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
   source ${hook}
 done
 
+# local binaries
+[[ -d ~/local/bin ]] || mkdir -p ~/local/bin
+
 # terminal setup
 source ~/.bash.d/term.sh 2> /dev/null
 

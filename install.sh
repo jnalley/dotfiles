@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DOTFILES=${HOME}/.dotfiles
 EXISTING=$(mktemp -d ${HOME}/dotfiles.XXXXX)
