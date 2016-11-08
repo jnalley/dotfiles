@@ -8,7 +8,7 @@ for CMD in gls gcp gmv grm gmkdir gtar gmd5sum gsha1sum \
 done
 
 # enable color ls output
-if [[ -L ${HOME}/local/bin/ls ]]; then
+if [[ -L ${HOME}/local/bin/ls && -x ${HOME}/local/bin/ls ]]; then
     alias ls='ls --color=auto'
 fi
 
