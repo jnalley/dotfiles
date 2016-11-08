@@ -1,4 +1,4 @@
-# vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
@@ -24,7 +24,7 @@ dirchange() {
 
 # called prior to displaying the prompt
 prompt_command() {
-  # write history so that it is available between shell sessions
+  # write history so that it is available in new shell sessions
   history -a
   # set default prompt
   export PS1=${ps1}

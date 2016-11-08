@@ -1,4 +1,4 @@
-# vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
@@ -29,16 +29,12 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # prevent duplicate history entries
-HISTCONTROL="erasedups:ignoreboth"
+HISTCONTROL=ignoredups:erasedups
 # do not create history entries for the following commands
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
 # unlimited history size
 HISTSIZE=-1
 HISTFILESIZE=-1
-# Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d
-# %T equivalent to %H:%M:%S (24-hours format)
-HISTTIMEFORMAT='%F %T '
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command

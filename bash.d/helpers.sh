@@ -200,5 +200,3 @@ unpack() {
     # rename the extracted directory to ${DESTINATION}
     mv ${EXTRACTED[0]} ${DESTINATION}
 }
-
-# vim: ft=sh:ts=4:sw=4
