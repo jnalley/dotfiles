@@ -166,26 +166,18 @@ nnoremap <silent> <C-W>D :call CloseAllBuffersButCurrent()<CR>
 " }}}
 
 " trailing whitespace {{{
-function! RemoveTrailingSpace(...)
-  let l:view = winsaveview()
-  if a:0 > 0
-    call cursor(1, 1)
-    let l:result = search('\s\+$', 'c')
-    call winrestview(l:view)
-    if l:result == 0 | return | endif
-    if confirm("Remove trailing spaces?", "&Yes\n&No") != 1 | return | endif
+function! DetectTrailingSpace()
+  if !&modifiable
+    return 0
   endif
+  return search('\s\+$', 'nw')
+endfunction
+
+function! RemoveTrailingSpace()
+  let l:view = winsaveview()
   %s/\s\+$//e
   call winrestview(l:view)
 endfunction
-
-" Remove trailing whitespaces when saving
-augroup TrailingWhitespace
-  autocmd!
-  autocmd BufWritePre * :set cmdheight=3
-        \ | :call RemoveTrailingSpace('prompt')
-        \ | :set cmdheight=1
-augroup END
 
 nnoremap <silent> <leader>S :call RemoveTrailingSpace()<CR>
 " }}}
@@ -292,6 +284,12 @@ function! CustomColors()
   highlight User3
         \ ctermfg=10 ctermbg=16
         \ guifg=#00ff00 guibg=#000000
+  highlight User4
+        \ ctermfg=172 ctermbg=16
+        \ guifg=#df8700 guibg=#000000
+  highlight User5
+        \ ctermfg=124 ctermbg=16
+        \ guifg=#af0000 guibg=#000000
 endfunction
 
 let g:gruvbox_contrast_dark='hard'
@@ -365,7 +363,7 @@ vnoremap <silent> <f9> :TREPLSendSelection<cr>
 " statusline {{{
 function! FugitiveStatusLine()
   let l:branch = ''
-  if exists("fugitive#head")
+  if exists("*fugitive#head")
     let l:branch = fugitive#head()
   endif
   return branch !=# '' ? ' {'.branch.'}' : ''
@@ -387,8 +385,10 @@ let g:mode_map={
       \ }
 
 set statusline=
-set statusline+=%1*%-9{g:mode_map[mode()]}%=%2*%-4m%<%f
-set statusline+=%#CursorLineNr#%{FugitiveStatusLine()}%=%3*%r
-set statusline+=[%{&fenc==''?&enc:&fenc}][%{&ff}]%y%1*%7p%%
-set statusline+=%#CursorLineNr#%11(%l/%L%)%5(%1*%c%)
+set statusline+=%1*%{g:mode_map[mode()]}
+set statusline+=%=%3*%-4m%2*%<%f%4*%{FugitiveStatusLine()}
+set statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
+set statusline+=%1*%{&paste?'[paste]':''}
+set statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
+set statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
 " }}}
