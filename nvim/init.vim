@@ -53,8 +53,6 @@ set diffopt=vertical
 set fillchars+=vert:│,fold:‒
 set foldenable
 set foldmethod=marker
-set grepformat=%f:%l:%c:%m
-set grepprg=ag\ --vimgrep\ $*
 set hidden
 set history=500
 set hlsearch
