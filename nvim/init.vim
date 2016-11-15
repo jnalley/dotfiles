@@ -95,10 +95,23 @@ set wildmenu
 set wildmode=list:longest,full
 set winminheight=0
 
+" grep {{{
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m
+elseif executable('ag')
+  set grepprg=ag\ --vimgrep\ $*
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
+" }}}
+
+" tabs/spaces {{{
 set expandtab
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
+" }}}
+
 " }}}
 
 " plugins {{{
