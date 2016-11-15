@@ -31,10 +31,9 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 # prevent duplicate history entries
 HISTCONTROL=ignoredups:erasedups
 # do not create history entries for the following commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
+HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
 # unlimited history size
 HISTSIZE=-1
-HISTFILESIZE=-1
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command

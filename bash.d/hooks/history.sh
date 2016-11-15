@@ -6,18 +6,14 @@
 history() {
   case "$1" in
     --squish)
-      # prevent changing parent shell environment with subshell
-      (
-        source ~/.bash.d/helpers.sh
         local OLDHIST=${HISTFILE}
-        HISTFILE=$(tmpfile)
-        history -c
+        HISTFILE=$(mktemp -t tmp.XXXXX)
+        command history -c
         perl -ne '$H{$_}++ or print' < ${OLDHIST} > ${HISTFILE}
-        history -r
+        command history -r
         rm ${HISTFILE}
         HISTFILE=${OLDHIST}
-        history -w
-      )
+        command history -w
       return
       ;;
   esac
