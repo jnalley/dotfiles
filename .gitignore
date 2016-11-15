@@ -1,4 +1,5 @@
 bash.d/local.sh
 nvim/autoload/plug.vim
+nvim/shada/
 nvim/site/
 nvim/tmp/

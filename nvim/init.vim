@@ -118,6 +118,7 @@ if has('vim_starting')
 
   call plug#begin(s:plugins)
 
+  Plug 'christoomey/vim-tmux-navigator'
   Plug 'junegunn/gv.vim'
   Plug 'justinmk/vim-dirvish'
   Plug 'kassio/neoterm'
