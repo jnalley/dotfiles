@@ -31,4 +31,4 @@ dps() {
   done
 }
 
-[[ $(docker-machine status dev) == "Running" ]] && denv dev
+[[ $(docker-machine status dev 2> /dev/null) == "Running" ]] && denv dev

@@ -2,7 +2,7 @@
 
 source ~/.bash.d/helpers.sh
 
-VENV_VERSION='15.0.3'
+VENV_VERSION='15.1.0'
 VENV_URL="https://github.com/pypa/virtualenv/tarball/${VENV_VERSION}"
 VENV_BASE=${HOME}/local/python/venv
 VENV_BOOTSTRAP=${VENV_BASE}/bootstrap
