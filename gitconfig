@@ -5,6 +5,8 @@
   path = ~/.git.user
 [push]
   default = nothing
+[pull]
+  rebase = true
 [branch]
   autosetuprebase = always
 [color]
@@ -30,6 +32,7 @@
   prune = true
 [rebase]
   autosquash = true
+  autostash = true
 [alias]
   aa = add --all
   br = "!f() { (git heads; git remotes) | column -ts'|'; }; f"
