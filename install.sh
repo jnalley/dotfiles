@@ -7,10 +7,8 @@ EXISTING=$(mktemp -d ${HOME}/dotfiles.XXXXX)
 
 for file in ${DOTFILES}/*; do
     file=${file##*/}
-    # skip the install script, README and nvim
-    [[ ${file} == ${0##*/} ]] && continue
-    [[ ${file} == README.md ]] && continue
-    [[ ${file} == nvim ]] && continue
+    # omit files listed in .skip
+    egrep -q "^${file}$" ${DOTFILES}/.skip && continue
     # if file exists and is not a symlink
     # move it to the temporary directory
     if [[ ! -L ${HOME}/.${file} ]]; then
