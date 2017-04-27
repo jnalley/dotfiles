@@ -1,6 +1,9 @@
 -- load plugins
 require("plugins")
 
+-- weather
+require("hs-weather").start{ geolocation = true, units = "F" }
+
 -- disable icons
 hs.dockIcon(false)
 hs.menuIcon(false)

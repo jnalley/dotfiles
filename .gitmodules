@@ -1,0 +1,3 @@
+[submodule "hammerspoon/hs-weather"]
+	path = hammerspoon/hs-weather
+	url = git@github.com:jnalley/hs-weather.git
