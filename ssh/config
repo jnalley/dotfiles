@@ -1,0 +1,34 @@
+# vim: set ft=sshconfig:ts=2:sw=2:noet:nowrap
+
+LogLevel ERROR
+TCPKeepAlive no
+ServerAliveInterval 60
+HashKnownHosts no
+NoHostAuthenticationForLocalhost yes
+ControlMaster auto
+ControlPersist 1
+ControlPath ~/.ssh/.%C
+GlobalKnownHostsFile ~/.ssh/known_hosts
+UserKnownHostsFile /dev/null
+
+## I don't always add host keys to my known_host file...
+## But when I do - I do it manually with 'ssh-keyscan -t rsa <hostname>'
+##
+## Swapping the roles of GlobalKnownHostsFile and UserKnownHostsFile allows me
+## to manually maintain my known_hosts file rather than have ssh prompt me to
+## add host keys for every host I happen to login to.  I then manually add
+## important hosts to ~/.ssh/known_hosts using ssh-keyscan.
+
+## bastion host example
+# Match host !*bastion* exec "echo %h | grep -q '*host behind bastion regex*'"
+#   ProxyJump bastion.host
+
+Include private
+
+## defaults
+Host *
+  CheckHostIP no
+  ForwardX11 no
+  ForwardAgent no
+  StrictHostKeyChecking no
+  GSSAPIAuthentication no
