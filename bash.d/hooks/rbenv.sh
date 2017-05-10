@@ -3,6 +3,6 @@
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
 
-[[ -n ${cmd} ]] || return 1
+[[ -n ${1} ]] || return 1
 
 eval "$(rbenv init -)"

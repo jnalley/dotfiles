@@ -14,7 +14,7 @@ for editor in nvim vim; do
     alias vi='vim'
     break
   fi
-done
+done ; unset editor
 
 # use nvr - https://github.com/mhinz/neovim-remote.git
 if [[ -n ${NVIM_LISTEN_ADDRESS} ]] && inpath nvr; then

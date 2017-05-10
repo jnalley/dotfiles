@@ -35,7 +35,16 @@ shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
   cmdhist checkwinsize no_empty_cmd_completion globstar
 
 # test if a command is available
-inpath() { type -p "${1}" > /dev/null ; }
+inpath() { type -P "${1}" > /dev/null ; }
+
+# built-in basename
+basename() { echo ${1##*/} ; }
+
+# wrap function callbacks
+closure() {
+  local fname=${1} ; shift
+  eval "function ${fname} { $@ \$@; };"
+}
 
 # report the status of terminated background jobs immediately
 set -o notify
@@ -55,11 +64,8 @@ alias su="sudo -E $(type -p bash)"
 
 # specialized settings for certain commands
 for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
-  name=${hook##*/}
-  name=${name%%.sh}
-  cmd=$(type -p ${name})
-  source ${hook}
-done
+  source ${hook} "$(type -P $(basename ${hook%%.sh}))"
+done ; unset hook
 
 # local binaries
 [[ -d ~/local/bin ]] || mkdir -p ~/local/bin

@@ -6,7 +6,7 @@
 # skip if this is a SUDO shell
 [[ -n ${SUDO_USER} ]] && return 1
 
-[[ -n ${cmd} ]] || return 1
+[[ -n ${1} ]] || return 1
 
 alias dm=docker-machine
 

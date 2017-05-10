@@ -3,7 +3,7 @@
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
 
-[[ -n ${cmd} ]] || return 1
+[[ -x ${1} ]] || return 1
 
 # run vagrant commands from anywhere
 # <vagrant vm name> <command>
@@ -15,7 +15,7 @@ __vagrant() {
 
 for dir in $(shopt -s nullglob; echo ~/Projects/vagrant/*); do
     name=${dir##*/}
-    eval "function ${name} { __vagrant ${name} \$@; };" \
-        "function _${name} { _vagrant \$@; }"
+    closure ${name} __vagrant ${name}
+    closure _${name} _vagrant
     complete -F _${name} ${name}
-done
+done ; unset dir ; unset name

@@ -3,4 +3,4 @@
 # this script should only ever be sourced
 [[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
 
-[[ -n ${cmd} ]] && alias top=htop
+[[ -n ${1} ]] && alias top=htop
