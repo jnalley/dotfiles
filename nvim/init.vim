@@ -299,6 +299,7 @@ let g:mode_map={
       \ 'S'  : 'S-LINE',
       \ '' : 'S-BLOCK',
       \ 't'  : 'TERMINAL',
+      \ 'r?'  : 'CONFIRM',
       \ }
 
 set statusline=
