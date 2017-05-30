@@ -7,9 +7,7 @@ local m = {}
 
 function m.initialize()
   hs.hotkey.bind({"cmd", "ctrl"}, "v", function()
-    for c in hs.pasteboard.getContents():gmatch(".") do
-      hs.eventtap.keyStroke({}, c)
-    end
+    hs.eventtap.keyStrokes(hs.pasteboard.getContents())
   end)
 end
 
