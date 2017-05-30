@@ -51,11 +51,11 @@ export PROMPT_COMMAND="prompt_command"
 # stop here if fewer than 8 colors are supported
 [[ $(tput colors 2> /dev/null) -lt 8 ]] && return 0
 
-# fix backspace in terminfo
-if ! [[ -f ~/.${TERM}.ti ]]; then
-  infocmp ${TERM} | sed 's/kbs=^[hH]/kbs=\\177/' > ~/.${TERM}.ti
-  tic ~/.${TERM}.ti
-fi
+t=( $(shopt -s nullglob; echo ~/.terminfo/*/{tmux,xterm}-256color) )
+[[ ${#t[@]} == 2 ]] || (
+  tic ~/.tmux-256color.ti
+  tic ~/.xterm-256color.ti
+) ; unset t
 
 # makes prompt red when root light cyan otherwise
 if [ ${UID} -eq 0 ]; then

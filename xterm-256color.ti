@@ -1,0 +1,7 @@
+# fix italics and backspace/delete
+# see:
+#   https://github.com/neovim/neovim/issues/2048
+#   https://github.com/tmux/tmux/blob/caa9073/FAQ#L355,#L384
+xterm-256color|xterm with 256 colors and italic,
+  sitm=\E[3m, ritm=\E[23m, kbs=\177,
+  use=xterm-256color,

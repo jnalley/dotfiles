@@ -10,4 +10,6 @@
 [[ -s ~/.ssh/config ]] || return 1
 
 # always ignore global ssh config
-ssh() { $(type -P ssh) -F ~/.ssh/config $@; }
+ssh() {
+  TERM=${TERM/tmux/screen} $(type -P ssh) -F ~/.ssh/config $@
+}
