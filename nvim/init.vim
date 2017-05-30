@@ -89,8 +89,9 @@ set wildignore+=*.o,*.obj,*.a
 set wildignore+=*.pyc
 set wildignore+=*/.git/*,*/.hg/*
 set wildignore+=*~,*.bak
+set wildchar=<Tab>
 set wildmenu
-set wildmode=list:longest,full
+set wildmode=longest,full
 set winminheight=0
 
 " grep {{{
@@ -114,35 +115,28 @@ set tabstop=2
 
 " plugins {{{
 if has('vim_starting')
-  let s:plugins = s:vimdir . '/plugged'
-  let s:vimplug = s:vimdir . '/autoload/plug.vim'
-  let s:vimplug_url = 'https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  call plug#begin(s:vimdir . '/plugged')
 
-  " install vim-plug
-  if ! filereadable(s:vimplug)
-    execute 'silent !curl -fLo' . s:vimplug . ' --create-dirs ' . s:vimplug_url
-    autocmd VimEnter * PlugInstall | source $MYVIMRC
-  endif
-
-  " combine update+upgrade
-  command! PU PlugUpdate | PlugUpgrade
-
-  call plug#begin(s:plugins)
-
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'christoomey/vim-tmux-navigator'
+  Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
+  Plug 'junegunn/fzf.vim'
   Plug 'junegunn/gv.vim'
   Plug 'justinmk/vim-dirvish'
   Plug 'kassio/neoterm'
   Plug 'morhetz/gruvbox'
   Plug 'nelstrom/vim-visual-star-search'
-  Plug 'sh.vim', { 'for': 'sh' }
   Plug 'sheerun/vim-polyglot'
   Plug 'tpope/vim-characterize'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rails', { 'for': 'ruby' }
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-unimpaired'
+  Plug 'vim-scripts/sh.vim', { 'for': 'sh' }
+  Plug 'w0rp/ale'
 
   call plug#end()
 endif
@@ -153,7 +147,6 @@ function! TNremap(...)
   if a:0 != 2 | return | endif
   execute printf('nnoremap %s %s', a:1, a:2)
   if ! has('nvim') | return | endif
-  if a:1 == '<C-L>' | return | endif " preserve screen clearing
   execute printf('tnoremap %s <C-\><C-N>%s', a:1, a:2)
 endfunction
 
@@ -170,7 +163,7 @@ function! CloseAllBuffersButCurrent()
   let l:curr = bufnr("%")
   let l:last = bufnr("$")
 
-  if l:curr > 1 | silent! execute "1,".(l:curr-1)."bd" | endif
+  if l:curr > 1 | silent! execute "only|1,".(l:curr-1)."bd" | endif
   if l:curr < l:last | silent! execute (l:curr+1).",".l:last."bd" | endif
 endfunction
 
@@ -205,10 +198,9 @@ augroup MyAutoCommands
   autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
   " Enable :Gstatus and friends.
   autocmd FileType dirvish call fugitive#detect(@%)
-  " Map CTRL-R to reload the Dirvish buffer.
-  autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
   " Help lookup in vimrc
   autocmd FileType vim setlocal keywordprg=:help
+  " Prevent folding in git
   autocmd FileType git setlocal nofoldenable
   " Reload vimrc
   autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
@@ -216,6 +208,9 @@ augroup END
 " }}}
 
 " mappings {{{
+
+" list buffers (fzf)
+nnoremap <leader><tab> :Buffers<CR>
 
 " wrapped lines goes down/up to next row, rather than next line in file.
 nnoremap j gj
@@ -259,9 +254,17 @@ endif
 
 " git {{{
 nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gv :GV<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
+" }}}
+
+" ale {{{
+let g:ale_sign_error = "✗"
+let g:ale_sign_warning = "⚠"
+" }}}
+
+" dirvish {{{
+let g:dirvish_mode = ':sort r /[^\/]$/'
 " }}}
 
 " sh.vim {{{
@@ -309,4 +312,12 @@ set statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
 set statusline+=%1*%{&paste?'[paste]':''}
 set statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
 set statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
+" }}}
+
+" deoplete {{{
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+set completeopt+=noinsert
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " }}}

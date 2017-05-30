@@ -10,13 +10,9 @@
 # set emails using the following format:                    #
 # git config --global user.email-mywork me@mywork.com       #
 # git config --global user.email-github-com me@mydomain.com #
-#                                                           #
-# optionally set a default address:                         #
-# git config --global user.default-email my@default.com     #
 #-----------------------------------------------------------#
 
 email="$(git config user.email)"
-default="$(git config user.default-email)"
 
 # do nothing if email is set
 [[ -n ${email} && ${email} != '(none)' ]] && exit 0
@@ -24,29 +20,29 @@ default="$(git config user.default-email)"
 # get remote url
 url="$(git config --get remote.origin.url)"
 
-if [[ -n ${url} ]]; then
-  # configured domains/emails
-  IFS=':' read -ra config <<< "$(
-    git config --get-regexp 'user.email-.*' | tr '\n' ':'
-  )"
+# bail if no url is set
+[[ -n ${url} ]] || exit 1
 
-  # iterate entries matching on domain
-  for ((i = 0; i < ${#config[@]}; i++)); do
-    set -- ${config[${i}],,}
-    domain=${1#*-}       # everything after the first dash
-    domain=${domain/-/.} # change dash to dot
-    domain=${domain}
-    address=${2}
-    # case insensitive
-    [[ ${url,,} =~ .*${domain}.* ]] && \
-      match=${address} && break
-  done
+# configured domains/emails
+IFS=':' read -ra config <<< "$(
+  git config --get-regexp 'user.email-.*' | tr '\n' ':'
+)"
+
+# iterate entries matching on domain
+for ((i = 0; i < ${#config[@]}; i++)); do
+  set -- ${config[${i}],,}
+  domain=${1#*-}        # everything after the first dash
+  domain=${domain//-/.} # dashes to dots
+  address=${2}
+  # case insensitive
+  [[ ${url,,} =~ .*${domain}.* ]] && \
+    match=${address} && break
+done
+
+# set email if a match was found
+if [[ -n ${match} ]]; then
+  git config user.email ${match}
+  echo "Setting git email to: $(git config user.email)"
+else
+  echo "Unable to match git email for: ${url,,} =~ ${domain}"
 fi
-
-# prompt if no match was found
-[[ -z ${match} ]] && \
-  read -e -i "${default}" -p 'GIT email: ' match
-
-# set it
-git config user.email ${match}
-echo "Using email: $(git config user.email)"

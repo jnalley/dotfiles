@@ -26,6 +26,9 @@
   changed = blue
   untracked = red
   branch = yellow bold
+[merge]
+  stat = true
+  ff = only
 [commit]
   template = ~/.gitmessage
 [fetch]
@@ -44,3 +47,7 @@
   df = diff
   st = status --short --branch
   l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
+  g = grep --break --heading --line-number
+[grep]
+  extendRegexp = true
+  lineNumber = true

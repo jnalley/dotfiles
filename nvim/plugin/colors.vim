@@ -52,6 +52,10 @@ function! <SID>CustomColors()
     highlight VertSplit
           \ ctermfg=236 ctermbg=NONE
           \ guifg=#353535 guibg=NONE
+    highlight DiffAdd    cterm=none ctermfg=11 ctermbg=22 gui=none guifg=#ffff00 guibg=#005f00
+    highlight DiffDelete cterm=none ctermfg=11 ctermbg=88 gui=none guifg=#ffff00 guibg=#870000
+    highlight DiffChange cterm=none ctermfg=11 ctermbg=88 gui=none guifg=#ffff00 guibg=#870000
+    highlight DiffText   cterm=none ctermfg=11 ctermbg=88 gui=underline guifg=#ffff00 guibg=#870000
   endif
 
   " status line colors

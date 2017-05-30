@@ -14,3 +14,8 @@ done ; unset prg
 if ! alias g > /dev/null 2>&1; then
   function g() { grep -inRHI "$@" .; }
 fi
+
+# enable color for GNU grep
+if command grep --version | grep -qi 'GNU'; then
+  alias grep='grep --color=auto'
+fi

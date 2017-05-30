@@ -76,8 +76,9 @@ error() {
 # print an info message
 message() {
     local MSG="$@"
-    echo -e "$(color P)$(color GREEN)[INFO]$(color P)" \
-        "$(color P)$(color CYAN)${MSG}$(color P)"
+    echo -e "$(color P)$(color GREEN)[$(color P)" \
+        "$(color P)$(color CYAN)${MSG}$(color P)" \
+        "$(color GREEN)]$(color P)"
 }
 
 # create temporary files/directories

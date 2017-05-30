@@ -19,3 +19,5 @@ source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
 
 # key bindings
 source "${HOME}/.fzf/shell/key-bindings.bash" 2> /dev/null
+
+export FZF_DEFAULT_OPTS='--height 30% --border'

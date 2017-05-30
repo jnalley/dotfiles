@@ -46,6 +46,8 @@ closure() {
   eval "function ${fname} { $@ \$@; };"
 }
 
+helper() { (source ~/.bash.d/helpers.sh; $@) ; }
+
 # report the status of terminated background jobs immediately
 set -o notify
 
@@ -59,19 +61,14 @@ bind Space:magic-space
 # date in the format YYYYMMDDHHMMSS (ISO 8601)
 alias mydate="date +'%G%m%d%H%M%S'"
 
+# use bash for 'which'
+alias which="type"
+
 # use sudo instead of su
 alias su="sudo -E $(type -p bash)"
 
-# specialized settings for certain commands
-for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
-  source ${hook} "$(type -P $(basename ${hook%%.sh}))"
-done ; unset hook
-
 # local binaries
 [[ -d ~/local/bin ]] || mkdir -p ~/local/bin
-
-# terminal setup
-source ~/.bash.d/term.sh 2> /dev/null
 
 # os specific
 source ~/.bash.d/os/$(uname -s).sh 2> /dev/null
@@ -79,5 +76,13 @@ source ~/.bash.d/os/$(uname -s).sh 2> /dev/null
 # host specific
 source ~/.bash.d/host/$(hostname -s).sh 2> /dev/null
 
+# terminal setup
+source ~/.bash.d/term.sh 2> /dev/null
+
 # local (not under version control)
 source ~/.bash.d/local.sh 2> /dev/null
+
+# specialized settings for certain commands
+for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
+  source ${hook} "$(type -P $(basename ${hook%%.sh}))"
+done ; unset hook
