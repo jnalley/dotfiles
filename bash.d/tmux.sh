@@ -13,18 +13,16 @@
 # in ssh_config(5).
 ########################################################################
 
-[[ ${TERM} != "screen-256color" && ${TERM} == *256color ]] || return
+[[ ${TERM} != tmux* && ${TERM} == *256color ]] || return
 
-TMUXCMD="$(type -p tmux)"
-
-[[ -x ${TMUXCMD} ]] || return
+TMUXCMD="$(type -P tmux)"
 
 # connect to existing session
 if ${TMUXCMD} has-session 2> /dev/null; then
-    # only if it has no clients
-    [[ -z $(${TMUXCMD}  list-clients) ]] && \
-        exec ${TMUXCMD} attach
+  # only if it has no clients
+  [[ -z $(${TMUXCMD} list-clients) ]] && \
+    exec ${TMUXCMD} attach
 else
-    # auto-create new session if logging in via SSH
-    [[ -r ${SSH_TTY} ]] && exec ${TMUXCMD} new
+  # create new session if logging in via SSH
+  [[ -r ${SSH_TTY} ]] && exec ${TMUXCMD} new
 fi

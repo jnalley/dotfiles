@@ -119,6 +119,7 @@ if has('vim_starting')
 
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'christoomey/vim-tmux-navigator'
+  Plug 'fishbullet/deoplete-ruby'
   Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
   Plug 'junegunn/fzf.vim'
@@ -128,6 +129,7 @@ if has('vim_starting')
   Plug 'morhetz/gruvbox'
   Plug 'nelstrom/vim-visual-star-search'
   Plug 'sheerun/vim-polyglot'
+  Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
   Plug 'tpope/vim-characterize'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-fugitive'
@@ -261,6 +263,7 @@ nnoremap <leader>gs :Gstatus<CR>
 " ale {{{
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
+let g:ale_lint_delay = 500
 " }}}
 
 " dirvish {{{
@@ -317,7 +320,7 @@ set statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
 " deoplete {{{
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
-set completeopt+=noinsert
+let g:deoplete#auto_complete_start_length = 3
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " }}}

@@ -5,7 +5,7 @@
 
 # update terminal title
 title() {
-  [[ ${TERM} == screen* || ${TERM} == xterm* ]] || return
+  [[ ${TERM} == @(tmux-*|screen-*|xterm-*) ]] || return
   local msg=''
   if [[ -z ${1} ]]; then
     msg=${PWD/$HOME/\\x7e}

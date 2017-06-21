@@ -40,5 +40,5 @@ install_vim_plugins() {
 
 vim() {
   install_vim_plugins || return 1
-  command ${EDITOR} $@
+  command ${EDITOR} "$@"
 }
