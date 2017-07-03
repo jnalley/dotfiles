@@ -9,36 +9,35 @@
 " export VIMINIT='source ~/.myvim/vimrc'
 
 " initialization {{{
-
-" set leader to SPACE
-let mapleader=' '
-
-" disable netrw (use dirvish instead)
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-
 if has('vim_starting')
+  " set leader to SPACE
+  let mapleader=' '
+
+  " disable netrw (use dirvish instead)
+  let g:loaded_netrw = 1
+  let g:loaded_netrwPlugin = 1
+
   let $MYVIMRC = resolve(expand('<sfile>'))
   let s:vimdir = fnamemodify($MYVIMRC, ':p:h')
   let s:tempdir = s:vimdir . '/tmp'
   let &directory = s:tempdir . '//'
   let &viewdir = s:tempdir . '/view'
   let &undodir = s:tempdir . '/undo'
-  if !has('nvim')
+  if ! has('nvim')
     let &runtimepath = printf('%s,%s,%s/after', s:vimdir, &runtimepath, s:vimdir)
     if ! isdirectory(&g:undodir) | call mkdir(&g:undodir, 'p', 0700) | endif
     if ! isdirectory(&g:undodir) | call mkdir(&g:undodir, 'p', 0700) | endif
   endif
   let s:viminfo = has('nvim') ? 'main.shada' : 'viminfo'
   let &viminfo = "!,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/' . s:viminfo
-  "               | |    |   |   |    | |  + path to viminfo file
-  "               | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
-  "               | |    |   |   |    + disable 'hlsearch' loading viminfo
-  "               | |    |   |   + command-line history saved
-  "               | |    |   + search history saved
-  "               | |    + files marks saved
-  "               | + lines saved each register (old name for <, vi6.2)
-  "               + don't preserve the buffer list
+                 "| |    |   |   |    | |  + path to viminfo file
+                 "| |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
+                 "| |    |   |   |    + disable 'hlsearch' loading viminfo
+                 "| |    |   |   + command-line history saved
+                 "| |    |   + search history saved
+                 "| |    + files marks saved
+                 "| + lines saved each register (old name for <, vi6.2)
+                 "+ don't preserve the buffer list
 endif
 " }}}
 
@@ -114,53 +113,33 @@ set tabstop=2
 " }}}
 
 " plugins {{{
-if has('vim_starting')
-  call plug#begin(s:vimdir . '/plugged')
+call plug#begin(s:vimdir . '/plugged')
 
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'christoomey/vim-tmux-navigator'
-  Plug 'fishbullet/deoplete-ruby'
-  Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
-  Plug 'junegunn/fzf.vim'
-  Plug 'junegunn/gv.vim'
-  Plug 'justinmk/vim-dirvish'
-  Plug 'kassio/neoterm'
-  Plug 'morhetz/gruvbox'
-  Plug 'nelstrom/vim-visual-star-search'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-  Plug 'tpope/vim-characterize'
-  Plug 'tpope/vim-commentary'
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-rails', { 'for': 'ruby' }
-  Plug 'tpope/vim-repeat'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-unimpaired'
-  Plug 'vim-scripts/sh.vim', { 'for': 'sh' }
-  Plug 'w0rp/ale'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/gv.vim'
+Plug 'justinmk/vim-dirvish'
+Plug 'morhetz/gruvbox'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'sheerun/vim-polyglot'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-scripts/sh.vim', { 'for': 'sh' }
+Plug 'w0rp/ale'
 
-  call plug#end()
-endif
+call plug#end()
 " }}}
 
-" terminal {{{
-function! TNremap(...)
-  if a:0 != 2 | return | endif
-  execute printf('nnoremap %s %s', a:1, a:2)
-  if ! has('nvim') | return | endif
-  execute printf('tnoremap %s <C-\><C-N>%s', a:1, a:2)
-endfunction
-
-call TNremap('<C-A>c', ':terminal<cr>')
-call TNremap('<C-A>"', ':Buffers<cr>')
-call TNremap('<C-A>p', ':bprevious<cr>')
-call TNremap('<C-A>n', ':bnext<cr>')
-call TNremap('<C-H>', '<C-W><C-H>')
-call TNremap('<C-J>', '<C-W><C-J>')
-call TNremap('<C-K>', '<C-W><C-K>')
-call TNremap('<C-L>', '<C-W><C-L>')
-
+" helper functions {{{
 function! CloseAllBuffersButCurrent()
   let l:curr = bufnr("%")
   let l:last = bufnr("$")
@@ -170,9 +149,7 @@ function! CloseAllBuffersButCurrent()
 endfunction
 
 nnoremap <silent> <C-W>D :call CloseAllBuffersButCurrent()<CR>
-" }}}
 
-" trailing whitespace {{{
 function! DetectTrailingSpace()
   if !&modifiable
     return 0
@@ -232,38 +209,41 @@ noremap gV `[v`]
 nnoremap Q @q
 
 " edit vimrc
-map <leader>v :e! $MYVIMRC<cr>
+nnoremap <leader>v :e! $MYVIMRC<cr>
 
 " auto indent pasted text
 nnoremap p p=`]<C-o>
 nnoremap P P=`]<C-o>
 
 " previous buffer
-map <leader><leader> :b#<CR>
+nnoremap <leader><leader> :b#<CR>
 " }}}
 
 " colorscheme {{{
 let g:gruvbox_contrast_dark='hard'
 
-if has('vim_starting')
-  try
-    colorscheme gruvbox
-  catch
-    colorscheme default
-  endtry
-endif
+try
+  colorscheme gruvbox
+catch
+  colorscheme default
+endtry
 " }}}
 
 " git {{{
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
+
+nmap <leader>g :Gstatus<cr>gg<C-n>
 " }}}
 
 " ale {{{
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_open_list = 1
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
-let g:ale_lint_delay = 500
 " }}}
 
 " dirvish {{{
@@ -274,13 +254,6 @@ let g:dirvish_mode = ':sort r /[^\/]$/'
 let g:sh_indent_case_labels = 1
 let g:sh_fold_enabled = 7
 let g:is_bash = 1
-" }}}
-
-" neoterm {{{
-let g:neoterm_position = 'horizontal'
-nnoremap <silent> <f10> :TREPLSendFile<cr>
-nnoremap <silent> <f9> :TREPLSendLine<cr>
-vnoremap <silent> <f9> :TREPLSendSelection<cr>
 " }}}
 
 " statusline {{{
@@ -315,12 +288,4 @@ set statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
 set statusline+=%1*%{&paste?'[paste]':''}
 set statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
 set statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
-" }}}
-
-" deoplete {{{
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#auto_complete_start_length = 3
-" deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " }}}
