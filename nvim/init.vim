@@ -73,7 +73,7 @@ set numberwidth=5
 set shortmess+=I
 set showbreak=↪
 set showcmd
-set showmatch
+set noshowmatch
 set showtabline=1
 set smartcase
 set splitbelow
@@ -108,6 +108,12 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
+" }}}
+
+" use system clipboard {{{
+if has('clipboard')
+  set clipboard=unnamedplus
+endif
 " }}}
 
 " }}}
@@ -167,7 +173,7 @@ nnoremap <silent> <leader>S :call RemoveTrailingSpace()<CR>
 " }}}
 
 " autocommands {{{
-augroup MyAutoCommands
+augroup VimRc
   autocmd!
   " Automatically open quick fix window
   autocmd QuickFixCmdPost *grep* cwindow
@@ -190,6 +196,9 @@ augroup END
 
 " list buffers (fzf)
 nnoremap <leader><tab> :Buffers<CR>
+
+" search help (fzf)
+nnoremap <leader>? :Helptags<CR>
 
 " wrapped lines goes down/up to next row, rather than next line in file.
 nnoremap j gj
@@ -230,11 +239,15 @@ endtry
 " }}}
 
 " git {{{
+autocmd VimRc BufReadPost fugitive://* set bufhidden=delete
 nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gl :silent Glog<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>gr :Gremove<CR>
 nnoremap <leader>gs :Gstatus<CR>
-
-nmap <leader>g :Gstatus<cr>gg<C-n>
+nnoremap <leader>gw :Gwrite<CR>
 " }}}
 
 " ale {{{
