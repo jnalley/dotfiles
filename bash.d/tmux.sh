@@ -13,7 +13,8 @@
 # in ssh_config(5).
 ########################################################################
 
-[[ ${TERM} != tmux* && ${TERM} == *256color ]] || return
+# prevent nested tmux/screen sessions
+[[ ${TERM} == @(tmux-*|screen-*) ]] && return
 
 TMUXCMD="$(type -P tmux)"
 
