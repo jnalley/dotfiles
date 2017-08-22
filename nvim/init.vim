@@ -32,7 +32,7 @@ if has('vim_starting')
   let &viminfo = "!,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/' . s:viminfo
                  "| |    |   |   |    | |  + path to viminfo file
                  "| |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
-                 "| |    |   |   |    + disable 'hlsearch' loading viminfo
+                 "| |    |   |   |    + disable 'hlsearch' on start
                  "| |    |   |   + command-line history saved
                  "| |    |   + search history saved
                  "| |    + files marks saved
@@ -108,12 +108,6 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
-" }}}
-
-" use system clipboard {{{
-if has('clipboard')
-  set clipboard=unnamedplus
-endif
 " }}}
 
 " }}}
@@ -221,8 +215,8 @@ nnoremap Q @q
 nnoremap <leader>v :e! $MYVIMRC<cr>
 
 " auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
+nnoremap p gp=`]
+nnoremap P gP=`]
 
 " previous buffer
 nnoremap <leader><leader> :b#<CR>
@@ -257,6 +251,24 @@ let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
+" }}}
+
+" fzf {{{
+if has('nvim')
+  let g:fzf_layout = { 'window': 'enew' }
+endif
+
+" Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" Use ripgrep for vimgrep
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 " }}}
 
 " dirvish {{{
@@ -294,11 +306,11 @@ let g:mode_map={
       \ 'r?'  : 'CONFIRM',
       \ }
 
-set statusline=
-set statusline+=%1*%{g:mode_map[mode()]}
-set statusline+=%=%3*%-4m%2*%<%f%4*%{FugitiveStatusLine()}
-set statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
-set statusline+=%1*%{&paste?'[paste]':''}
-set statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
-set statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
+setlocal statusline=
+setlocal statusline+=%1*%{g:mode_map[mode()]}
+setlocal statusline+=%=%3*%-4m%2*%<%f%4*%{FugitiveStatusLine()}
+setlocal statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
+setlocal statusline+=%1*%{&paste?'[paste]':''}
+setlocal statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
+setlocal statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
 " }}}

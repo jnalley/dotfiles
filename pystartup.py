@@ -1,9 +1,10 @@
-import os
 import atexit
+import os
 import readline
+import rlcompleter
+import sys
 
-""" save history - not necessary with bpython """
-if os.path.basename(os.environ['_']) != 'bpython':
+if os.path.basename(os.environ['_']) == 'python':
     def save_history(path, readline):
         readline.write_history_file(path)
 
@@ -15,4 +16,4 @@ if os.path.basename(os.environ['_']) != 'bpython':
 
     readline.parse_and_bind("tab: complete")
 
-del os, atexit, readline
+del atexit, os, readline, rlcompleter, sys

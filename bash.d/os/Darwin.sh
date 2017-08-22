@@ -1,9 +1,11 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
+declare -r brewprefix="$(brew --prefix)"
+
 # use gnu versions if they are available
 # - brew install coreutils gnu-tar findutils
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:${MANPATH}"
+export PATH="${brewprefix}/opt/coreutils/libexec/gnubin:${PATH}"
+export MANPATH="${brewprefix}/local/opt/coreutils/libexec/gnuman:${MANPATH}"
 
 # enable color ls output
 if command ls --version | grep -qi 'GNU'; then
@@ -15,7 +17,7 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxexexabagacad
 
 # bash completion
-source /usr/local/etc/bash_completion 2> /dev/null
+source ${brewprefix}/etc/bash_completion 2> /dev/null
 
 # homebrew
 source ~/.homebrew.key 2> /dev/null
