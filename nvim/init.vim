@@ -47,7 +47,7 @@ set autoread
 set background=dark
 set backspace=indent,eol,start
 set colorcolumn=80
-set completeopt=menu
+set completeopt=menuone,noinsert,noselect
 set diffopt=vertical
 set fillchars+=vert:│,fold:‒
 set foldenable
@@ -70,7 +70,7 @@ set noshowmode
 set nostartofline
 set nowrap
 set numberwidth=5
-set shortmess+=I
+set shortmess+=Ic
 set showbreak=↪
 set showcmd
 set noshowmatch
@@ -115,13 +115,13 @@ set tabstop=2
 " plugins {{{
 call plug#begin(s:vimdir . '/plugged')
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'
 Plug 'justinmk/vim-dirvish'
+Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
@@ -251,6 +251,14 @@ let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
+" }}}
+
+" {{{ mucomplete
+inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
+
+let g:mucomplete#enable_auto_at_startup = 1
 " }}}
 
 " fzf {{{
