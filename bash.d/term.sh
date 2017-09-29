@@ -53,8 +53,8 @@ export PROMPT_COMMAND="prompt_command"
 
 t=( $(shopt -s nullglob; echo ~/.terminfo/*/{tmux,xterm}-256color) )
 [[ ${#t[@]} == 2 ]] || (
-  tic ~/.tmux-256color.ti
-  tic ~/.xterm-256color.ti
+  tic -x ~/.tmux-256color.ti
+  tic -x ~/.xterm-256color.ti
 ) ; unset t
 
 # makes prompt red when root light cyan otherwise

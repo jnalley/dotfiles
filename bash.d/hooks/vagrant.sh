@@ -10,6 +10,7 @@
 __vagrant() {
     local instance=$1; shift
     [[ -d ~/Projects/vagrant/${instance} ]] || return 1
+    [[ -z "$@" ]] && set -- "ssh -- -A" # make default command be ssh
     (cd ~/Projects/vagrant/${instance} ; exec vagrant $@)
 }
 
