@@ -26,7 +26,6 @@ if has('vim_starting')
   if ! has('nvim')
     let &runtimepath = printf('%s,%s,%s/after', s:vimdir, &runtimepath, s:vimdir)
     if ! isdirectory(&g:undodir) | call mkdir(&g:undodir, 'p', 0700) | endif
-    if ! isdirectory(&g:undodir) | call mkdir(&g:undodir, 'p', 0700) | endif
   endif
   let s:viminfo = has('nvim') ? 'main.shada' : 'viminfo'
   let &viminfo = "!,<800,'10,/50,:100,h,f0,n" . s:tempdir . '/' . s:viminfo
