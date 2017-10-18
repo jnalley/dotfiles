@@ -11,5 +11,5 @@
 
 # always ignore global ssh config
 ssh() {
-  TERM=${TERM/tmux/screen} $(type -P ssh) -F ~/.ssh/config $@
+  TERM=${TERM/tmux/xterm} $(type -P ssh) -F ~/.ssh/config $@
 }
