@@ -46,7 +46,7 @@ set autoread
 set background=dark
 set backspace=indent,eol,start
 set colorcolumn=80
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone,longest,noinsert
 set diffopt=vertical
 set fillchars+=vert:│,fold:‒
 set foldenable
@@ -245,11 +245,13 @@ nnoremap <leader>gw :Gwrite<CR>
 
 " ale {{{
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_open_list = 1
+let g:ale_open_list = 0
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
+" disable for java to prevent popup in osx
+let g:ale_linters = {'java': []}
 " }}}
 
 " {{{ mucomplete
@@ -281,7 +283,7 @@ command! -bang -nargs=* Rg
 " }}}
 
 " dirvish {{{
-let g:dirvish_mode = ':sort r /[^\/]$/'
+let g:dirvish_mode = ':sort r /[^\/]$/|silent keeppatterns g/\.pyc$/d _'
 " }}}
 
 " sh.vim {{{
@@ -315,11 +317,11 @@ let g:mode_map={
       \ 'r?'  : 'CONFIRM',
       \ }
 
-setlocal statusline=
-setlocal statusline+=%1*%{g:mode_map[mode()]}
-setlocal statusline+=%=%3*%-4m%2*%<%f%4*%{FugitiveStatusLine()}
-setlocal statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
-setlocal statusline+=%1*%{&paste?'[paste]':''}
-setlocal statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
-setlocal statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
+set statusline=
+set statusline+=%1*%{g:mode_map[mode()]}
+set statusline+=%=%3*%-4m%2*%<%f%4*%{FugitiveStatusLine()}
+set statusline+=%=%5*%{DetectTrailingSpace()==0?'':'[S]'}
+set statusline+=%1*%{&paste?'[paste]':''}
+set statusline+=%3*%r[%{&fenc==''?&enc:&fenc}][%{&ff}]%y
+set statusline+=%1*%7p%%%3*%4*%11(%l/%L%)%5(%1*%c%)
 " }}}
