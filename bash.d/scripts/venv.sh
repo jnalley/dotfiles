@@ -4,18 +4,16 @@ source ~/.bash.d/helpers.sh
 
 VENV_VERSION='15.1.0'
 VENV_URL="https://github.com/pypa/virtualenv/tarball/${VENV_VERSION}"
-VENV_BASE=${HOME}/local/python/venv
-VENV_BOOTSTRAP=${VENV_BASE}/bootstrap
 VENV_OPTS='--no-site-packages --distribute'
-VENV_PYTHON='python'
+VENV_PYTHON=${VENV_PYTHON:-python2}
+VENV_BASE=${HOME}/local/${VENV_PYTHON}
+VENV_BOOTSTRAP=${VENV_BASE}/bootstrap
 
 # install virtualenv
 venv_bootstrap() {
   # parse options
   for opt in "$@"; do
     case ${opt} in
-      -p=*|--python=*)
-        VENV_PYTHON="${opt#*=}" ; shift ;;
       -v=*|--version=*)
         VENV_VERSION="${opt#*=}" ; shift ;;
     esac
@@ -137,11 +135,15 @@ case "${CMD}" in
     echo "Usage:"
     echo "    venv bootstrap       -  Install virtualenv"
     echo "         --version=<virtualenv version>"
-    echo "         --python=<python interpreter to use>"
     echo "    venv list            -  List virtual environments"
     echo "    venv new <name>      -  Create a new virtual environment"
     echo "    venv activate <name> -  Activate the virtual environment"
     echo "    venv rm <name>       -  Remove the virtual environment"
+    echo
+    echo "    Prefix venv with VENV_PYTHON=<interpreter>"
+    echo "    e.g."
+    echo "    VENV_PYTHON=python3 venv bootstrap"
+    echo "    VENV_PYTHON=python3 venv new default"
     ;;
   *)
     [[ -z "${CMD}" ]] && venv_list && exit $?

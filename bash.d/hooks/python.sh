@@ -5,7 +5,10 @@
 
 [[ -n ${1} ]] || return 1
 
-export PATH=~/local/python/venv/active/bin:${PATH}
+for p in python3 python2; do
+  [[ -d ${HOME}/local/${p} ]] || continue
+  export PATH=${HOME}/local/${p}/active/bin:${PATH}
+done
 
 venv() { ~/.bash.d/scripts/venv.sh $@ ; }
 
