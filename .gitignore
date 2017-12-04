@@ -6,3 +6,4 @@ nvim/shada/
 nvim/site/
 nvim/tmp/
 ssh/**
+configstore/
