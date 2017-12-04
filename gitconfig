@@ -10,22 +10,34 @@
 [branch]
   autosetuprebase = always
 [color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
   ui = auto
 [color "branch"]
-  current = yellow black
+  current = yellow
   local = yellow bold
   remote = magenta
 [color "diff"]
-  meta = green
+  commit = yellow bold
   frag = yellow bold
-  old = red
+  func = green dim
+  meta = green
   new = blue
+  old = red
+  plain = white bold
   whitespace = red reverse
 [color "status"]
   added = green
   changed = blue
   untracked = red
   branch = yellow bold
+[mergetool "vimdiff3"]
+  cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+[difftool "vim"]
+  cmd = vim \"$MERGED\"
+  prompt = false
 [merge]
   stat = true
   ff = only
@@ -38,9 +50,9 @@
   autostash = true
 [alias]
   aa = add --all
-  br = "!f() { (git heads; git remotes) | column -ts'|'; }; f"
-  heads = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset)|%(color:red)%(objectname:short)%(color:reset)|%(authorname)|%(color:green)%(committerdate:relative)%(color:reset)'
-  remotes = for-each-ref --sort=-committerdate refs/remotes/ --format='  %(color:yellow)%(refname:short)%(color:reset)|%(color:red)%(objectname:short)%(color:reset)|%(authorname)|%(color:green)%(committerdate:relative)%(color:reset)'
+  br = "!(git x-heads --color=always; git x-remotes --color=always) | column -ts'|'"
+  x-heads = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset)|%(color:red)%(objectname:short)%(color:reset)|%(authorname)|%(color:green)%(committerdate:relative)%(color:reset)'
+  x-remotes = for-each-ref --sort=-committerdate refs/remotes/ --format='  %(color:yellow)%(refname:short)%(color:reset)|%(color:red)%(objectname:short)%(color:reset)|%(authorname)|%(color:green)%(committerdate:relative)%(color:reset)'
   ci = commit -v
   co = checkout
   dc = diff --cached
@@ -48,6 +60,12 @@
   st = status --short --branch
   l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
   g = grep --break --heading --line-number
+  # commits not pushed to $1
+  unpushed = cherry -v
+  # what tag contains the sha
+  whatrelease = name-rev --name-only
+  # what branch contains the sha
+  contains = branch --contains
 [grep]
   extendRegexp = true
   lineNumber = true
