@@ -18,6 +18,8 @@
 
 TMUXCMD="$(type -P tmux)"
 
+[[ -x "${TMUXCMD}" ]] || return
+
 # connect to existing session
 if ${TMUXCMD} has-session 2> /dev/null; then
   # only if it has no clients
