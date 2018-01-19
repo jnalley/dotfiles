@@ -8,8 +8,7 @@
 for p in python3 python2; do
   [[ -d ${HOME}/local/${p} ]] || continue
   export PATH=${HOME}/local/${p}/active/bin:${PATH}
+  export ${p^^}="$(type -P ${p})"
 done
 
 venv() { ~/.bash.d/scripts/venv.sh $@ ; }
-
-venv activate

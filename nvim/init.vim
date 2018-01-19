@@ -46,7 +46,8 @@ set autoread
 set background=dark
 set backspace=indent,eol,start
 set colorcolumn=80
-set completeopt=menuone,longest,noinsert
+set completeopt-=preview
+set completeopt+=menuone,noinsert,noselect
 set diffopt=vertical
 set fillchars+=vert:│,fold:‒
 set foldenable
@@ -260,6 +261,16 @@ nmap <silent> <leader>E <Plug>(ale_previous_wrap)
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
 let g:ale_fixers = { 'python': ['autopep8', 'isort'] }
+" }}}
+
+" {{{ python
+if filereadable($PYTHON2)
+  let g:python_host_prog = $PYTHON2
+endif
+
+if filereadable($PYTHON3)
+  let g:python3_host_prog = $PYTHON3
+endif
 " }}}
 
 " {{{ mucomplete
