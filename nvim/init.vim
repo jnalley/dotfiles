@@ -275,12 +275,6 @@ endif
 
 " {{{ mucomplete
 let g:mucomplete#enable_auto_at_startup = 1
-
-if exists("g:loaded_mucomplete")
-  inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-  inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-  inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-endif
 " }}}
 
 " fzf {{{
