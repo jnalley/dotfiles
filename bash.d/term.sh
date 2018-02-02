@@ -1,7 +1,6 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-# this script should only ever be sourced
-[[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
+export COLOR_COUNT=$(inpath tput && tput colors 2> /dev/null || echo 0)
 
 # update terminal title
 title() {
@@ -49,7 +48,7 @@ ps1='\W\$'
 export PROMPT_COMMAND="prompt_command"
 
 # stop here if fewer than 8 colors are supported
-[[ $(tput colors 2> /dev/null) -lt 8 ]] && return 0
+[[ ${COLOR_COUNT} -lt 8 ]] && return 0
 
 t=( $(shopt -s nullglob; echo ~/.terminfo/*/{tmux,xterm}-256color) )
 [[ ${#t[@]} == 2 ]] || (

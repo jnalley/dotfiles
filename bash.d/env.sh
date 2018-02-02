@@ -1,8 +1,5 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-# this script should only ever be sourced
-[[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
-
 export LANG="en_US.UTF-8"
 export LC_COLLATE="${LANG}"
 export LC_CTYPE="${LANG}"

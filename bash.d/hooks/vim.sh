@@ -1,8 +1,5 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-# this script should only ever be sourced
-[[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
-
 # make legacy vim use init.vim instead of ~/.vimrc
 export VIMINIT='source ~/.dotfiles/nvim/init.vim'
 

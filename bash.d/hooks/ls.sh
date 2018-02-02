@@ -1,16 +1,13 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-# this script should only ever be sourced
-[[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
-
-[[ -n ${1} ]] || return 1
+[[ -n $@ ]] || return 1
 
 # my fancy ll depends on gnu ls
 if command ls --version | grep -qi 'GNU'; then
   ll() {
     local extra=''
     [[ -z $@ ]] && extra+=' --dereference '
-    [[ $(tput colors 2> /dev/null) -ge 8 ]] && extra+=' --color=always '
+    [[ ${COLOR_COUNT} -ge 8 ]] && extra+=' --color=always '
     command ls -ov \
     --almost-all \
     --escape \

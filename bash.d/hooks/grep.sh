@@ -1,9 +1,6 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-# this script should only ever be sourced
-[[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
-
-[[ -n ${1} ]] || return 1
+[[ -n $@ ]] || return 1
 
 # pick the best recursive grep option available
 for prg in 'rg' 'ag'; do

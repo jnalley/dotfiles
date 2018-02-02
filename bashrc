@@ -14,6 +14,36 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
 # stop here if this is not an interactive shell (e.g. ssh <hostname> ls)
 [[ $- == *i* ]] || return
 
+# test if a command is available
+inpath() { type -P "${1}" > /dev/null ; }
+
+# built-in basename
+basename() { echo ${1##*/} ; }
+
+# run helper function in a subshell
+helper() { (source ~/.bash.d/helpers.sh; $@) ; }
+
+# wrap function callbacks
+closure() {
+  local fname=${1} ; shift
+  eval "function ${fname} { $@ \$@; };"
+}
+
+hooks() {
+  local hook
+
+  # os specific
+  source ~/.bash.d/os/$(uname -s)-hooks.sh 2> /dev/null
+
+  # host specific
+  source ~/.bash.d/host/$(hostname -s)-hooks.sh 2> /dev/null
+
+  # customized commands
+  for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
+    source ${hook} "$(type -P $(basename ${hook%%.sh}))"
+  done
+}
+
 # only for login shells.
 if shopt -q login_shell; then
   source ~/.bash.d/tmux.sh
@@ -34,20 +64,6 @@ fi
 shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
   cmdhist checkwinsize no_empty_cmd_completion globstar
 
-# test if a command is available
-inpath() { type -P "${1}" > /dev/null ; }
-
-# built-in basename
-basename() { echo ${1##*/} ; }
-
-# wrap function callbacks
-closure() {
-  local fname=${1} ; shift
-  eval "function ${fname} { $@ \$@; };"
-}
-
-helper() { (source ~/.bash.d/helpers.sh; $@) ; }
-
 # report the status of terminated background jobs immediately
 set -o notify
 
@@ -61,11 +77,11 @@ bind Space:magic-space
 # date in the format YYYYMMDDHHMMSS (ISO 8601)
 alias mydate="date +'%G%m%d%H%M%S'"
 
-# use bash for 'which'
-alias which="type"
-
 # use sudo instead of su
 alias su="sudo -E $(type -p bash)"
+
+# rehash PATH
+alias rehash='hash -r'
 
 # local binaries
 [[ -d ~/local/bin ]] || mkdir -p ~/local/bin
@@ -76,13 +92,12 @@ source ~/.bash.d/os/$(uname -s).sh 2> /dev/null
 # host specific
 source ~/.bash.d/host/$(hostname -s).sh 2> /dev/null
 
-# terminal setup
-source ~/.bash.d/term.sh 2> /dev/null
-
 # local (not under version control)
 source ~/.bash.d/local.sh 2> /dev/null
 
-# specialized settings for certain commands
-for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
-  source ${hook} "$(type -P $(basename ${hook%%.sh}))"
-done ; unset hook
+# terminal setup
+source ~/.bash.d/term.sh
+
+# hack to run hooks in the background (fast shell prompt)
+trap "hooks ; trap QUIT" QUIT
+{ sleep 0.1 ; command kill -QUIT $$ ; } & disown

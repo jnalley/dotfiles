@@ -1,6 +1,3 @@
-# this script should only ever be sourced
-[[ ${BASH_SOURCE[0]} != ${0} ]] || exit 1
-
 [[ -s ~/.lscolors ]] || curl -sSLo ~/.lscolors \
   https://raw.githubusercontent.com/trapd00r/LS_COLORS/master/LS_COLORS
 
