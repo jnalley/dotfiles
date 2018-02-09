@@ -115,6 +115,7 @@ set tabstop=2
 " plugins {{{
 call plug#begin(s:vimdir . '/plugged')
 
+Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
@@ -220,6 +221,9 @@ nnoremap P gP=`]
 
 " previous buffer
 nnoremap <leader><leader> :b#<CR>
+
+" close window
+map <C-x> <C-w>c
 " }}}
 
 " colorscheme {{{
@@ -261,6 +265,10 @@ nmap <silent> <leader>E <Plug>(ale_previous_wrap)
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
 let g:ale_fixers = { 'python': ['autopep8', 'isort'] }
+" }}}
+
+" indentLine {{{
+let g:indentLine_char = '¦'
 " }}}
 
 " {{{ python
