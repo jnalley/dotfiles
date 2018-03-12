@@ -11,9 +11,6 @@ export HISTCONTROL=ignoredups:erasedups:ignorespace
 # do not create history entries for the following commands
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
 
-# stop here if this is not an interactive shell (e.g. ssh <hostname> ls)
-[[ $- == *i* ]] || return
-
 # test if a command is available
 inpath() { type -P "${1}" > /dev/null ; }
 
@@ -28,6 +25,9 @@ closure() {
   local fname=${1} ; shift
   eval "function ${fname} { $@ \$@; };"
 }
+
+# stop here if this is not an interactive shell (e.g. ssh <hostname> ls)
+[[ $- == *i* ]] || return
 
 hooks() {
   local hook

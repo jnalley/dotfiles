@@ -17,8 +17,9 @@ modules=(
   request
 )
 
-for version in 2 3; do
+for version in 2.7 3; do
   rm -rf ~/local/python${version}
+  inpath python${version} || continue
   VENV_PYTHON=python${version} ${venv} bootstrap \
     || die "Bootstrap failed"
   VENV_PYTHON=python${version} ${venv} default \

@@ -2,10 +2,12 @@
 
 [[ -n $@ ]] || return 1
 
-for p in python3 python2; do
+for p in python3 python2.7; do
+  inpath ${p} || continue
   [[ -d ${HOME}/local/${p} ]] || continue
   export PATH=${HOME}/local/${p}/active/bin:${PATH}
-  export ${p^^}="$(type -P ${p})"
-done ; unset p
+  P=${p^^}
+  export ${P%%.*}="$(type -P ${p})"
+done ; unset p P
 
 venv() { ~/.bash.d/scripts/venv.sh $@ ; }
