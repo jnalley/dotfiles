@@ -115,7 +115,6 @@ set tabstop=2
 " plugins {{{
 call plug#begin(s:vimdir . '/plugged')
 
-Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
@@ -250,18 +249,14 @@ nnoremap <leader>gw :Gwrite<CR>
 
 " ale {{{
 let g:ale_lint_on_enter = 0
-let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_filetype_changed = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_open_list = 0
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
 " disable for java to prevent popup in osx
 let g:ale_linters = {'java': []}
 " navigation
-nmap <silent> <leader>e <Plug>(ale_next_wrap)
-nmap <silent> <leader>E <Plug>(ale_previous_wrap)
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
 let g:ale_fixers = { 'python': ['autopep8', 'isort'] }
