@@ -13,4 +13,4 @@ fi
 
 # node version manager
 export NVM_DIR=~/.nvm
-closure nvm source ${HOMEBREW_PREFIX}/opt/nvm/nvm.sh \; nvm
+source ${HOMEBREW_PREFIX}/opt/nvm/nvm.sh
