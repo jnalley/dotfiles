@@ -2,4 +2,6 @@
 
 [[ -n $@ ]] || return 1
 
+return 0
+
 eval "$(rbenv init -)"

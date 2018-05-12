@@ -12,5 +12,5 @@ if [[ ! -s ~/.iterm2/com.googlecode.iterm2.plist ]]; then
 fi
 
 # node version manager
-export NVM_DIR=~/.nvm
-source ${HOMEBREW_PREFIX}/opt/nvm/nvm.sh
+# export NVM_DIR=~/.nvm
+# source ${HOMEBREW_PREFIX}/opt/nvm/nvm.sh
