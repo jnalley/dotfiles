@@ -37,5 +37,6 @@ install_vim_plugins() {
 
 vim() {
   install_vim_plugins || return 1
+  unset vim # first time only
   command ${EDITOR} "$@"
 }

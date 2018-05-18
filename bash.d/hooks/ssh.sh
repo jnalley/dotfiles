@@ -1,7 +1,7 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
 # no ssh
-[[ -x $@ ]] || return 1
+[[ -x $(type -P "$(basename "${BASH_SOURCE[0]%%.sh}")") ]] || return 1
 
 # no ssh config
 [[ -s ~/.ssh/config ]] || return 1

@@ -1,11 +1,9 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-[[ -n $* ]] || return 1
-
 : "${VENV_BASE_DIR:=${HOME}/local}"
 
 python_setup() {
-  local skip_install="${1:=no}"
+  local skip_install=${1}
 
   die() { echo -e "$*" ; exit 1 ; }
 
@@ -14,7 +12,7 @@ python_setup() {
     local python
     local requirements
 
-    [[ ${skip_install} == no ]] && return 1
+    [[ -z ${skip_install} ]] || return 0
 
     mkdir -p "${VENV_BASE_DIR}" || \
       die "Failed to create: ${VENV_BASE_DIR}"
@@ -27,11 +25,11 @@ python_setup() {
         requirements="${HOME}/.py3reqs"
         ;;
       python2)
-        ~/.bash.d/scripts/venv.sh "${VENV_BASE_DIR}/python2" || \
+        "${HOME}/.bash.d/scripts/venv.sh" "${VENV_BASE_DIR}/python2" || \
           die "Failed to create virtualenv: ${VENV_BASE_DIR}/python2"
         python="${VENV_BASE_DIR}/python2/bin/python"
         requirements="${HOME}/.py2reqs"
-        venv() { ~/.bash.d/scripts/venv.sh "$@" ; }
+        venv() { "${HOME}/.bash.d/scripts/venv.sh" "$@" ; }
         ;;
     esac
 

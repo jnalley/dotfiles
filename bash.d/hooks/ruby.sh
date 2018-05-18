@@ -1,6 +1,4 @@
-[[ -n $@ ]] || return 1
-
-return 0
+[[ -x $(type -P "$(basename "${BASH_SOURCE[0]%%.sh}")") ]] || return 1
 
 export PATH=$(
   IFS=':' read -a gempath <<< $(gem environment gempath)

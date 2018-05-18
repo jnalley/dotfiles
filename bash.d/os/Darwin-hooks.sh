@@ -1,7 +1,7 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
 # bash completions path
-source "${HOMEBREW_PREFIX}/etc/bash_completion" 2> /dev/null
+BASH_COMPLETION="${HOMEBREW_PREFIX}/etc/bash_completion"
 
 # install iterm2 preferences
 if [[ ! -s ~/.iterm2/com.googlecode.iterm2.plist ]]; then
@@ -12,5 +12,5 @@ if [[ ! -s ~/.iterm2/com.googlecode.iterm2.plist ]]; then
 fi
 
 # node version manager
-# export NVM_DIR=~/.nvm
-# source ${HOMEBREW_PREFIX}/opt/nvm/nvm.sh
+export NVM_DIR=~/.nvm
+source ${HOMEBREW_PREFIX}/opt/nvm/nvm.sh

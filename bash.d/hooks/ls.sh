@@ -1,12 +1,12 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-[[ -n $@ ]] || return 1
+[[ -x $(type -P "$(basename "${BASH_SOURCE[0]%%.sh}")") ]] || return 1
 
 # my fancy ll depends on gnu ls
 if command ls --version | grep -qi 'GNU'; then
   ll() {
     local extra=''
-    [[ -z $@ ]] && extra+=' --dereference '
+    [[ -z $* ]] && extra+=' --dereference '
     [[ ${COLOR_COUNT} -ge 8 ]] && extra+=' --color=always '
     command ls -ov \
     --almost-all \

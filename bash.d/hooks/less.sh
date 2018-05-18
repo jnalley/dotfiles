@@ -1,6 +1,6 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-[[ -n $@ ]] || return 1
+[[ -x $(type -P "$(basename "${BASH_SOURCE[0]%%.sh}")") ]] || return 1
 
 # - 'R' Accept control chars
 # - 'X' Don't clear screen

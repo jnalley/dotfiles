@@ -12,7 +12,7 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxexexabagacad
 
 # use the login keychain for aws-vault
-export AWS_VAULT_KEYCHAIN_NAME=login
+export AWS_VAULT_KEYCHAIN_NAME='file'
 
 # homebrew
 source ~/.homebrew.key 2> /dev/null

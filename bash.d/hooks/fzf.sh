@@ -11,9 +11,6 @@
 [[ "${MANPATH}" == *${HOME}/.fzf/man* && -d "${HOME}/.fzf/man" ]] || \
   export MANPATH="$MANPATH:${HOME}/.fzf/man"
 
-# auto-completion
-source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
-
 # key bindings
 source "${HOME}/.fzf/shell/key-bindings.bash" 2> /dev/null
 

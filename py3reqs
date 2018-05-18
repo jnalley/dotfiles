@@ -1,0 +1,10 @@
+autopep8
+awscli
+black
+certifi
+isort
+neovim
+pip-review
+pychromecast
+pyflakes
+requests

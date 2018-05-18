@@ -1,7 +1,5 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-[[ -n $@ ]] || return 1
-
 # pick the best recursive grep option available
 for prg in 'rg' 'ag'; do
   inpath ${prg} && alias g="${prg} --ignore-case" && break

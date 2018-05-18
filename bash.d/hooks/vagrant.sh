@@ -1,6 +1,6 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-[[ -x $@ ]] || return 1
+[[ -x $(type -P "$(basename "${BASH_SOURCE[0]%%.sh}")") ]] || return 1
 
 # run vagrant commands from anywhere
 # <vagrant vm name> <command>

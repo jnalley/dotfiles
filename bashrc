@@ -1,6 +1,14 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-export PATH="~/local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin"
+## start profiling
+# STARTTIME=$(date "+%s")
+# PS4='+ $(($(date "+%s") - ${STARTTIME})) '
+# exec 3>&2 2> /tmp/bashstart.$$.log
+# set -x
+
+export PATH="${HOME}/local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin"
+
+: "${BASH_COMPLETION:=/etc/bash_completion}"
 
 # unlimited history
 export HISTFILESIZE=
@@ -40,7 +48,7 @@ hooks() {
 
   # customized commands
   for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
-    source ${hook} "$(type -P $(basename ${hook%%.sh}))"
+    source "${hook}"
   done
 }
 
@@ -98,6 +106,9 @@ source ~/.bash.d/local.sh 2> /dev/null
 # terminal setup
 source ~/.bash.d/term.sh
 
-# hack to run hooks in the background (fast shell prompt)
-trap "hooks ; trap QUIT" QUIT
-{ sleep 0.1 ; command kill -QUIT $$ ; } & disown
+hooks
+
+source "${BASH_COMPLETION}"
+
+# set +x
+# exec 2>&3 3>&-
