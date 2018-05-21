@@ -23,11 +23,11 @@ install_vim_plugins() {
   while :; do
     [[ -s ${plug_path} ]] && break
     helper message "Vim plugins appear to be missing..."
-    read -s -n 1 -p "Install plugins now? (y/n)" response ; echo
+    read -r -s -n 1 -p "Install plugins now? (y/n)" response ; echo
     [[ ${response} == 'y' ]] || return 1
     helper message "Installing vim plugins..."
     curl --create-dirs -fsLo "${plug_path}" ${plug_url} && \
-      command ${cmd} +PlugInstall +PlugClean! +qa && \
+      command "${cmd}" +PlugInstall +PlugClean! +qa && \
       helper message "Plugins installed!" && break
     helper error "Failed to install plugins!" ; return 1
   done
@@ -37,6 +37,5 @@ install_vim_plugins() {
 
 vim() {
   install_vim_plugins || return 1
-  unset vim # first time only
   command ${EDITOR} "$@"
 }

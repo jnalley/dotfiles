@@ -2,6 +2,8 @@
 
 : "${VENV_BASE_DIR:=${HOME}/local}"
 
+export VENV_BASE_DIR
+
 python_setup() {
   local skip_install=${1}
 

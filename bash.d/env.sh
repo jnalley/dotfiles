@@ -18,15 +18,20 @@ export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 3)
 export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
 export LESS_TERMCAP_mr=$(tput rev)
 export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
+
+# unlimited history
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTTIMEFORMAT="#%s# "
+# prevent duplicate history entries
+export HISTCONTROL=ignoredups:erasedups:ignorespace
+# do not create history entries for the following commands
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
 
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command
-CDPATH=.:~/Projects
+export CDPATH=.:~/Projects
 # python startup script
 export PYTHONSTARTUP=~/.pystartup.py
 # default editor
@@ -35,3 +40,22 @@ export EDITOR=vi
 # store config files in .dotfiles directory
 export XDG_CONFIG_HOME=~/.dotfiles
 export XDG_DATA_HOME="${XDG_CONFIG_HOME}"
+
+# disable some shellcheck errors
+export SHELLCHECK_OPTS="-e SC1090 -e SC2155"
+
+# use the login keychain for aws-vault
+export AWS_VAULT_BACKEND='file'
+
+# - 'R' Accept control chars
+# - 'X' Don't clear screen
+# - 'F' Don't page if output fits on a single screen
+# - 'i' Case insensitive search (type -i in less to toggle)
+export LESS="-RXFi"
+export PAGER='less'
+
+# color for BSD ls
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxexexabagacad
+
+include dircolors.sh

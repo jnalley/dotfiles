@@ -1,82 +1,33 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-## start profiling
-# STARTTIME=$(date "+%s")
-# PS4='+ $(($(date "+%s") - ${STARTTIME})) '
-# exec 3>&2 2> /tmp/bashstart.$$.log
-# set -x
+PATH=~/local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin
 
-export PATH="${HOME}/local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin"
-
-: "${BASH_COMPLETION:=/etc/bash_completion}"
-
-# unlimited history
-export HISTFILESIZE=
-export HISTSIZE=
-export HISTTIMEFORMAT="#%s# "
-# prevent duplicate history entries
-export HISTCONTROL=ignoredups:erasedups:ignorespace
-# do not create history entries for the following commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
-
-# test if a command is available
-inpath() { type -P "${1}" > /dev/null ; }
-
-# built-in basename
-basename() { echo ${1##*/} ; }
-
-# run helper function in a subshell
-helper() { (source ~/.bash.d/helpers.sh; $@) ; }
-
-# wrap function callbacks
-closure() {
-  local fname=${1} ; shift
-  eval "function ${fname} { $@ \$@; };"
-}
+export PATH
 
 # stop here if this is not an interactive shell (e.g. ssh <hostname> ls)
 [[ $- == *i* ]] || return
 
-hooks() {
-  local hook
+basename() { echo "${1##*/}"; }
+include() { source "${HOME}/.bash.d/${1}" 2>/dev/null; }
+inpath() { type -P "${1}" >/dev/null; }
 
-  # os specific
-  source ~/.bash.d/os/$(uname -s)-hooks.sh 2> /dev/null
+# run helper function in a subshell
+helper() { (
+  source ~/.bash.d/helpers.sh
+  "$@"
+); }
 
-  # host specific
-  source ~/.bash.d/host/$(hostname -s)-hooks.sh 2> /dev/null
-
-  # customized commands
-  for hook in $(shopt -s nullglob; echo ~/.bash.d/hooks/*.sh); do
-    source "${hook}"
-  done
+# test for colors
+colorterm() {
+  [[ -n ${COLOR_COUNT} ]] ||
+    export COLOR_COUNT=$(tput colors 2>/dev/null || echo 0)
+  [[ ${COLOR_COUNT} -ge 8 ]]
 }
 
-# only for login shells.
-if shopt -q login_shell; then
-  source ~/.bash.d/tmux.sh
-  source ~/.bash.d/env.sh
-fi
+include 'tmux.sh'
+include 'term.sh'
 
-# shell options:
-# - enable programable completion
-# - fix spelling errors when using cd
-# - expand directories with completion results
-# - fix spelling errors during tab-completion
-# - change directory by typing directory name
-# - extended pattern matching
-# - append to the history file, don't overwrite it
-# - check the window size after each command
-# - don't complete empty command line
-# - recursive globbing (enables ** to recurse all directories)
-shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
-  cmdhist checkwinsize no_empty_cmd_completion globstar
-
-# report the status of terminated background jobs immediately
-set -o notify
-
-# Use a vi-style command line editing interface.
-set -o vi
+[[ ${SHLVL} == 1 ]] && include 'startup.sh'
 
 # Enable history expansion with space
 # e.g. typing !!<space> will replace the !! with your last command
@@ -86,29 +37,26 @@ bind Space:magic-space
 alias mydate="date +'%G%m%d%H%M%S'"
 
 # use sudo instead of su
+# shellcheck disable=SC2139
 alias su="sudo -E $(type -p bash)"
 
 # rehash PATH
 alias rehash='hash -r'
 
-# local binaries
-[[ -d ~/local/bin ]] || mkdir -p ~/local/bin
+[[ ${PAGER} == less ]] && alias more="less"
 
-# os specific
-source ~/.bash.d/os/$(uname -s).sh 2> /dev/null
-
-# host specific
-source ~/.bash.d/host/$(hostname -s).sh 2> /dev/null
-
-# local (not under version control)
-source ~/.bash.d/local.sh 2> /dev/null
-
-# terminal setup
-source ~/.bash.d/term.sh
-
-hooks
-
-source "${BASH_COMPLETION}"
-
+# STARTTIME=$(date "+%s")
+# PS4='+ $(($(date "+%s") - ${STARTTIME})) '
+# exec 3>&2 2> /tmp/bashstart.$$.log
+# set -x
+# customize commands
+for hook in $(
+  shopt -s nullglob
+  echo ~/.bash.d/hooks/*.sh
+); do
+  source "${hook}" "$(basename "${hook}")"
+done
 # set +x
 # exec 2>&3 3>&-
+
+[[ -n ${HOMEBREW_PREFIX} ]] && source "${HOMEBREW_PREFIX}/etc/bash_completion"

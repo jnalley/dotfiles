@@ -259,7 +259,8 @@ let g:ale_linters = {'java': []}
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
-let g:ale_fixers = { 'python': ['autopep8', 'isort'] }
+let g:ale_fixers = { 'python': ['autopep8', 'isort'], 'sh': ['shfmt'] }
+let g:ale_sh_shfmt_options = '-i 2 -ci'
 " }}}
 
 " indentLine {{{
@@ -300,6 +301,7 @@ command! -bang -nargs=* Rg
 
 " dirvish {{{
 let g:dirvish_mode = ':sort r /[^\/]$/|silent keeppatterns g/\.pyc$/d _'
+let g:dirvish_relative_paths = 1
 " }}}
 
 " sh.vim {{{

@@ -21,8 +21,8 @@ TMUXCMD="$(type -P tmux)"
 if ${TMUXCMD} has-session 2> /dev/null; then
   # only if it has no clients
   [[ -z $(${TMUXCMD} list-clients) ]] && \
-    exec ${TMUXCMD} attach
+    exec "${TMUXCMD}" attach
 else
-  # create new session if logging in via SSH
-  [[ -r ${SSH_TTY} ]] && exec ${TMUXCMD} new
+  # create new session
+  exec "${TMUXCMD}" new
 fi
