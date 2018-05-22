@@ -29,6 +29,12 @@ include 'term.sh'
 
 [[ ${SHLVL} == 1 ]] && include 'startup.sh'
 
+# report the status of terminated background jobs immediately
+set -o notify
+
+# use a vi-style command line editing interface
+set -o vi
+
 # Enable history expansion with space
 # e.g. typing !!<space> will replace the !! with your last command
 bind Space:magic-space

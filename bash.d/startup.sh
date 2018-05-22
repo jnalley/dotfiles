@@ -18,15 +18,6 @@ shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
 # preserve "shopt" options in subshells
 export BASHOPTS
 
-# report the status of terminated background jobs immediately
-set -o notify
-
-# use a vi-style command line editing interface
-set -o vi
-
-# preserve options in subshells
-export SHELLOPTS
-
 # local binaries
 mkdir -p ~/local/bin
 

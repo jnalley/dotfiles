@@ -259,7 +259,8 @@ let g:ale_linters = {'java': []}
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
-let g:ale_fixers = { 'python': ['autopep8', 'isort'], 'sh': ['shfmt'] }
+let g:ale_fixers = { 'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt'] }
+let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
 " }}}
 
