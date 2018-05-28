@@ -65,4 +65,4 @@ done
 # set +x
 # exec 2>&3 3>&-
 
-[[ -n ${HOMEBREW_PREFIX} ]] && source "${HOMEBREW_PREFIX}/etc/bash_completion"
+source ~/local/etc/profile.d/bash_completion.sh 2> /dev/null
