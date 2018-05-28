@@ -3,6 +3,7 @@
 # update terminal title
 title() {
   [[ ${TERM} == @(tmux-*|screen-*|xterm-*) ]] || return
+  [[ -z ${NVIM_LISTEN_ADDRESS} ]] || return
   local msg=''
   if [[ -z ${1} ]]; then
     msg=${PWD/$HOME/\\x7e}
