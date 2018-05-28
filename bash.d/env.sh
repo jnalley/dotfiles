@@ -32,8 +32,6 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command
 export CDPATH=.:~/Projects
-# python startup script
-export PYTHONSTARTUP=~/.pystartup.py
 # default editor
 export EDITOR=vi
 
