@@ -57,6 +57,7 @@ set history=500
 set hlsearch
 set ignorecase
 set incsearch
+set infercase
 set laststatus=2
 set lazyredraw
 set list
@@ -116,16 +117,16 @@ set tabstop=2
 call plug#begin(s:vimdir . '/plugged')
 
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'guns/xterm-color-table.vim', { 'for': 'vim' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'
 Plug 'justinmk/vim-dirvish'
+Plug 'jalvesaq/vimcmdline'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'ternjs/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -140,16 +141,6 @@ call plug#end()
 " }}}
 
 " helper functions {{{
-function! CloseAllBuffersButCurrent()
-  let l:curr = bufnr("%")
-  let l:last = bufnr("$")
-
-  if l:curr > 1 | silent! execute "only|1,".(l:curr-1)."bd" | endif
-  if l:curr < l:last | silent! execute (l:curr+1).",".l:last."bd" | endif
-endfunction
-
-nnoremap <silent> <C-W>D :call CloseAllBuffersButCurrent()<CR>
-
 function! DetectTrailingSpace()
   if !&modifiable
     return 0
@@ -162,8 +153,6 @@ function! RemoveTrailingSpace()
   %s/\s\+$//e
   call winrestview(l:view)
 endfunction
-
-nnoremap <silent> <leader>S :call RemoveTrailingSpace()<CR>
 " }}}
 
 " autocommands {{{
@@ -223,6 +212,15 @@ nnoremap <leader><leader> :b#<CR>
 
 " close window
 map <C-x> <C-w>c
+
+" remove trailing spaces
+nnoremap <silent> <leader>S :call RemoveTrailingSpace()<CR>
+
+" escape terminals
+tnoremap <C-H> <C-\><C-N><C-W><C-H>
+tnoremap <C-J> <C-\><C-N><C-W><C-J>
+tnoremap <C-K> <C-\><C-N><C-W><C-K>
+tnoremap <C-L> <C-\><C-N><C-W><C-L>
 " }}}
 
 " colorscheme {{{
@@ -262,6 +260,17 @@ nmap <silent> <leader>ff <Plug>(ale_fix)
 let g:ale_fixers = { 'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt'] }
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
+" }}}
+
+" vimcmdline {{{
+let cmdline_vsplit = 1
+let cmdline_app = {}
+let cmdline_app['python'] = 'ipython'
+let cmdline_map_start = '<leader>r'
+let cmdline_map_send = '<leader><cr>'
+let cmdline_term_width = 80
+let cmdline_outhl = 0
+let cmdline_esc_term = 0
 " }}}
 
 " indentLine {{{
