@@ -19,15 +19,6 @@ export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
 export LESS_TERMCAP_mr=$(tput rev)
 export LESS_TERMCAP_mh=$(tput dim)
 
-# unlimited history
-export HISTFILESIZE=
-export HISTSIZE=
-export HISTTIMEFORMAT="#%s# "
-# prevent duplicate history entries
-export HISTCONTROL=ignoredups:erasedups:ignorespace
-# do not create history entries for the following commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
-
 # format output of ps
 export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
 # search path for cd command

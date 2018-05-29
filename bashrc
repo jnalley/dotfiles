@@ -4,6 +4,15 @@ PATH=~/local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin
 
 export PATH
 
+# unlimited history
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTTIMEFORMAT="#%s# "
+# prevent duplicate history entries
+export HISTCONTROL=ignoredups:erasedups:ignorespace
+# do not create history entries for the following commands
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
+
 # stop here if this is not an interactive shell (e.g. ssh <hostname> ls)
 [[ $- == *i* ]] || return
 
