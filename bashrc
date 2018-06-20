@@ -11,7 +11,7 @@ export HISTTIMEFORMAT="#%s# "
 # prevent duplicate history entries
 export HISTCONTROL=ignoredups:erasedups:ignorespace
 # do not create history entries for the following commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:jobs:history:clear:pwd"
+export HISTIGNORE="&:[ ]*:??:???:exit:ls -al:bg:fg:jobs:history:clear:pwd"
 
 # stop here if this is not an interactive shell (e.g. ssh <hostname> ls)
 [[ $- == *i* ]] || return
@@ -44,10 +44,6 @@ set -o notify
 # use a vi-style command line editing interface
 set -o vi
 
-# Enable history expansion with space
-# e.g. typing !!<space> will replace the !! with your last command
-bind Space:magic-space
-
 # date in the format YYYYMMDDHHMMSS (ISO 8601)
 alias mydate="date +'%G%m%d%H%M%S'"
 
@@ -57,6 +53,10 @@ alias su="sudo -E $(type -p bash)"
 
 # rehash PATH
 alias rehash='hash -r'
+
+# request response times with curl
+# see: https://stackoverflow.com/q/18215389
+alias tcurl='curl -w "@${HOME}/.curl_format" -o /dev/null -sSL'
 
 [[ ${PAGER} == less ]] && alias more="less"
 
