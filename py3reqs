@@ -2,7 +2,11 @@ autopep8
 awscli
 black
 certifi
+click
+ipython
 isort
+mrjob
+mypy
 neovim
 pip-review
 pychromecast
