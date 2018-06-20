@@ -60,6 +60,7 @@
   st = status --short --branch
   l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
   g = grep --break --heading --line-number
+  tags = tag
   # commits not pushed to $1
   unpushed = cherry -v
   # what tag contains the sha
