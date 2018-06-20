@@ -34,7 +34,7 @@ export XDG_DATA_HOME="${XDG_CONFIG_HOME}"
 export SHELLCHECK_OPTS="-e SC1090 -e SC2155"
 
 # use the login keychain for aws-vault
-export AWS_VAULT_BACKEND='file'
+export AWS_VAULT_KEYCHAIN_NAME=login
 
 # - 'R' Accept control chars
 # - 'X' Don't clear screen
