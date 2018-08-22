@@ -5,6 +5,7 @@
 export NVM_DIR=~/.nvm
 
 __node_initialization() {
+  unset npm
   unset nvm
   unset node
   unset __node_initialization
@@ -21,3 +22,10 @@ node() {
   __node_initialization
   command node "$@"
 }
+
+npm() {
+  __node_initialization
+  command npm "$@"
+}
+
+[[ -d ~/.current/node ]] && export PATH=~/.current/node:${PATH}

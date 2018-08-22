@@ -1,8 +1,4 @@
-autopep8
 awscli
 certifi
-isort
 neovim
-pip-review
-pyflakes
 requests

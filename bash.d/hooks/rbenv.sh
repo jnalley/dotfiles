@@ -3,6 +3,11 @@
 inpath "${1%%.*}" || return 1
 
 __ruby_initialization() {
+  unset gem
+  unset ruby
+  unset rbenv
+  unset __ruby_initialization
+
   eval "$(command rbenv init -)"
 
   # add ruby bin paths
@@ -11,10 +16,6 @@ __ruby_initialization() {
     gempath=$(printf ":%s" "${gempath[@]/%//bin}")
     echo "${gempath:1}"
   ):${PATH}
-
-  unset ruby
-  unset rbenv
-  unset __ruby_initialization
 }
 
 rbenv() {
@@ -26,3 +27,10 @@ ruby() {
   __ruby_initialization
   command ruby "$@"
 }
+
+gem() {
+  __ruby_initialization
+  command gem "$@"
+}
+
+[[ -d ~/.current/ruby ]] && export PATH=~/.current/ruby:${PATH}

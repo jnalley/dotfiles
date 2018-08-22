@@ -1,3 +1,4 @@
+pyyaml>=4.2b4
 autopep8
 awscli
 black
@@ -5,11 +6,8 @@ certifi
 click
 ipython
 isort
-mrjob
-mypy
 neovim
 pip-review
-pychromecast
-pyflakes
+pipdeptree
 requests
-youtube-dl
+pylint

@@ -5,6 +5,5 @@
 
 # always ignore global ssh config
 ssh() {
-  # TERM=${TERM/tmux/xterm}
-  command ssh -F ~/.ssh/config "$@"
+  TERM="${TERM/tmux/xterm}" command ssh -F ~/.ssh/config "$@"
 }

@@ -75,3 +75,5 @@ done
 # exec 2>&3 3>&-
 
 source ~/local/etc/profile.d/bash_completion.sh 2> /dev/null
+
+source ~/.bash.d/local.sh 2> /dev/null
