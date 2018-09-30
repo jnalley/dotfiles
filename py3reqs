@@ -1,13 +1,12 @@
-pyyaml>=4.2b4
 autopep8
 awscli
 black
 certifi
-click
+flake8
 ipython
 isort
 neovim
 pip-review
 pipdeptree
+pyyaml>=4.2b4
 requests
-pylint

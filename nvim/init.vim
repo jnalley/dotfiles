@@ -20,6 +20,7 @@ if has('vim_starting')
   let $MYVIMRC = resolve(expand('<sfile>'))
   let s:vimdir = fnamemodify($MYVIMRC, ':p:h')
   let s:tempdir = s:vimdir . '/tmp'
+  let s:notedir = s:vimdir . '/doc'
   let &directory = s:tempdir . '//'
   let &viewdir = s:tempdir . '/view'
   let &undodir = s:tempdir . '/undo'
@@ -121,16 +122,12 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'
 Plug 'justinmk/vim-dirvish'
-Plug 'jalvesaq/vimcmdline'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
-Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
-Plug 'ternjs/tern_for_vim', { 'for': 'javascript', 'do': 'npm install' }
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -163,7 +160,7 @@ augroup VimRc
   " Open help in vertical split
   autocmd FileType help wincmd H
   " Switch to insert mode when entering a terminal buffer
-  autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
+  " autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
   " Enable :Gstatus and friends.
   autocmd FileType dirvish call fugitive#detect(@%)
   " Help lookup in vimrc
@@ -172,13 +169,15 @@ augroup VimRc
   autocmd FileType git setlocal nofoldenable
   " Reload vimrc
   autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+  " Update tags for notes
+  exec "autocmd bufwritepost " . s:notedir . "/* " . ":helptags " . s:notedir
 augroup END
 " }}}
 
 " mappings {{{
 
-" list buffers (fzf)
-nnoremap <leader><tab> :Buffers<CR>
+" choose buffer
+nnoremap <leader><tab> :buffers<CR>:buffer<Space>
 
 " search help (fzf)
 nnoremap <leader>? :Helptags<CR>
@@ -221,6 +220,8 @@ tnoremap <C-H> <C-\><C-N><C-W><C-H>
 tnoremap <C-J> <C-\><C-N><C-W><C-J>
 tnoremap <C-K> <C-\><C-N><C-W><C-K>
 tnoremap <C-L> <C-\><C-N><C-W><C-L>
+
+tnoremap <leader><esc> <C-\><C-N>
 " }}}
 
 " colorscheme {{{
@@ -248,33 +249,18 @@ nnoremap <leader>gw :Gwrite<CR>
 " ale {{{
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_filetype_changed = 0
-let g:ale_lint_on_text_changed = 'never'
 let g:ale_open_list = 0
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
+let g:ale_completion_enabled = 0
 " disable for java to prevent popup in osx
 let g:ale_linters = {'java': []}
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
-let g:ale_fixers = { 'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt'] }
+let g:ale_fixers = {'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
-" }}}
-
-" vimcmdline {{{
-let cmdline_vsplit = 1
-let cmdline_app = {}
-let cmdline_app['python'] = 'ipython'
-let cmdline_map_start = '<leader>r'
-let cmdline_map_send = '<leader><cr>'
-let cmdline_term_width = 80
-let cmdline_outhl = 0
-let cmdline_esc_term = 0
-" }}}
-
-" indentLine {{{
-let g:indentLine_char = '¦'
 " }}}
 
 " {{{ python
@@ -285,6 +271,11 @@ endif
 if filereadable($PYTHON3)
   let g:python3_host_prog = $PYTHON3
 endif
+
+command! -nargs=? Ipython silent! vnew | :call termopen("ipython --no-autoindent -i -- " . expand(<q-args>)) | wincmd <c-p>
+command! -nargs=+ Pydoc silent! vnew | te PAGER=cat pydoc <q-args>
+
+autocmd VimRc FileType python setlocal keywordprg=:Pydoc
 " }}}
 
 " {{{ mucomplete
@@ -307,6 +298,9 @@ command! -bang -nargs=* Rg
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+" grep for word at cursor
+nnoremap <silent> <c-f> :Rg <C-R><C-W><CR>
 " }}}
 
 " dirvish {{{
