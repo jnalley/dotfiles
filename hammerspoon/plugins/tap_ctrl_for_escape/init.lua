@@ -1,53 +1,40 @@
 -- Send 'ESCAPE' when 'CTRL' is pressed and released.
 -- Other 'CTRL' combinations work as expected.
 --
--- Based on: https://gist.github.com/zcmarine/f65182fe26b029900792fa0b59f09d7f
+-- Originally based on:
+--   https://gist.github.com/zcmarine/f65182fe26b029900792fa0b59f09d7f
 
 local m = {}
 
-m.send_escape = false
-m.prev_modifiers = {}
+local function abort()
+  return m.non_modifier_tap:isEnabled() and m.non_modifier_tap:stop() and true
+end
 
-local function non_modifier_handler()
-  m.send_escape = false
-  if m.non_modifier_tap:isEnabled() then
-    m.non_modifier_tap:stop()
-  end
-  return false
+local function ctrl_key_up(evt)
+  return next(evt:getFlags()) == nil and evt:getProperty(
+    hs.eventtap.event.properties.keyboardEventKeycode
+  ) == 62
 end
 
 local function modifier_handler(evt)
-  -- Modifiers that caused the event
-  local curr_modifiers = evt:getFlags()
-  local modifier = next(curr_modifiers, nil)
-  local single_modifier = nil == next(curr_modifiers, modifier)
-  local no_prev_modifiers = nil == next(m.prev_modifiers, nil)
-
-  if modifier == 'ctrl' and single_modifier and no_prev_modifiers then
-    -- We need this here because we might have had additional modifiers, which
-    -- we don't want to lead to an escape, e.g. [Ctrl + Cmd] —> [Ctrl] —> [ ]
-    m.send_escape = true
-    -- Don't send ESCAPE if a non-modifier is pressed subsequent to CTRL.
-    m.non_modifier_tap:start()
-  elseif not modifier and m.prev_modifiers["ctrl"] and m.send_escape then
-    m.send_escape = false
+  if evt:getFlags():containExactly({"ctrl"}) then
+    m.non_modifier_tap:start() -- ESCAPE pending
+  elseif abort() and ctrl_key_up(evt) then
     hs.eventtap.keyStroke({}, "ESCAPE", 2000)
-  else
-    m.send_escape = false
   end
-  m.prev_modifiers = curr_modifiers
 end
 
 function m.initialize()
-  -- Tap for non-modifier keyDown events (only enabled subsequent to CTRL
-  -- being pressed)
-  m.non_modifier_tap = hs.eventtap.new({hs.eventtap.event.types.keyDown},
-    non_modifier_handler)
+  -- isEnabled() is used as a "flag" for a pending ESCAPE
+  m.non_modifier_tap = hs.eventtap.new(
+    {hs.eventtap.event.types.keyDown},
+    function() m.non_modifier_tap:stop() end
+  )
 
-  -- Call the modifier_handler function when a modifier
-  -- key is pressed or released.
-  m.modifier_tap = hs.eventtap.new({hs.eventtap.event.types.flagsChanged},
-    modifier_handler):start()
+  -- modifier key presses
+  m.modifier_tap = hs.eventtap.new(
+    {hs.eventtap.event.types.flagsChanged}, modifier_handler
+  ):start()
 end
 
 return m
