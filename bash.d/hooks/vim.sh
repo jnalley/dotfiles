@@ -15,9 +15,9 @@ done ; unset editor
 install_vim_plugins() {
   local plug_path=~/.dotfiles/nvim/autoload/plug.vim
   local plug_url='https://raw.github.com/junegunn/vim-plug/master/plug.vim'
-  local cmd=${EDITOR}
+  local cmd=("${EDITOR}")
 
-  [[ ${EDITOR} == 'nvim' ]] && cmd="${EDITOR} --headless "
+  [[ ${EDITOR} == 'nvim' ]] && cmd=("${EDITOR}" --headless)
 
   # install vim-plug (and plugins)
   while :; do
@@ -27,7 +27,7 @@ install_vim_plugins() {
     [[ ${response} == 'y' ]] || return 1
     helper message "Installing vim plugins..."
     curl --create-dirs -fsLo "${plug_path}" ${plug_url} && \
-      command "${cmd}" +PlugInstall +PlugClean! +qa && \
+      command "${cmd[@]}" +PlugInstall +PlugClean! +qa && \
       helper message "Plugins installed!" && break
     helper error "Failed to install plugins!" ; return 1
   done
