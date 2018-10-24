@@ -8,5 +8,6 @@ isort
 neovim
 pip-review
 pipdeptree
+pudb
 pyyaml>=4.2b4
 requests

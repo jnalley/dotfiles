@@ -50,6 +50,9 @@ python_setup() {
     export PATH=${VENV_BASE_DIR}/${p}/bin:${PATH}
     export ${P}="$(type -P ${p})"
   done
+
+  python -c "import pudb" > /dev/null 2>&1 && \
+    export PYTHONBREAKPOINT=pudb.set_trace
 }
 
 python_reset() {
