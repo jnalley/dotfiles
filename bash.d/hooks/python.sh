@@ -51,13 +51,15 @@ python_setup() {
     export ${P}="$(type -P ${p})"
   done
 
-  python -c "import pudb" > /dev/null 2>&1 && \
-    export PYTHONBREAKPOINT=pudb.set_trace
+  python -c "import ipdb" > /dev/null 2>&1 && \
+    export PYTHONBREAKPOINT=ipdb.set_trace
 }
 
 python_reset() {
   rm -rf "${VENV_BASE_DIR}"/python[2-3]
   python_setup
 }
+
+alias pydebug="python -m ipdb -c continue"
 
 python_setup skip_install
