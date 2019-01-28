@@ -74,6 +74,14 @@ function! <SID>CustomColors()
   highlight User5
         \ ctermfg=124 ctermbg=16
         \ guifg=#af0000 guibg=#000000
+
+  " ale error/warning
+  highlight ALEErrorLine
+        \ ctermfg=11 ctermbg=1
+        \ guifg=#ffff00 guibg=#800000
+  highlight ALEWarningLine
+        \ ctermfg=11 ctermbg=130
+        \ guifg=#ffff00 guibg=#af5f00
 endfunction
 
 if has('nvim')

@@ -131,6 +131,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'guns/xterm-color-table.vim'
 Plug 'vim-scripts/sh.vim', { 'for': 'sh' }
 Plug 'w0rp/ale'
 
@@ -247,20 +248,17 @@ nnoremap <leader>gw :Gwrite<CR>
 " }}}
 
 " ale {{{
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_filetype_changed = 0
-let g:ale_open_list = 0
-let g:ale_sign_error = "✗"
-let g:ale_sign_warning = "⚠"
-let g:ale_completion_enabled = 0
-" disable for java to prevent popup in osx
-let g:ale_linters = {'java': []}
-" navigation
-nmap <silent> <leader>ee <Plug>(ale_lint)
-nmap <silent> <leader>ff <Plug>(ale_fix)
+let g:ale_set_signs = 0
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_delay = 0
+let g:ale_linters = {'java': []} " disable for java to prevent popup in osx
 let g:ale_fixers = {'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
+" navigation
+nmap <silent> <leader>ee <Plug>(ale_lint)
+nmap <silent> <leader>ff <Plug>(ale_fix)
 " }}}
 
 " {{{ python
