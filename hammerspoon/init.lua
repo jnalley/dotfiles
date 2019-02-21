@@ -8,7 +8,7 @@ hs.logger.defaultLogLevel = 'info'
 require("plugins")
 
 -- weather
-require("hs-weather").start{ geolocation = true, units = "F" }
+-- require("hs-weather").start{ geolocation = true, units = "F" }
 
 -- disable icons
 hs.dockIcon(false)
