@@ -253,7 +253,7 @@ let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 0
 let g:ale_linters = {'java': []} " disable for java to prevent popup in osx
-let g:ale_fixers = {'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt']}
+let g:ale_fixers = {'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt'], 'javascript': ['prettier']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
 " navigation
