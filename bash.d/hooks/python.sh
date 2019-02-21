@@ -10,11 +10,6 @@ python_reset() {
   done
 }
 
-if ~/.bash.d/scripts/package_installed.py ipdb; then
-  export PYTHONBREAKPOINT=ipdb.set_trace
-  alias pydebug="PYTHONBREAKPOINT=ipdb.set_trace python -m ipdb -c continue"
-fi
-
 for p in $(shopt -s nullglob && echo "${VENV_BASE_DIR}"/python[2-3]); do
   [[ -x ${p}/bin/python ]] || continue
   export PATH=${p}/bin:${PATH}
@@ -23,3 +18,8 @@ for p in $(shopt -s nullglob && echo "${VENV_BASE_DIR}"/python[2-3]); do
 done
 
 unset p
+
+if ~/.bash.d/scripts/package_installed.py ipdb; then
+  export PYTHONBREAKPOINT=ipdb.set_trace
+  alias pydebug="PYTHONBREAKPOINT=ipdb.set_trace python -m ipdb -c continue"
+fi
