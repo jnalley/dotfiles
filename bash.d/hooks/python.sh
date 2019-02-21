@@ -2,64 +2,24 @@
 
 : "${VENV_BASE_DIR:=${HOME}/local}"
 
-export VENV_BASE_DIR
-
-python_setup() {
-  local skip_install=${1}
-
-  die() { echo -e "$*" ; exit 1 ; }
-
-  install() {
-    local p P
-    local python
-    local requirements
-
-    [[ -z ${skip_install} ]] || return 0
-
-    mkdir -p "${VENV_BASE_DIR}" || \
-      die "Failed to create: ${VENV_BASE_DIR}"
-
-    case ${1} in
-      python3)
-        python3 -m venv "${VENV_BASE_DIR}/python3" || \
-          die "Failed to create virtualenv: ${VENV_BASE_DIR}/python3"
-        python="${VENV_BASE_DIR}/python3/bin/python"
-        requirements="${HOME}/.py3reqs"
-        ;;
-      python2)
-        "${HOME}/.bash.d/scripts/venv.sh" "${VENV_BASE_DIR}/python2" || \
-          die "Failed to create virtualenv: ${VENV_BASE_DIR}/python2"
-        python="${VENV_BASE_DIR}/python2/bin/python"
-        requirements="${HOME}/.py2reqs"
-        venv() { "${HOME}/.bash.d/scripts/venv.sh" "$@" ; }
-        ;;
-    esac
-
-    [[ -x ${python} ]] || \
-      die "Failed to create virtualenv with: ${1}!"
-
-    touch "${requirements}"
-    ${python} -m pip install -q --upgrade pip
-    ${python} -m pip install -q --requirement "${requirements}"
-  }
-
-  for p in python2 python3; do
-    inpath ${p} || continue
-    P=${p^^} ; P=${P%%.*}
-    [[ -d ${VENV_BASE_DIR}/${p} ]] || install ${p} || continue
-    export PATH=${VENV_BASE_DIR}/${p}/bin:${PATH}
-    export ${P}="$(type -P ${p})"
-  done
-
-  python -c "import ipdb" > /dev/null 2>&1 && \
-    export PYTHONBREAKPOINT=ipdb.set_trace
-}
-
 python_reset() {
+  local p
   rm -rf "${VENV_BASE_DIR}"/python[2-3]
-  python_setup
+  for p in python2 python3; do
+    "${HOME}/.bash.d/scripts/create_python_venv.sh" "${p}"
+  done
 }
 
-alias pydebug="python -m ipdb -c continue"
+if ~/.bash.d/scripts/package_installed.py ipdb; then
+  export PYTHONBREAKPOINT=ipdb.set_trace
+  alias pydebug="PYTHONBREAKPOINT=ipdb.set_trace python -m ipdb -c continue"
+fi
 
-python_setup skip_install
+for p in $(shopt -s nullglob && echo "${VENV_BASE_DIR}"/python[2-3]); do
+  [[ -x ${p}/bin/python ]] || continue
+  export PATH=${p}/bin:${PATH}
+  p=${p##*/}
+  export "${p^^}"="$(type -P "${p}")"
+done
+
+unset p
