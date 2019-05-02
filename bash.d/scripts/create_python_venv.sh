@@ -4,7 +4,7 @@
 
 die() { echo -e "$*" && exit 1; }
 
-inpath() { type -P "${1}" >/dev/null; }
+inpath() { command -v "${1}" >/dev/null; }
 
 install_requirements() {
   local interpreter="${1}"

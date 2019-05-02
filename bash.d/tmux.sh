@@ -13,7 +13,7 @@
 # prevent nested tmux/screen sessions
 [[ ${TERM} == @(tmux-*|screen-*) ]] && return
 
-TMUXCMD="$(type -P tmux)"
+TMUXCMD="$(command -v tmux)"
 
 [[ -x "${TMUXCMD}" ]] || return
 

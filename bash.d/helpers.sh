@@ -19,7 +19,7 @@ repeat() {
 
 # determine if a function/command is callable
 inpath() {
-    type -p "${1}" > /dev/null
+    command -v "${1}" > /dev/null
 }
 
 # check if needle is in haystack

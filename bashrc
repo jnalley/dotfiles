@@ -18,7 +18,7 @@ export HISTIGNORE="&:[ ]*:??:???:exit:ls -al:bg:fg:jobs:history:clear:pwd"
 
 basename() { echo "${1##*/}"; }
 include() { source "${HOME}/.bash.d/${1}" 2>/dev/null; }
-inpath() { type -P "${1}" >/dev/null; }
+inpath() { command -v "${1}" >/dev/null; }
 
 # run helper function in a subshell
 helper() { (
@@ -49,7 +49,7 @@ alias mydate="date +'%G%m%d%H%M%S'"
 
 # use sudo instead of su
 # shellcheck disable=SC2139
-alias su="sudo -E $(type -p bash)"
+alias su="sudo -E $(command -v bash)"
 
 # rehash PATH
 alias rehash='hash -r'

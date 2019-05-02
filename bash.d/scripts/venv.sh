@@ -2,8 +2,8 @@
 
 source ~/.bash.d/helpers.sh
 
-: "${VENV_PYTHON:=$(type -P python2)}"
-: "${VENV_VERSION:=16.0.0}"
+: "${VENV_PYTHON:=$(command -v python2)}"
+: "${VENV_VERSION:=16.1.0}"
 : "${VENV_URL:=https://github.com/pypa/virtualenv/tarball/${VENV_VERSION}}"
 : "${VENV_CACHE:=${HOME}/.venv_cache}"
 

@@ -14,7 +14,7 @@ for p in $(shopt -s nullglob && echo "${VENV_BASE_DIR}"/python[2-3]); do
   [[ -x ${p}/bin/python ]] || continue
   export PATH=${p}/bin:${PATH}
   p=${p##*/}
-  export "${p^^}"="$(type -P "${p}")"
+  export "${p^^}"="$(command -v "${p}")"
 done
 
 unset p
