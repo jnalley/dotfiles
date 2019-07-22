@@ -118,10 +118,12 @@ set tabstop=2
 call plug#begin(s:vimdir . '/plugged')
 
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'guns/xterm-color-table.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'
 Plug 'justinmk/vim-dirvish'
+Plug 'kassio/neoterm'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
 Plug 'sheerun/vim-polyglot'
@@ -131,7 +133,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'guns/xterm-color-table.vim'
 Plug 'vim-scripts/sh.vim', { 'for': 'sh' }
 Plug 'w0rp/ale'
 
@@ -168,6 +169,8 @@ augroup VimRc
   autocmd FileType vim setlocal keywordprg=:help
   " Prevent folding in git
   autocmd FileType git setlocal nofoldenable
+  " Auto-wrap lines in markdown
+  autocmd FileType markdown setlocal textwidth=79
   " Reload vimrc
   autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
   " Update tags for notes
@@ -248,17 +251,26 @@ nnoremap <leader>gw :Gwrite<CR>
 " }}}
 
 " ale {{{
-let g:ale_set_signs = 0
+let g:ale_sign_error = "✗"
+let g:ale_sign_warning = "⚠"
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 0
 let g:ale_linters = {'java': []} " disable for java to prevent popup in osx
-let g:ale_fixers = {'python': ['autopep8', 'black', 'isort'], 'sh': ['shfmt'], 'javascript': ['prettier']}
+let g:ale_fixers = {'python': ['black', 'isort'], 'sh': ['shfmt'], 'javascript': ['prettier']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
+" }}}
+
+" {{{ neoterm
+  let g:neoterm_default_mod='vertical'
+  " send current line and move down
+  nnoremap <leader><cr> :TREPLSendLine<cr>j
+  " send current selection
+  vnoremap <leader><cr> :TREPLSendSelection<cr>
 " }}}
 
 " {{{ python
