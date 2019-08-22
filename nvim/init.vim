@@ -225,7 +225,7 @@ tnoremap <C-J> <C-\><C-N><C-W><C-J>
 tnoremap <C-K> <C-\><C-N><C-W><C-K>
 tnoremap <C-L> <C-\><C-N><C-W><C-L>
 
-tnoremap <leader><esc> <C-\><C-N>
+tnoremap <esc><esc> <C-\><C-n>
 " }}}
 
 " colorscheme {{{
