@@ -20,7 +20,7 @@ local function modifier_handler(evt)
   if evt:getFlags():containExactly({"ctrl"}) then
     m.non_modifier_tap:start() -- ESCAPE pending
   elseif abort() and ctrl_key_up(evt) then
-    hs.eventtap.keyStroke({}, "ESCAPE", 2000)
+    hs.eventtap.keyStroke({}, "ESCAPE", 3000)
   end
 end
 
@@ -30,6 +30,8 @@ function m.initialize()
     {hs.eventtap.event.types.keyDown},
     function() m.non_modifier_tap:stop() end
   )
+
+  m.non_modifier_tap:stop()
 
   -- modifier key presses
   m.modifier_tap = hs.eventtap.new(
