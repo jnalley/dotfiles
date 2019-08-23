@@ -274,18 +274,13 @@ nmap <silent> <leader>ff <Plug>(ale_fix)
 " }}}
 
 " {{{ python
-if filereadable($PYTHON2)
-  let g:python_host_prog = $PYTHON2
-endif
-
-if filereadable($PYTHON3)
-  let g:python3_host_prog = $PYTHON3
-endif
-
 command! -nargs=? Ipython silent! vnew | :call termopen("ipython --no-autoindent -i -- " . expand(<q-args>)) | wincmd <c-p>
 command! -nargs=+ Pydoc silent! vnew | te PAGER=cat pydoc <q-args>
 
 autocmd VimRc FileType python setlocal keywordprg=:Pydoc
+
+" disable python2
+let g:loaded_python_provider = 0
 " }}}
 
 " {{{ mucomplete
