@@ -6,13 +6,6 @@
 
 local m = {}
 
-local CTRL = hs.eventtap.event.rawFlagMasks["control"]
-local RIGHT_CTRL = hs.eventtap.event.rawFlagMasks["deviceRightControl"]
-local NON_COALESCED = hs.eventtap.event.rawFlagMasks["nonCoalesced"]
-
--- raw flags that are set for internal keyboard
-local BUILTIN = CTRL | RIGHT_CTRL | NON_COALESCED
-
 local function abort()
   return m.non_modifier_tap:isEnabled() and m.non_modifier_tap:stop() and true
 end
@@ -24,7 +17,7 @@ local function ctrl_key_up(evt)
 end
 
 local function modifier_handler(evt)
-  if evt:rawFlags() == BUILTIN and evt:getFlags():containExactly({"ctrl"}) then
+  if evt:getFlags():containExactly({"ctrl"}) then
     m.non_modifier_tap:start() -- ESCAPE pending
   elseif abort() and ctrl_key_up(evt) then
     hs.eventtap.keyStroke({}, "ESCAPE", 3000)
