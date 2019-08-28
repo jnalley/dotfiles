@@ -220,12 +220,14 @@ map <C-x> <C-w>c
 nnoremap <silent> <leader>S :call RemoveTrailingSpace()<CR>
 
 " escape terminals
-tnoremap <C-H> <C-\><C-N><C-W><C-H>
-tnoremap <C-J> <C-\><C-N><C-W><C-J>
-tnoremap <C-K> <C-\><C-N><C-W><C-K>
-tnoremap <C-L> <C-\><C-N><C-W><C-L>
+if has('nvim')
+  tnoremap <C-H> <C-\><C-N><C-W><C-H>
+  tnoremap <C-J> <C-\><C-N><C-W><C-J>
+  tnoremap <C-K> <C-\><C-N><C-W><C-K>
+  tnoremap <C-L> <C-\><C-N><C-W><C-L>
 
-tnoremap <esc><esc> <C-\><C-n>
+  tnoremap <esc><esc> <C-\><C-n>
+endif
 " }}}
 
 " colorscheme {{{
