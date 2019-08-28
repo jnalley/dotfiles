@@ -1,6 +1,6 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-unalias ll
+unalias ll 2> /dev/null
 
 # my fancy ll depends on gnu ls
 if command ls --version 2> /dev/null | grep -qi 'GNU'; then
