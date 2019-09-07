@@ -213,9 +213,6 @@ nnoremap P gP=`]
 " previous buffer
 nnoremap <leader><leader> :b#<CR>
 
-" close window
-map <C-x> <C-w>c
-
 " remove trailing spaces
 nnoremap <silent> <leader>S :call RemoveTrailingSpace()<CR>
 
