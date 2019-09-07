@@ -1,7 +1,7 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
 # bail if executables are not present
-[[ -x ${HOME}/.fzf/bin/fzf ]] && inpath fd || return 1
+[[ -x ${HOME}/.fzf/bin/fzf ]] || return 1
 
 # add fzf bin directory to path
 [[ "$PATH" == *${HOME}/.fzf/bin* ]] || \
@@ -11,10 +11,16 @@
 [[ "${MANPATH}" == *${HOME}/.fzf/man* && -d "${HOME}/.fzf/man" ]] || \
   export MANPATH="$MANPATH:${HOME}/.fzf/man"
 
-# key bindings
 source "${HOME}/.fzf/shell/key-bindings.bash" 2> /dev/null
 
 export FZF_DEFAULT_OPTS='--height 30% --border'
+
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
+bind '"\C-x": "\C-x\C-addi`__fzf_cd__`\C-x\C-e\C-x\C-r\C-m"'
+bind -m vi-command '"\C-x": "ddi`__fzf_cd__`\C-x\C-e\C-x\C-r\C-m"'
+
+inpath fd || return 0
 
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
@@ -36,8 +42,3 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
-
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-
-bind '"\C-x": "\C-x\C-addi`__fzf_cd__`\C-x\C-e\C-x\C-r\C-m"'
-bind -m vi-command '"\C-x": "ddi`__fzf_cd__`\C-x\C-e\C-x\C-r\C-m"'
