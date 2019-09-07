@@ -1,7 +1,7 @@
 awscli
 awslogs
 black
-pyflakes
+flake8
 ipdb
 ipython
 isort
