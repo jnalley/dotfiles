@@ -33,8 +33,25 @@ colorterm() {
   [[ ${COLOR_COUNT} -ge 8 ]]
 }
 
+# update terminal title
+title() {
+  [[ ${TERM} == @(tmux-*|screen-*|xterm-*) ]] || return
+  # don't set title in neovim terminals
+  [[ -z ${NVIM_LISTEN_ADDRESS} ]] || return
+  if [[ -z ${_TITLE_} ]]; then
+    _TITLE_=${PWD/$HOME/\\x7e}
+    [[ ${#_TITLE_} -gt 24 ]] &&
+      _TITLE_="${_TITLE_:0:12}..${_TITLE_:(-12)}"
+  fi
+  # add hostname for remote sessions
+  [[ -z ${TMUX} && -n ${SSH_CLIENT} ]] && _TITLE_="${HOSTNAME%%.*} ${_TITLE_}"
+  [[ ${_TITLE_} == \\x7e ]] && _TITLE_="${USER}"
+  echo -ne "\\033]2;${_TITLE_}\\033\\"                   # window title
+  [[ -n ${TMUX} ]] && echo -ne "\\033k${_TITLE_}\\033\\" # session title
+}
+
 include 'tmux.sh'
-include 'term.sh'
+include 'prompt.sh'
 
 [[ ${SHLVL} == 1 ]] && include 'startup.sh'
 
