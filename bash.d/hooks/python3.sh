@@ -4,11 +4,12 @@ inpath "${1%%.*}" || return 1
 
 export VIRTUAL_ENV_DISABLE_PROMPT=true
 export PYTHONBREAKPOINT=ipdb.set_trace
+export PATH="${HOME}/.pyenv/shims:${PATH}"
 
-## NOTE: Always use 'python3 -m pip ...' instead of 'pip ...'
+## NOTE: Always use 'python -m pip ...' instead of 'pip ...'
 
 pip() {
-  echo "Always use 'python3 -m pip ...' instead of 'pip ...'"
+  python3 -m pip "$@"
 }
 
 _python_version() {
@@ -16,37 +17,70 @@ _python_version() {
     'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")'
 }
 
+_full_path() {
+  local path=${1:?Missing path}
+  python3 -c \
+    "from pathlib import Path; print(Path('${path}').resolve())"
+}
+
 _activate_virtualenv() {
-  local target="${1:-.virtualenv}"
-  # must have python3
-  if [[ ! -x "${target}/bin/python3" ]]; then
-    # deactivate when no longer in a directory containing .virtualenv
-    deactivate 2>/dev/null
-    return
-  fi
-  echo "Activating Virtual Environment"
-  # shellcheck disable=SC1091
-  source "${target}/bin/activate" && hash -r
+  local path="${1:-${PWD}}"
+  while [[ $path != "" ]]; do
+    if [[ -s "${path}/.virtualenv/bin/activate" ]]; then
+      [[ ${VIRTUAL_ENV} == "${path}/.virtualenv" ]] && return 0
+      # shellcheck disable=SC1091
+      source "${path}/.virtualenv/bin/activate" && hash -r
+      return
+    fi
+    path=${path%/*}
+  done
+  return 1
 }
 
-create_top_level_virtualenv() {
-  local target="${HOME}/.virtualenv"
-  echo "Creating ${HOME}/.virtualenv..."
-  python3 -m venv "${target}" && _activate_virtualenv "${target}" &&
-    python3 -m pip install --upgrade pip &&
-    [[ -s "${HOME}/.requirements.txt" ]] &&
-    python3 -m pip install --requirement "${HOME}/.requirements.txt"
-}
+mkvenv() {
+  local target="$(_full_path "${1:-.virtualenv}")"
+  local venv_opts=()
 
-create_child_virtualenv() {
-  local target="${1:-.virtualenv}"
-  local packages=".virtualenv/lib/python$(_python_version)/site-packages"
-  if [[ ! -d "${HOME}/${packages}" ]]; then
-    echo "Failed to identify parent virtualenv: ${HOME}/${packages}"
-    return 1
+  if [[ -d "${target}" ]]; then
+    echo "${target} already exists!" && return 1
   fi
-  python3 -m venv --without-pip "${target}" && _activate_virtualenv &&
-    echo "${HOME}/${packages}" >"${packages}/parent.pth"
+
+  [[ -n "${VIRTUAL_ENV}" ]] && venv_opts+=(--without-pip)
+
+  if ! python3 -m venv "${venv_opts[@]}" "${target}"; then
+    echo "Error creating: ${target}" && return 1
+  fi
+
+  # upgrade pip and install requirements for primary virtualenv
+  if [[ "${target%/*}" == "${HOME}" ]]; then
+    if ! _activate_virtualenv "${target%/*}"; then
+      echo "Failed to activate: ${target}!" && return 1
+    fi
+
+    if ! python3 -m pip install --upgrade pip; then
+      echo "Error during pip upgrade!" && return 1
+    fi
+
+    if [[ -s ~/.requirements.txt ]]; then
+      if ! python3 -m pip install --requirement ~/.requirements.txt; then
+        echo "Error installing requirements!" && return 1
+      fi
+    fi
+
+    return 0
+  fi
+
+  # return if not currently in a virtualenv
+  [[ -z "${VIRTUAL_ENV}" ]] && return 0
+
+  local pkgpath="lib/python$(_python_version)/site-packages"
+
+  # inherit packages from ${VIRTUAL_ENV}
+  echo "${VIRTUAL_ENV}/${pkgpath}" >"${target}/${pkgpath}/parent.pth"
+
+  if ! _activate_virtualenv "${target%/*}"; then
+    echo "Failed to activate: ${target}!" && return 1
+  fi
 }
 
 add_change_directory_callback _activate_virtualenv
