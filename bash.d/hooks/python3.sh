@@ -3,7 +3,7 @@
 inpath "${1%%.*}" || return 1
 
 export VIRTUAL_ENV_DISABLE_PROMPT=true
-export PYTHONBREAKPOINT=ipdb.set_trace
+export PYTHONBREAKPOINT=pdb.set_trace
 export PATH="${HOME}/.pyenv/shims:${PATH}"
 
 ## NOTE: Always use 'python -m pip ...' instead of 'pip ...'

@@ -2,14 +2,15 @@ awscli
 awslogs
 black
 flake8
-ipdb
 ipython
 isort
 memory_profiler
 neovim
 numpy
 pandas
+pdbpp
 pip-review
 pipdeptree
 requests
 smart-open
+tqdm
