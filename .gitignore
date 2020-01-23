@@ -1,7 +1,7 @@
 !ssh/config
 bash.d/local.sh
 htop/
-nvim/autoload/plug.vim
+nvim/autoload/plug.vim*
 nvim/shada/
 nvim/site/
 nvim/tmp/
