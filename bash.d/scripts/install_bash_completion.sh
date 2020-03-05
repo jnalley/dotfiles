@@ -9,7 +9,7 @@
 
 RAW_GIT_URL='https://raw.githubusercontent.com'
 
-: "${VERSION:=2.9}"
+: "${VERSION:=2.10}"
 : "${DESTDIR:=${HOME}/local}"
 : "${BASE_URL:=https://github.com/scop/bash-completion/releases/download/}"
 
