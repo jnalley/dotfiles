@@ -68,6 +68,8 @@
   whatrelease = name-rev --name-only
   # what branch contains the sha
   contains = branch --contains
+  # squash ALL commits (dangerous!)
+  squash-all = "!f(){git reset $(git commit-tree HEAD^{tree} -m \"${1:-Initial commit}\");};f"
 [grep]
   extendRegexp = true
   lineNumber = true
