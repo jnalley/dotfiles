@@ -126,6 +126,8 @@ Plug 'justinmk/vim-dirvish'
 Plug 'kassio/neoterm'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
@@ -163,8 +165,6 @@ augroup VimRc
   autocmd FileType help wincmd H
   " Switch to insert mode when entering a terminal buffer
   " autocmd BufEnter * if &buftype ==# 'terminal' | :startinsert | endif
-  " Enable :Gstatus and friends.
-  autocmd FileType dirvish call fugitive#detect(@%)
   " Help lookup in vimrc
   autocmd FileType vim setlocal keywordprg=:help
   " Prevent folding in git
@@ -181,7 +181,7 @@ augroup END
 " mappings {{{
 
 " choose buffer
-nnoremap <leader><tab> :buffers<CR>:buffer<Space>
+nnoremap <leader><tab> :Buffers<CR>
 
 " search help (fzf)
 nnoremap <leader>? :Helptags<CR>
@@ -259,6 +259,7 @@ let g:ale_linters = {'java': []} " disable for java to prevent popup in osx
 let g:ale_fixers = {'python': ['black', 'isort'], 'sh': ['shfmt'], 'javascript': ['prettier']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
+let g:ale_python_flake8_options = '--ignore=E203,E266,E501,W503 --per-file-ignores=__init__.py:F401'
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
@@ -287,9 +288,7 @@ let g:mucomplete#enable_auto_at_startup = 1
 " }}}
 
 " fzf {{{
-if has('nvim')
-  let g:fzf_layout = { 'window': 'enew' }
-endif
+let g:fzf_layout = { 'down': '~20%' }
 
 " Files command with preview window
 command! -bang -nargs=? -complete=dir Files
