@@ -30,6 +30,9 @@ export EDITOR=vi
 export XDG_CONFIG_HOME=~/.dotfiles
 export XDG_DATA_HOME="${XDG_CONFIG_HOME}"
 
+# store (auto generated) plugin manifest in tmp directory
+export NVIM_RPLUGIN_MANIFEST="${XDG_DATA_HOME}/nvim/tmp/rplugin.vim"
+
 # disable some shellcheck errors
 export SHELLCHECK_OPTS="-e SC1090 -e SC2155"
 
