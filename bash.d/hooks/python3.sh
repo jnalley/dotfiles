@@ -9,17 +9,17 @@ export PATH="${HOME}/.pyenv/shims:${PATH}"
 ## NOTE: Always use 'python -m pip ...' instead of 'pip ...'
 
 pip() {
-  python3 -m pip "$@"
+  ${PYTHON:-python3} -m pip "$@"
 }
 
 _python_version() {
-  python3 -c \
+  ${PYTHON:-python3} -c \
     'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")'
 }
 
 _full_path() {
   local path=${1:?Missing path}
-  python3 -c \
+  ${PYTHON:-python3} -c \
     "from pathlib import Path; print(Path('${path}').resolve())"
 }
 
@@ -39,47 +39,30 @@ _activate_virtualenv() {
 
 mkvenv() {
   local target="$(_full_path "${1:-.virtualenv}")"
-  local venv_opts=()
 
   if [[ -d "${target}" ]]; then
     echo "${target} already exists!" && return 1
   fi
 
-  [[ -n "${VIRTUAL_ENV}" ]] && venv_opts+=(--without-pip)
-
-  if ! python3 -m venv "${venv_opts[@]}" "${target}"; then
+  if ! ${PYTHON:-python3} -m venv "${target}"; then
     echo "Error creating: ${target}" && return 1
   fi
 
-  # upgrade pip and install requirements for primary virtualenv
+  if ! _activate_virtualenv "${target%/*}"; then
+    echo "Failed to activate: ${target}!" && return 1
+  fi
+
+  if ! ${PYTHON:-python3} -m pip install --upgrade pip; then
+    echo "Error during pip upgrade!" && return 1
+  fi
+
+  # install requirements for primary virtualenv
   if [[ "${target%/*}" == "${HOME}" ]]; then
-    if ! _activate_virtualenv "${target%/*}"; then
-      echo "Failed to activate: ${target}!" && return 1
-    fi
-
-    if ! python3 -m pip install --upgrade pip; then
-      echo "Error during pip upgrade!" && return 1
-    fi
-
     if [[ -s ~/.requirements.txt ]]; then
-      if ! python3 -m pip install --requirement ~/.requirements.txt; then
+      if ! ${PYTHON:-python3} -m pip install --requirement ~/.requirements.txt; then
         echo "Error installing requirements!" && return 1
       fi
     fi
-
-    return 0
-  fi
-
-  # return if not currently in a virtualenv
-  [[ -z "${VIRTUAL_ENV}" ]] && return 0
-
-  local pkgpath="lib/python$(_python_version)/site-packages"
-
-  # inherit packages from ${VIRTUAL_ENV}
-  echo "${VIRTUAL_ENV}/${pkgpath}" >"${target}/${pkgpath}/parent.pth"
-
-  if ! _activate_virtualenv "${target%/*}"; then
-    echo "Failed to activate: ${target}!" && return 1
   fi
 }
 
