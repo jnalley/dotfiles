@@ -23,6 +23,13 @@ m.secure_input_menu_bar:returnToMenuBar()
 m.secure_input_menu_bar:removeFromMenuBar()
 --]]
 
+local CTRL = hs.eventtap.event.rawFlagMasks["control"]
+local RIGHT_CTRL = hs.eventtap.event.rawFlagMasks["deviceRightControl"]
+local NON_COALESCED = hs.eventtap.event.rawFlagMasks["nonCoalesced"]
+
+-- raw flags that are set for internal keyboard
+local BUILTIN = CTRL | RIGHT_CTRL | NON_COALESCED
+
 local function abort()
   if hs.eventtap.isSecureInputEnabled() then
     hs.alert.show("Secure input is enabled - tap_ctrl_for_escape will fail!")
@@ -37,9 +44,11 @@ local function ctrl_key_up(evt)
 end
 
 local function modifier_handler(evt)
-  if evt:getFlags():containExactly({"ctrl"}) then
+  if evt:rawFlags() == BUILTIN and evt:getFlags():containExactly({"ctrl"}) then
+    hs.alert.show("PENDING")
     m.non_modifier_tap:start() -- ESCAPE pending
   elseif abort() and ctrl_key_up(evt) then
+    hs.alert.show("SENDING")
     hs.eventtap.keyStroke({}, "ESCAPE", 3000)
   end
 end
