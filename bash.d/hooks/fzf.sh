@@ -11,14 +11,11 @@
 [[ "${MANPATH}" == *${HOME}/.fzf/man* && -d "${HOME}/.fzf/man" ]] || \
   export MANPATH="$MANPATH:${HOME}/.fzf/man"
 
-source "${HOME}/.fzf/shell/key-bindings.bash" 2> /dev/null
-
 export FZF_DEFAULT_OPTS='--height 30% --border'
 
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+inpath tree && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
-bind '"\C-x": "\C-x\C-addi`__fzf_cd__`\C-x\C-e\C-x\C-r\C-m"'
-bind -m vi-command '"\C-x": "ddi`__fzf_cd__`\C-x\C-e\C-x\C-r\C-m"'
+source "${HOME}/.fzf/shell/key-bindings.bash" 2> /dev/null
 
 inpath fd || return 0
 
