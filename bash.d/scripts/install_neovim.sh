@@ -19,4 +19,4 @@ case "$(uname -s)" in
 esac
 
 curl -sSL "${url}/${filename}" |
-  tar -C "${HOME}/local" -xz --strip-components=1 -f -
+  tar -C "${HOME}/.local" -xz --strip-components=1 -f -

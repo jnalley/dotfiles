@@ -19,7 +19,7 @@ shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
 export BASHOPTS
 
 # local binaries
-mkdir -p ~/local/bin
+mkdir -p ~/.local/bin
 
 include env.sh
 
@@ -56,8 +56,8 @@ if HOMEBREW_PREFIX="$(brew --prefix)"; then
 fi
 
 # add bash completion install function if completions are missing
-[[ -s ~/local/etc/profile.d/bash_completion.sh ]] || \
+[[ -s ~/.local/etc/profile.d/bash_completion.sh ]] || \
   install_bash_completion() {
     ~/.bash.d/scripts/install_bash_completion.sh && \
-      source ~/local/etc/profile.d/bash_completion.sh 2> /dev/null
+      source ~/.local/etc/profile.d/bash_completion.sh 2> /dev/null
   }

@@ -1,6 +1,8 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
-
 inpath "${1%%.*}" || return 1
+
+return 0  # skip for now
+
 
 export VIRTUAL_ENV_DISABLE_PROMPT=true
 export PYTHONBREAKPOINT=pdb.set_trace

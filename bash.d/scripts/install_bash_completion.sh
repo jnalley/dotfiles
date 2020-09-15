@@ -9,8 +9,8 @@
 
 RAW_GIT_URL='https://raw.githubusercontent.com'
 
-: "${VERSION:=2.10}"
-: "${DESTDIR:=${HOME}/local}"
+: "${VERSION:=2.11}"
+: "${DESTDIR:=${HOME}/.local}"
 : "${BASE_URL:=https://github.com/scop/bash-completion/releases/download/}"
 
 BASH_COMPLETION_URL="${BASE_URL}/${VERSION}/bash-completion-${VERSION}.tar.xz"
