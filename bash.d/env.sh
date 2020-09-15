@@ -39,6 +39,9 @@ export SHELLCHECK_OPTS="-e SC1090 -e SC2155"
 # use the login keychain for aws-vault
 export AWS_VAULT_KEYCHAIN_NAME=login
 
+# some AWS SDK's only use ~/.aws/credentials by default and not ~/.aws/config
+export AWS_SDK_LOAD_CONFIG=true
+
 # - 'R' Accept control chars
 # - 'X' Don't clear screen
 # - 'F' Don't page if output fits on a single screen

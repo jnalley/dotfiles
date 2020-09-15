@@ -1,6 +1,6 @@
 # vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
 
-PATH=~/local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin
+PATH=~/.local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin
 
 export PATH
 
@@ -91,6 +91,6 @@ done
 # set +x
 # exec 2>&3 3>&-
 
-source ~/local/etc/profile.d/bash_completion.sh 2> /dev/null
+source ~/.local/etc/profile.d/bash_completion.sh 2> /dev/null
 
 source ~/.bash.d/local.sh 2> /dev/null
