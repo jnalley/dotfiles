@@ -259,6 +259,13 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gw :Gwrite<CR>
 " }}}
 
+" " semshi {{{
+" let g:semshi#mark_selected_nodes = 0
+" let g:semshi#error_sign = v:false
+
+" nmap <silent> <leader>rr :Semshi rename<CR>
+" " }}}
+
 " ale {{{
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_sign_error = "✗"
