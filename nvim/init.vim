@@ -126,7 +126,6 @@ Plug 'justinmk/vim-dirvish'
 Plug 'kassio/neoterm'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-characterize'
@@ -266,6 +265,7 @@ let g:ale_linters = {'java': []} " disable for java to prevent popup in osx
 let g:ale_fixers = {'python': ['black', 'isort'], 'sh': ['shfmt'], 'javascript': ['prettier']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
+let g:ale_sh_shellcheck_options = '-s bash'
 let g:ale_python_flake8_options = '--ignore=E203,E266,E501,W503 --per-file-ignores=__init__.py:F401'
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
@@ -286,8 +286,9 @@ command! -nargs=+ Pydoc silent! vnew | te PAGER=cat pydoc <q-args>
 
 autocmd VimRc FileType python setlocal keywordprg=:Pydoc
 
-" disable python2
+" disable python2 and perl
 let g:loaded_python_provider = 0
+let g:loaded_perl_provider = 0
 " }}}
 
 " {{{ mucomplete
