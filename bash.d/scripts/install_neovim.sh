@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-url=https://github.com/neovim/neovim/releases/download/stable
+NVIM_VERSION="${NVIM_VERSION:-stable}"
+
+url="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}"
 
 die() { echo "$*" && exit 1; }
 
-case "$(uname -o)" in
+case "$(uname -s)" in
   Darwin)
     filename=nvim-macos.tar.gz
     ;;
-  GNU/Linux)
+  Linux)
     filename=nvim-linux64.tar.gz
     ;;
   *)
