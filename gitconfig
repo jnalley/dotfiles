@@ -1,6 +1,8 @@
 [user]
   name = (none)
   email = (none)
+[core]
+  excludesfile = ~/.gitignore
 [include]
   path = ~/.git.user
 [push]
