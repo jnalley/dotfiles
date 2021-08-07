@@ -129,6 +129,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
 " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
@@ -155,6 +156,13 @@ function! RemoveTrailingSpace()
   %s/\s\+$//e
   call winrestview(l:view)
 endfunction
+
+" Sort lines, selected or over motion.
+xnoremap <silent> gs :sort i<CR>
+nnoremap <silent> gs :set opfunc=SortLines<CR>g@
+fun! SortLines(type) abort
+    '[,']sort i
+endfun
 " }}}
 
 " autocommands {{{

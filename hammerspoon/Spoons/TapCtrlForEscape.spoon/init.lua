@@ -4,7 +4,7 @@ obj.__index = obj
 obj.name = "TapCtrlForEscape"
 obj.version = "0.1"
 obj.author = "Jon Nalley <code@bluebot.org>"
-obj.homepage = "https://github.com/Hammerspoon/Spoons"
+obj.homepage = "https://github.com/jnalley/dotfiles"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 obj.logger = hs.logger.new("TapCtrlForEscape")

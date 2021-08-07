@@ -6,7 +6,7 @@ hs.logger.defaultLogLevel = "info"
 
 -- disable icons
 hs.dockIcon(false)
-hs.menuIcon(true)
+hs.menuIcon(false)
 
 -- set console colors
 hs.console.outputBackgroundColor(hs.drawing.color.ansiTerminalColors.bgBlack)
@@ -30,15 +30,34 @@ end)
 
 hs.grid.setGrid("2x2")
 hs.grid.ui.showExtraKeys = true
-hs.hotkey.bind({"alt", "cmd"}, "G", function() hs.grid.show() end)
+hs.hotkey.bind({"alt", "cmd"}, "G", hs.grid.show)
 
 hs.hints.style = "vimperator"
 hs.window.animationDuration = 0
+
+local left = {
+  hs.layout.left50,
+  hs.geometry.unitrect(0,0,0.5,0.5),
+  hs.geometry.unitrect(0,0.5,0.5,0.5)
+}
+
+local left_index = nil
 
 -- window management hotkeys
 local function moveToUnit(unit)
   hs.window.focusedWindow():moveToUnit(unit)
 end
+
+-- hs.hotkey.bind({"alt", "cmd"}, "t",
+--   function() hs.grid.resizeWindowShorter(hs.window.focusedWindow()) end
+-- )
+
+hs.hotkey.bind({"alt", "cmd"}, "t",
+  function()
+    left_index, unit = next(left, (left_index or 1) < #left and left_index or nil)
+    moveToUnit(unit)
+  end
+)
 
 hs.hotkey.bind({"alt", "cmd"}, "Left",
   hs.fnutils.partial(moveToUnit, hs.layout.left50)

@@ -10,5 +10,6 @@ pdbpp
 requests
 smart-open
 tqdm
+twine
 wheel
 faker
