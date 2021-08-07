@@ -126,7 +126,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'kassio/neoterm'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-characterize'
@@ -154,6 +154,13 @@ function! RemoveTrailingSpace()
   %s/\s\+$//e
   call winrestview(l:view)
 endfunction
+
+" Sort lines, selected or over motion.
+xnoremap <silent> gs :sort i<CR>
+nnoremap <silent> gs :set opfunc=SortLines<CR>g@
+fun! SortLines(type) abort
+    '[,']sort i
+endfun
 " }}}
 
 " autocommands {{{
@@ -286,8 +293,9 @@ command! -nargs=+ Pydoc silent! vnew | te PAGER=cat pydoc <q-args>
 
 autocmd VimRc FileType python setlocal keywordprg=:Pydoc
 
-" disable python2
+" disable python2 and perl
 let g:loaded_python_provider = 0
+let g:loaded_perl_provider = 0
 " }}}
 
 " {{{ mucomplete

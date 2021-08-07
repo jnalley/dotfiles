@@ -10,8 +10,8 @@
 # in ssh_config(5).
 ########################################################################
 
-# prevent nested tmux/screen sessions
-[[ ${TERM} == @(tmux-*|screen-*) ]] && return
+# prevent nested tmux/screen sessions and skip for vscode
+[[ ${TERM} == @(tmux-*|screen-*) || ${TERM_PROGRAM} == vscode ]] && return
 
 TMUXCMD="$(command -v tmux)"
 

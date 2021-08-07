@@ -2,9 +2,13 @@
 
 inpath "${1%%.*}" || return 1
 
+export PYENV_ROOT=~/.pyenv
 export VIRTUAL_ENV_DISABLE_PROMPT=true
 export PYTHONBREAKPOINT=pdb.set_trace
 export PATH="${HOME}/.pyenv/shims:${PATH}"
+
+[[ -s ~/.pyenv/version && -d ~/.pyenv/versions/$(< ~/.pyenv/version) ]] && \
+  export PATH="${HOME}/.pyenv/versions/$(< ~/.pyenv/version)/bin:${PATH}"
 
 ## NOTE: Always use 'python -m pip ...' instead of 'pip ...'
 
