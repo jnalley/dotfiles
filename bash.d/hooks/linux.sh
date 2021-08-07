@@ -1,4 +1,4 @@
-[[ "$(uname -o)" == *Linux* ]] || return
+[[ "$(uname -s)" == *Linux* ]] || return
 
 # running x windows?
 [[ -n "${DISPLAY}" ]] || return

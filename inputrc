@@ -17,5 +17,9 @@ set show-all-if-unmodified on
 set skip-completed-text on
 set visible-stats on
 
+# set show-mode-in-prompt on
+# set vi-ins-mode-string "[I]"
+# set vi-cmd-mode-string "[N]"
+
 "\C-a\C-l": clear-screen
 "\C-x\C-r": re-read-init-file
