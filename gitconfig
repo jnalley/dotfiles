@@ -1,6 +1,7 @@
 [user]
   name = (none)
   email = (none)
+  useConfigOnly = true
 [core]
   excludesfile = ~/.gitignore
 [include]
