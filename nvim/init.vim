@@ -117,17 +117,19 @@ set tabstop=2
 " plugins {{{
 call plug#begin(s:vimdir . '/plugged')
 
+" Plug 'Vimjas/vim-python-pep8-indent'
+" Plug 'sheerun/vim-polyglot'
+"Plug 'guns/xterm-color-table.vim'
+"Plug 'junegunn/gv.vim'
+"Plug 'kassio/neoterm'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'guns/xterm-color-table.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/gv.vim'
 Plug 'justinmk/vim-dirvish'
-Plug 'kassio/neoterm'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
+" Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -180,7 +182,8 @@ augroup END
 " mappings {{{
 
 " choose buffer
-nnoremap <leader><tab> :Buffers<CR>
+" nnoremap <leader><tab> :Buffers<CR>  " uses fzf
+nnoremap <leader><tab> :buffers<CR>:buffer<Space>
 
 " search help (fzf)
 nnoremap <leader>? :Helptags<CR>
@@ -248,28 +251,28 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gw :Gwrite<CR>
 " }}}
 
-" semshi {{{
-let g:semshi#mark_selected_nodes = 0
-let g:semshi#error_sign = v:false
-
-nmap <silent> <leader>rr :Semshi rename<CR>
-" }}}
-
 " ale {{{
+let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 0
-let g:ale_linters = {'java': []} " disable for java to prevent popup in osx
+let g:ale_linters = {'java': [], 'python': ['flake8', 'pyflakes', 'mypy']} " disable for java to prevent popup in osx
 let g:ale_fixers = {'python': ['black', 'isort'], 'sh': ['shfmt'], 'javascript': ['prettier']}
 let g:ale_python_black_options = '--line-length 79'
 let g:ale_sh_shfmt_options = '-i 2 -ci'
 let g:ale_sh_shellcheck_options = '-s bash'
 let g:ale_python_flake8_options = '--ignore=E203,E266,E501,W503 --per-file-ignores=__init__.py:F401'
+let g:ale_python_pylint_options = '--disable=C0103,C0114,C0115,C0116'
 " navigation
 nmap <silent> <leader>ee <Plug>(ale_lint)
 nmap <silent> <leader>ff <Plug>(ale_fix)
+
+let b:ale_python_flake8_executable = '/Users/jnalley/.local/bin/flake8'
+let b:ale_python_flake8_use_global = 1
+
+
 " }}}
 
 " {{{ neoterm
@@ -309,6 +312,12 @@ command! -bang -nargs=* Rg
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 
 " grep for word at cursor
 nnoremap <silent> <c-f> :Rg <C-R><C-W><CR>
