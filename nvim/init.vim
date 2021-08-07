@@ -130,6 +130,7 @@ Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
 " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+" Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
