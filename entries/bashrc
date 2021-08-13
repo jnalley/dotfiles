@@ -12,9 +12,6 @@ colorterm() {
 # report the status of terminated background jobs immediately
 set -o notify
 
-# customizations for less
-[[ -s ~/.less ]] || lesskey
-
 # date in the format YYYYMMDDHHMMSS (ISO 8601)
 alias mydate="date +'%G%m%d%H%M%S'"
 alias e='${EDITOR}'
