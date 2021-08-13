@@ -1,0 +1,58 @@
+font:
+  normal:
+    family: RobotoMono Nerd Font
+    style: Light
+
+  bold:
+    family: RobotoMono Nerd Font
+    style: Medium
+
+  italic:
+    family: RobotoMono Nerd Font
+    style: Italic
+
+  bold_italic:
+    family: RobotoMono Nerd Font
+    style: Medium Italic
+
+  size: 14.0
+
+window:
+  decorations: none
+
+mouse:
+    hide_when_typing: true
+
+# disable history buffer - relying on tmux
+scrolling:
+  history: 0
+  faux_multiplier: 0
+
+selection:
+  save_to_clipboard: true
+
+# gruvbox material dark - tweaked
+colors:
+  primary:
+    background: '0x1c1f20'
+    foreground: '0xebdbb2'
+
+  normal:
+    black:   '0x665c54'
+    red:     '0xea6962'
+    green:   '0xa9b665'
+    yellow:  '0xe78a4e'
+    blue:    '0x7daea3'
+    magenta: '0xd3869b'
+    cyan:    '0x89b482'
+    white:   '0xdfbf8e'
+
+  bright:
+    black:   '0x928374'
+    red:     '0xea6962'
+    green:   '0xa9b665'
+    yellow:  '0xe3a84e'
+    blue:    '0x7daea3'
+    magenta: '0xd3869b'
+    cyan:    '0x89b482'
+    white:   '0xdfbf8e'

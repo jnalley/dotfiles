@@ -1,0 +1,12 @@
+\n  undo-hilite
+#env
+LESS=-RXFi
+LESS_TERMCAP_mb=[1m[32m
+LESS_TERMCAP_md=[1m[35m
+LESS_TERMCAP_me=(B[m
+LESS_TERMCAP_mh=[2m
+LESS_TERMCAP_mr=[7m
+LESS_TERMCAP_se=[27m(B[m
+LESS_TERMCAP_so=[1m[38;5;51m[48;5;20m
+LESS_TERMCAP_ue=[24m(B[m
+LESS_TERMCAP_us=[4m[1m[33m

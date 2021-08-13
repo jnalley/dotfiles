@@ -1,0 +1,68 @@
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
+
+export PATH=~/.local/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/sbin
+
+# unlimited history
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTTIMEFORMAT="#%s# "
+# prevent duplicate history entries
+export HISTCONTROL=ignoredups:erasedups:ignorespace
+# do not create history entries for the following commands
+export HISTIGNORE="&:[ ]*:??:???:exit:ls -al:bg:fg:jobs:history:clear:pwd"
+
+# format output of ps (gnu ps)
+export PS_FORMAT="user:15,pid,state,tt=TTY,etime=TIME,command"
+# search path for cd command
+export CDPATH=.:~/Projects
+
+# default editor
+export EDITOR=vi
+
+# disable some shellcheck errors
+export SHELLCHECK_OPTS="-e SC1090 -e SC2155 -e SC1091"
+
+# enable ~/.aws/config
+export AWS_SDK_LOAD_CONFIG=true
+
+export PAGER=less
+
+# color for BSD ls
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxexexabagacad
+
+# python
+export VIRTUAL_ENV_DISABLE_PROMPT=true
+export PYTHONBREAKPOINT=pdb.set_trace
+
+# shell options:
+# - enable programable completion
+# - fix spelling errors when using cd
+# - expand directories with completion results
+# - fix spelling errors during tab-completion
+# - change directory by typing directory name
+# - extended pattern matching
+# - append to the history file, don't overwrite it
+# - check the window size after each command
+# - don't complete empty command line
+# - recursive globbing (enables ** to recurse all directories)
+# - attempt to perform hostname completion
+shopt -s progcomp cdspell direxpand dirspell autocd extglob histappend \
+  cmdhist checkwinsize no_empty_cmd_completion globstar hostcomplete
+
+# preserve "shopt" options in subshells
+export BASHOPTS
+
+# check for presence of terminfo files
+mapfile -t _ < <(
+  shopt -s nullglob
+  echo ~/.terminfo/*/{tmux,xterm}-256color
+)
+
+# generate terminfo files if missing
+[[ ${#_[@]} == 2 ]] || (
+  tic -x -o ~/.terminfo ~/.dotfiles/tmux-256color.ti
+  tic -x -o ~/.terminfo ~/.dotfiles/xterm-256color.ti
+) 2>/dev/null
+
+source ~/.bashrc

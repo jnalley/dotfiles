@@ -1,3 +1,5 @@
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
+
 [[ "$(uname -s)" == *Linux* ]] || return
 
 # running x windows?

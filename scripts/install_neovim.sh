@@ -18,5 +18,9 @@ case "$(uname -s)" in
     ;;
 esac
 
+mkdir -p "${HOME}/.local" ||
+  die "Failed to create ~/.local"
+
 curl -sSL "${url}/${filename}" |
-  tar -C "${HOME}/.local" -xz --strip-components=1 -f -
+  tar -C "${HOME}/.local" -xz --strip-components=1 -f - ||
+	die "Failed to install Neovim!"

@@ -3,7 +3,7 @@
   name = (none)
   email = (none)
 [core]
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.dotfiles/gitexcludes
 [include]
   path = ~/.git.user
 [push]
@@ -47,7 +47,7 @@
   stat = true
   ff = only
 [commit]
-  template = ~/.gitmessage
+  template = ~/.dotfiles/gitmessage
 [fetch]
   prune = true
 [rebase]

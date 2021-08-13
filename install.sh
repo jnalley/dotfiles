@@ -1,27 +1,40 @@
 #!/usr/bin/env bash
 
-DOTFILES=${HOME}/.dotfiles
-EXISTING=$(mktemp -d ${HOME}/dotfiles.XXXXX)
+die() { echo "$*" && exit 1; }
 
-[[ -d "${DOTFILES}" && -d "${EXISTING}" ]] || exit 1
+# gnu vs bsd ln :-(
+command ln --version 2>/dev/null | grep -qi 'GNU' &&
+  params='-vsnf' || params='-vshf'
 
-for file in ${DOTFILES}/*; do
-    file=${file##*/}
-    # omit files listed in .skip
-    egrep -q "^${file}$" ${DOTFILES}/.skip && continue
-    # if file exists and is not a symlink
-    # move it to the temporary directory
-    if [[ ! -L ${HOME}/.${file} ]]; then
-        [[ -e ${HOME}/.${file} ]] && \
-            mv -v ${HOME}/.${file} ${EXISTING}/
-    fi
-    # skip files that are already correct
-    [[ -e "${HOME}/.${file}" && \
-        "$(readlink ${HOME}/.${file})" = ".dotfiles/${file}" ]] && continue
-    ln -vsf .dotfiles/${file} ${HOME}/.${file}
+EXISTING=$(mktemp -d ~/dotfiles.XXXXX)
+
+mkdir -p ~/.config ~/.ssh
+
+# save existing ssh config
+[[ ! -L ~/.ssh/config && -s ~/.ssh/config ]] &&
+  mv ~/.ssh/config "${EXISTING}/"
+
+# link to ssh config
+ln "${params}" ../.dotfiles/ssh_config ~/.ssh/config
+
+# link entries and config
+for file in ~/.dotfiles/entries/* ~/.dotfiles/config/*; do
+  entry=${file#*.dotfiles/}
+  entry=${entry#entries/}
+
+  # if file exists and is not a symlink move it to the temporary directory
+  if [[ ! -L "${HOME}/.${entry}" && -e "${HOME}/.${entry}" ]]; then
+    [[ ${entry} == *config/* ]] && mkdir -p "${EXISTING}/.config"
+    mv -v "${HOME}/.${entry}" "${EXISTING}/"
+  fi
+
+  prefix='.dotfiles/entries'
+  [[ ${entry} == *config/* ]] && prefix='../.dotfiles'
+
+  ln "${params}" "${prefix}/${entry}" "${HOME}/.${entry}"
 done
 
 # fails if the directory contains files
-if ! rmdir ${EXISTING} 2> /dev/null; then
-    echo "Existing files moved to ${EXISTING}"
+if ! rmdir "${EXISTING}" 2>/dev/null; then
+  echo "Existing files moved to ${EXISTING}"
 fi
