@@ -1,21 +1,13 @@
-# vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
-# bail if executables are not present
-[[ -x ${HOME}/.fzf/bin/fzf ]] || return 1
-
-# add fzf bin directory to path
-[[ "$PATH" == *${HOME}/.fzf/bin* ]] || \
-  export PATH="$PATH:${HOME}/.fzf/bin"
-
-# add to MANPATH
-[[ "${MANPATH}" == *${HOME}/.fzf/man* && -d "${HOME}/.fzf/man" ]] || \
-  export MANPATH="$MANPATH:${HOME}/.fzf/man"
+inpath fzf || return
 
 export FZF_DEFAULT_OPTS='--height 30% --border'
 
 inpath tree && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
-source "${HOME}/.fzf/shell/key-bindings.bash" 2> /dev/null
+[[ -d "${HOMEBREW_PREFIX}" ]] &&
+  source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.bash"
 
 inpath fd || return 0
 

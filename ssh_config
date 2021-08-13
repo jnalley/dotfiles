@@ -12,7 +12,7 @@ GlobalKnownHostsFile ~/.ssh/known_hosts
 UserKnownHostsFile /dev/null
 
 ## I don't always add host keys to my known_host file...
-## But when I do - I do it manually with 'ssh-keyscan -t rsa <hostname>'
+## But when I do - I do it manually with 'ssh-keyscan <hostname>'
 ##
 ## Swapping the roles of GlobalKnownHostsFile and UserKnownHostsFile allows me
 ## to manually maintain my known_hosts file rather than have ssh prompt me to

@@ -1,4 +1,4 @@
-# vim: set ft=sh:ts=4:sw=4:noet:nowrap # bash
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
 # no ssh config
 [[ -s ~/.ssh/config ]] || return 1

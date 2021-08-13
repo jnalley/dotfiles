@@ -1,0 +1,27 @@
+# vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
+
+# stop here if this is not an interactive shell
+[[ $- == *i* ]] || return
+
+inpath() { command -v "${1}" >/dev/null; }
+colorterm() {
+  local colors=$(tput colors 2>/dev/null)
+  [[ ${colors:-0} -gt 2 ]]
+}
+
+# report the status of terminated background jobs immediately
+set -o notify
+
+# customizations for less
+[[ -s ~/.less ]] || lesskey
+
+# date in the format YYYYMMDDHHMMSS (ISO 8601)
+alias mydate="date +'%G%m%d%H%M%S'"
+alias e='${EDITOR}'
+inpath htop && alias top=htop
+
+for _ in ~/.dotfiles/scripts/hooks/*.sh; do
+  source "$_"
+done
+
+source ~/.local/etc/profile.d/bash_completion.sh 2>/dev/null

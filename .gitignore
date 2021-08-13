@@ -1,12 +1,4 @@
-!ssh/config
-bash.d/local.sh
-htop/
-nvim/autoload/plug.vim*
-nvim/shada/
-nvim/site/
-nvim/tmp/
-nvim/doc/
-nvim/log
-ssh/**
-configstore/
-bash-completion/
+entries/ssh/**
+!entries/ssh/config
+config/nvim/tmp/*
+config/nvim/autoload/*

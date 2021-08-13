@@ -1,9 +1,10 @@
 # vim: set ft=sh:ts=2:sw=2:noet:nowrap # bash
 
 # pick the best recursive grep option available
-for prg in 'rg' 'ag'; do
-  inpath ${prg} && alias g="${prg} --ignore-case" && break
-done ; unset prg
+for _ in 'rg' 'ag'; do
+  # shellcheck disable=SC2139
+  inpath $_ && alias g="$_ --ignore-case" && break
+done
 
 # use a function wrapper if we are stuck with plain grep
 if ! alias g > /dev/null 2>&1; then
