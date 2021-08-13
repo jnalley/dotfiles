@@ -123,8 +123,8 @@ call plug#begin(s:vimdir . '/plugged')
 "Plug 'junegunn/gv.vim'
 "Plug 'kassio/neoterm'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' }
+"Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'morhetz/gruvbox'
