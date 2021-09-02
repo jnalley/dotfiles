@@ -34,7 +34,7 @@ selection:
 # gruvbox material dark - tweaked
 colors:
   primary:
-    background: '0x1c1f20'
+    background: '0x111111'
     foreground: '0xebdbb2'
 
   normal:
@@ -56,3 +56,22 @@ colors:
     magenta: '0xd3869b'
     cyan:    '0x89b482'
     white:   '0xdfbf8e'
+
+hints:
+  enabled:
+  - regex: "(mailto:|https:|http:|file:|git:|ssh:|ftp:)\
+            [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+    command: open
+    post_processing: true
+    mouse:
+      enabled: true
+      mods: Command
+
+key_bindings:
+  - { key: Key0,           mods: Command, action: ResetFontSize    }
+  - { key: Equals,         mods: Command, action: IncreaseFontSize }
+  - { key: Plus,           mods: Command, action: IncreaseFontSize }
+  - { key: NumpadAdd,      mods: Command, action: IncreaseFontSize }
+  - { key: Minus,          mods: Command, action: DecreaseFontSize }
+  - { key: NumpadSubtract, mods: Command, action: DecreaseFontSize }
+  - { key: 36,             mods: Command, action: ToggleSimpleFullscreen }

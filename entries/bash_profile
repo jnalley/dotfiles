@@ -36,7 +36,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=true
 export PYTHONBREAKPOINT=pdb.set_trace
 
 # shell options:
-# - enable programable completion
+# - enable programmable completion
 # - fix spelling errors when using cd
 # - expand directories with completion results
 # - fix spelling errors during tab-completion

@@ -6,6 +6,9 @@ url="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}"
 
 die() { echo "$*" && exit 1; }
 
+inpath curl || die "Missing curl!"
+inpath git || die "Missing git!"
+
 case "$(uname -s)" in
   Darwin)
     filename=nvim-macos.tar.gz
@@ -23,4 +26,9 @@ mkdir -p "${HOME}/.local" ||
 
 curl -sSL "${url}/${filename}" |
   tar -C "${HOME}/.local" -xz --strip-components=1 -f - ||
-	die "Failed to install Neovim!"
+  die "Failed to install Neovim!"
+
+git clone https://github.com/wbthomason/packer.nvim \
+  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'

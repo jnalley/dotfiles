@@ -1,4 +1,3 @@
 entries/ssh/**
 !entries/ssh/config
-config/nvim/tmp/*
-config/nvim/autoload/*
+config/nvim/plugin/packer_compiled.lua
