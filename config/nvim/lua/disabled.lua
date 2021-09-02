@@ -1,20 +1,15 @@
-vim.tbl_map(function(p) vim.g["loaded_" .. p] = 1 end,
+vim.tbl_map(
+  function(p)
+    vim.g["loaded_" .. p] = vim.endswith(p, "provider") and 0 or 1
+  end,
   {
     "2html_plugin",
-    "getscript",
-    "getscriptPlugin",
     "gzip",
-    "logipat",
     "matchit",
     "netrw",
-    "netrwFileHandlers",
     "netrwPlugin",
-    "netrwSettings",
-    -- disable python2 and perl
     "perl_provider",
     "python_provider",
-    "rrhelper",
-    "spellfile_plugin",
     "tar",
     "tarPlugin",
     "vimball",
