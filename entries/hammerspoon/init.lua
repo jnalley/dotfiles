@@ -52,12 +52,14 @@ end
 --   function() hs.grid.resizeWindowShorter(hs.window.focusedWindow()) end
 -- )
 
+--[[
 hs.hotkey.bind({"alt", "cmd"}, "t",
   function()
     left_index, unit = next(left, (left_index or 1) < #left and left_index or nil)
     moveToUnit(unit)
   end
 )
+--]]
 
 hs.hotkey.bind({"alt", "cmd"}, "Left",
   hs.fnutils.partial(moveToUnit, hs.layout.left50)
@@ -78,6 +80,15 @@ hs.hotkey.bind({"cmd", "alt"}, "s", function()
     "Sleep disabled" or "Normal sleep restored"
   )
 end)
+
+hs.hotkey.bind(
+  {"alt", "cmd"}, "t",
+  function()
+    local app = hs.application.open("alacritty")
+    local win = app:getWindow()
+    win:moveToUnit(hs.layout.right50)
+  end
+)
 
 -- cli
 -- if not hs.ipc.cliStatus() then
