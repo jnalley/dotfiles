@@ -10,29 +10,46 @@ end
 
 function m.partial(f, ...)
   local args = {...}
-  return function(...) return f(unpack(args), ...) end
+  return function(...)
+    return f(unpack(args), ...)
+  end
 end
 
 function m.plugins(plugins)
-  require("packer").startup(function(use)
+  local config = {
+    display = {
+      open_fn = function()
+        return require("packer.util").float({border = "single"})
+      end
+    },
+    profile = {
+      enable = true,
+      threshold = 1
+    }
+  }
+
+  local function packer(use)
     use "wbthomason/packer.nvim"
     for _, args in ipairs(plugins) do
       local plugin = args[1]
-      local cfg = plugin:gsub(
-        "(.*/)(.*)","%2"
-      ):gsub("^nvim%-",""):gsub("%.nvim$",""):gsub("-","_")
-      local path = string.format(
-        "%s/lua/plugins/%s.lua", vim.fn.stdpath("config"), cfg
+      local cfg =
+        plugin:gsub("(.*/)(.*)", "%2"):gsub("^nvim%-", ""):gsub("%.nvim$", ""):gsub(
+        "-",
+        "_"
       )
+      local path =
+        string.format("%s/lua/plugins/%s.lua", vim.fn.stdpath("config"), cfg)
       if vim.loop.fs_stat(path) then
         args["config"] = string.format([[require("plugins/%s")]], cfg)
       end
       use(args)
     end
-  end)
+  end
+
+  require("packer").startup {packer, config = config}
 end
 
-m.noremap  = m.partial(_keymap, "")
+m.noremap = m.partial(_keymap, "")
 m.nnoremap = m.partial(_keymap, "n")
 m.vnoremap = m.partial(_keymap, "v")
 

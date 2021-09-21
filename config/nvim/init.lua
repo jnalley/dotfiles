@@ -12,6 +12,7 @@ require("util").plugins{
   {"kabouzeid/nvim-lspinstall"},
   {"neovim/nvim-lspconfig"},
   {"hrsh7th/nvim-cmp", requires = {"hrsh7th/cmp-buffer"}},
+  {"hrsh7th/cmp-nvim-lsp"},
   {"tpope/vim-characterize"},
   {"tpope/vim-fugitive"},
   {"tpope/vim-repeat"},

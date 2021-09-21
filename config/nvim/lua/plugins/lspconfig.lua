@@ -2,14 +2,19 @@ local vim = vim
 local lspconfig = require "lspconfig"
 local lspinstall = require "lspinstall"
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 lspinstall.setup()
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
+vim.lsp.handlers["textDocument/publishDiagnostics"] =
+  vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
     signs = true,
     underline = true,
     update_in_insert = false,
-    virtual_text = false,
+    virtual_text = false
   }
 )
 
@@ -38,13 +43,17 @@ local settings = {
           {
             formatCommand = "isort --stdout --profile black -",
             formatStdin = true
-          },
+          }
         },
         sh = {
           {
             lintCommand = "shellcheck -f gcc -x -",
             lintStdin = true,
-            lintFormats = {"%f:%l:%c: %trror: %m", "%f:%l:%c: %tarning: %m", "%f:%l:%c: %tote: %m"},
+            lintFormats = {
+              "%f:%l:%c: %trror: %m",
+              "%f:%l:%c: %tarning: %m",
+              "%f:%l:%c: %tote: %m"
+            },
             lintSource = "shellcheck"
           },
           {
@@ -56,13 +65,33 @@ local settings = {
   }
 }
 
-local manual  = { "efm" }
+settings["python"] = {
+  filetypes = { 'python' },
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        autoImportCompletions = true,
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
+}
+
+local manual = {"efm"}
 local servers = vim.list_extend(lspinstall.installed_servers(), manual)
 
 for _, server in ipairs(servers) do
   if lspconfig[server] ~= nil then
-    lspconfig[server].setup(settings[server] or {})
+    local s = settings[server] or {}
+    s["capabilities"] = capabilities
+    lspconfig[server].setup(s)
   else
-    vim.notify(string.format("Unable to enable language server: %s", server), "ERROR")
+    vim.notify(
+      string.format("Unable to enable language server: %s", server),
+      "ERROR"
+    )
   end
 end
+
+lspconfig["jedi_language_server"].setup{}

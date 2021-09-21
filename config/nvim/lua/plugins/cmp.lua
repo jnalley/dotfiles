@@ -1,5 +1,7 @@
 local cmp = require "cmp"
 
+vim.o.completeopt = 'menuone,noselect'
+
 cmp.setup {
   mapping = {
     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'}),
