@@ -5,6 +5,7 @@ NVIM_VERSION="${NVIM_VERSION:-stable}"
 url="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}"
 
 die() { echo "$*" && exit 1; }
+inpath() { command -v "${1}" >/dev/null; }
 
 inpath curl || die "Missing curl!"
 inpath git || die "Missing git!"
