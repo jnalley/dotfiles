@@ -30,11 +30,11 @@ local settings = {
       languages = {
         python = {
           {
-            formatCommand = "black --fast -",
+            formatCommand = "black --line-length 79 -",
             formatStdin = true
           },
           {
-            lintCommand = "flake8 --max-line-length 160 --format '%(path)s:%(row)d:%(col)d: %(code)s %(code)s %(text)s' --stdin-display-name ${INPUT} -",
+            lintCommand = "flake8 --ignore=E203,E266,E501,W503 --per-file-ignores=__init__.py:F401 --max-line-length 79 --format '%(path)s:%(row)d:%(col)d: %(code)s %(code)s %(text)s' --stdin-display-name ${INPUT} -",
             lintStdin = true,
             lintIgnoreExitCode = true,
             lintFormats = {"%f:%l:%c: %t%n%n%n %m"},
@@ -57,7 +57,7 @@ local settings = {
             lintSource = "shellcheck"
           },
           {
-            formatCommand = "shfmt ${-i:tabWidth}"
+            formatCommand = "shfmt ${-i:tabWidth} -ci"
           }
         }
       }
