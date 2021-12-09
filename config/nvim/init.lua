@@ -9,7 +9,7 @@ require("util").plugins{
   {"folke/trouble.nvim", requires = icons},
   {"hoob3rt/lualine.nvim", requires = icons},
   {"justinmk/vim-dirvish"},
-  {"kabouzeid/nvim-lspinstall"},
+  {'neovim/nvim-lspconfig'},
   {"neovim/nvim-lspconfig"},
   {"hrsh7th/nvim-cmp", requires = {"hrsh7th/cmp-buffer"}},
   {"hrsh7th/cmp-nvim-lsp"},
