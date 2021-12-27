@@ -6,7 +6,7 @@ export HOMEBREW_PREFIX="$(brew --prefix)"
 # use gnu versions if they are available
 # - brew install coreutils gnu-tar findutils
 PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:${PATH}"
-MANPATH="${HOMEBREW_PREFIX}/local/opt/coreutils/libexec/gnuman:${MANPATH}"
+MANPATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnuman:${MANPATH##/usr/share/man:}:/usr/share/man"
 export PATH MANPATH
 
 # prevent github rate limiting
