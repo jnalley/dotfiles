@@ -1,7 +1,9 @@
 black
+faker
 flake8
 ipython
 isort
+jedi-language-server
 memory_profiler
 neovim
 numpy
@@ -12,4 +14,3 @@ smart-open
 tqdm
 twine
 wheel
-faker
