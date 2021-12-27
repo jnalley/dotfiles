@@ -1,3 +1,4 @@
 entries/ssh/**
 !entries/ssh/config
 config/nvim/plugin/packer_compiled.lua
+local.sh

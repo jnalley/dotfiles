@@ -21,6 +21,8 @@ for _ in ~/.dotfiles/scripts/hooks/*.sh; do
   source "$_"
 done
 
-source ~/.asdf/asdf.sh
+source ~/.asdf/asdf.sh 2>/dev/null
 
 source ~/.local/etc/profile.d/bash_completion.sh 2>/dev/null
+
+source ~/.dotfiles/local.sh 2>/dev/null
