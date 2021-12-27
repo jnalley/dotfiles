@@ -4,6 +4,7 @@ require "keymaps"
 local icons = {"kyazdani42/nvim-web-devicons", opt = true}
 
 require("util").plugins{
+  {"christoomey/vim-tmux-navigator"},
   {"Murtaza-Udaipurwala/gruvqueen"},
   {"b3nj5m1n/kommentary"},
   {"folke/trouble.nvim", requires = icons},
