@@ -67,3 +67,4 @@ lspconfig["efm"].setup{
 
 lspconfig["jedi_language_server"].setup{}
 lspconfig["solargraph"].setup{}
+lspconfig["bashls"].setup{}
